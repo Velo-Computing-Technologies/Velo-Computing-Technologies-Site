@@ -1,11 +1,15 @@
 {
-  "name": "Velo Tech",
+  "name": "Velo Systems Suite",
   "short_name": "Velo",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#050505",
-  "theme_color": "#6366f1",
+  "background_color": "#020202",
+  "theme_color": "#3b82f6",
   "icons": [
-    { "src": "https://lucide.dev", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "https://cdn-icons-png.flaticon.com",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }
