@@ -2,76 +2,203 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velo Systems | All-in-One Engineering Suite</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Velo Computing Technologies</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://unpkg.com"></script>
+    <style>
+        :root {
+            --bg: #050505; --card: #111111; --primary: #6366f1;
+            --text: #ffffff; --text-dim: #94a3b8; --border: rgba(255,255,255,0.08);
+        }
+        [data-theme="light"] {
+            --bg: #f1f5f9; --card: #ffffff; --text: #0f172a;
+            --text-dim: #64748b; --border: rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+        body { 
+            margin: 0; background: var(--bg); color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh;
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* Desktop Sidebar / Mobile Header */
+        header {
+            padding: 20px; display: flex; justify-content: space-between;
+            align-items: center; border-bottom: 1px solid var(--border);
+            background: var(--bg); z-index: 10;
+        }
+
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
+        .logo span { color: var(--primary); }
+
+        /* Responsive Layout Container */
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+
+        /* Content Area */
+        #content { 
+            flex: 1; overflow-y: auto; padding: 2rem; 
+            max-width: 1200px; margin: 0 auto; width: 100%;
+        }
+
+        /* Grid for Desktop */
+        .grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 1.5rem; margin-top: 1rem;
+        }
+
+        /* UI Cards */
+        .card {
+            background: var(--card); border: 1px solid var(--border);
+            padding: 1.5rem; border-radius: 20px; position: relative;
+        }
+        .card:hover { border-color: var(--primary); }
+
+        .badge {
+            font-size: 0.7rem; font-weight: 800; padding: 4px 10px;
+            border-radius: 8px; background: rgba(99, 102, 241, 0.15); color: var(--primary);
+        }
+
+        /* Navigation Strategy */
+        nav {
+            background: var(--card); border-top: 1px solid var(--border);
+            display: flex; justify-content: space-around; padding: 10px 0;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .nav-btn {
+            background: none; border: none; color: var(--text-dim);
+            display: flex; flex-direction: column; align-items: center;
+            gap: 5px; cursor: pointer; font-size: 0.75rem; font-weight: 600;
+        }
+        .nav-btn.active { color: var(--primary); }
+
+        /* Desktop Adjustments */
+        @media (min-width: 768px) {
+            nav {
+                flex-direction: column; width: 240px; height: 100%;
+                justify-content: flex-start; padding: 2rem 1rem; border-top: none;
+                border-right: 1px solid var(--border);
+            }
+            .nav-btn { 
+                flex-direction: row; padding: 12px; border-radius: 12px;
+                width: 100%; font-size: 0.9rem; gap: 12px;
+            }
+            .nav-btn.active { background: rgba(99,102,241,0.1); }
+            header { display: none; } /* Use sidebar logo instead */
+            .sidebar-logo { display: block !important; margin-bottom: 2rem; }
+        }
+
+        /* Components */
+        .btn-toggle {
+            width: 40px; height: 20px; background: #334155;
+            border-radius: 20px; position: relative; cursor: pointer;
+        }
+        .btn-toggle::before {
+            content: ''; position: absolute; width: 16px; height: 16px;
+            background: white; border-radius: 50%; top: 2px; left: 2px;
+            transition: 0.3s;
+        }
+        [data-theme="light"] .btn-toggle::before { transform: translateX(20px); background: var(--primary); }
+    </style>
 </head>
 <body>
-    <div id="app-container">
-        <!-- SIDEBAR NAVIGATION -->
-        <nav id="sidebar">
-            <div class="logo">VELO<span>.</span></div>
-            <ul class="nav-links">
-                <li class="active" onclick="showApp('timer')">System Timer</li>
-                <li onclick="showApp('egg')">Kitchen Sync</li>
-                <li onclick="showApp('compass')">Nav Compass</li>
-                <li onclick="showApp('todo')">Task Stack</li>
-            </ul>
-            <div class="founder">FND DEC 2025<br>H. SHASTRI</div>
+
+    <header>
+        <div class="logo">VELO<span>.TECH</span></div>
+        <button onclick="UI.toggleTheme()" style="background:none; border:none; color:var(--text);"><i data-lucide="sun-moon"></i></button>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar for Desktop / Bottom for Mobile -->
+        <nav id="main-nav">
+            <div class="logo sidebar-logo" style="display:none; padding: 0 12px;">VELO<span>.TECH</span></div>
+            <button class="nav-btn active" onclick="UI.render('home')"><i data-lucide="home"></i> Home</button>
+            <button class="nav-btn" onclick="UI.render('apps')"><i data-lucide="smartphone"></i> Mobile Apps</button>
+            <button class="nav-btn" onclick="UI.render('settings')"><i data-lucide="settings"></i> Settings</button>
         </nav>
 
-        <!-- MAIN VIEWPORT -->
-        <main id="viewport">
-            <!-- APPS LOAD HERE DYNAMICALLY -->
-            <section id="timer" class="app-view active">
-                <h2>System Timer</h2>
-                <div class="display" id="stopwatch">00:00:00</div>
-                <div class="controls">
-                    <button class="btn" onclick="startSw()">Start</button>
-                    <button class="btn" onclick="stopSw()">Stop</button>
-                    <button class="btn" onclick="resetSw()">Reset</button>
-                </div>
-            </section>
-
-            <section id="egg" class="app-view">
-                <h2>Kitchen Sync</h2>
-                <div class="display" id="eggClock">05:00</div>
-                <div class="controls">
-                    <button class="btn" onclick="startEgg(300)">5m</button>
-                    <button class="btn" onclick="startEgg(600)">10m</button>
-                    <button class="btn" onclick="resetEgg()">Clear</button>
-                </div>
-            </section>
-
-            <section id="compass" class="app-view">
-                <h2>Navigational Compass</h2>
-                <div class="compass-disc">
-                    <div id="needle"></div>
-                    <div class="cardinals"><span>N</span><span>E</span><span>S</span><span>W</span></div>
-                </div>
-                <p id="heading">0° NORTH</p>
-                <button class="btn" onclick="calibrateCompass()">Re-Calibrate</button>
-            </section>
-
-            <section id="todo" class="app-view">
-                <h2>Task Stack</h2>
-                <div class="todo-ui">
-                    <input type="text" id="todoIn" placeholder="New System Task...">
-                    <button class="btn" onclick="addTodo()">Push</button>
-                </div>
-                <ul id="todoList"></ul>
-            </section>
+        <main id="content">
+            <!-- Dynamic Content -->
         </main>
     </div>
 
-    <script src="app.js"></script>
     <script>
-        // PWA Registration
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
-        }
+        const UI = {
+            state: {
+                theme: localStorage.getItem('theme') || 'dark',
+                pages: {
+                    home: `
+                        <h1>Velo Computing</h1>
+                        <p style="color:var(--text-dim)">Next-generation hardware-software synergy from Umeå, Sweden.</p>
+                        <div class="grid">
+                            <div class="card">
+                                <h3>Active Research</h3>
+                                <p style="font-size:0.9rem; color:var(--text-dim)">We are currently optimizing CI/CD workflows for rapid mobile deployment.</p>
+                            </div>
+                            <div class="card">
+                                <h3>Cloud Integration</h3>
+                                <p style="font-size:0.9rem; color:var(--text-dim)">Native systems built to sync with GitHub Enterprise environments.</p>
+                            </div>
+                        </div>
+                    `,
+                    apps: `
+                        <h1>Mobile Ecosystem</h1>
+                        <div class="grid">
+                            <div class="card">
+                                <span class="badge">PLANNED</span>
+                                <h3 style="margin:10px 0">Velo Hub</h3>
+                                <p style="font-size:0.9rem; color:var(--text-dim)">A centralized control point for high-performance computing assets.</p>
+                            </div>
+                            <div class="card">
+                                <span class="badge">R&D</span>
+                                <h3 style="margin:10px 0">SecureSync</h3>
+                                <p style="font-size:0.9rem; color:var(--text-dim)">End-to-end encrypted mobile-to-desktop bridging.</p>
+                            </div>
+                        </div>
+                    `,
+                    settings: `
+                        <h1>Settings</h1>
+                        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>Dark Mode</span>
+                            <div class="btn-toggle" onclick="UI.toggleTheme()"></div>
+                        </div>
+                        <p style="margin-top:2rem; font-size:0.8rem; color:var(--text-dim)">Support Ticket #4087767: Academic Status Active</p>
+                    `
+                }
+            },
+
+            render(page) {
+                const container = document.getElementById('content');
+                container.innerHTML = `<div style="animation: fade 0.3s ease">${this.state.pages[page]}</div>`;
+                
+                // Update Nav UI
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.innerText.toLowerCase().includes(page));
+                });
+                
+                lucide.createIcons();
+            },
+
+            toggleTheme() {
+                this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', this.state.theme);
+                localStorage.setItem('theme', this.state.theme);
+            },
+
+            init() {
+                document.documentElement.setAttribute('data-theme', this.state.theme);
+                this.render('home');
+            }
+        };
+
+        UI.init();
     </script>
+
+    <style>
+        @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </body>
 </html>
+
