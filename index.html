@@ -45,22 +45,18 @@
             --glass: rgba(13,13,18,0.7);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif;
-               overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
 
-        /* ─── Status Bar ─── */
         #status { font-size: 0.6rem; padding: 6px; color: var(--primary); text-align: center;
                   letter-spacing: 3px; text-transform: uppercase; background: rgba(61,220,132,0.03);
                   border-bottom: 1px solid var(--border); }
 
-        /* ─── Layout ─── */
         .container { max-width: 960px; margin: 0 auto; padding: 30px 20px; }
         .view { display: none; }
         .view.active { display: block; }
 
-        /* ─── LANDING PAGE ─── */
+        /* ─── LANDING ─── */
         .landing { min-height: 100vh; position: relative; }
-
         .landing-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
             background:
@@ -68,7 +64,6 @@
                 radial-gradient(ellipse 40% 50% at 80% 50%, rgba(59,130,246,0.05) 0%, transparent 50%),
                 radial-gradient(ellipse 40% 40% at 20% 80%, rgba(168,85,247,0.04) 0%, transparent 50%);
         }
-
         .grid-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
             background-image:
@@ -76,7 +71,6 @@
                 linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
             background-size: 60px 60px;
         }
-
         .landing-nav {
             position: relative; z-index: 2; display: flex; justify-content: space-between;
             align-items: center; padding: 24px 40px; max-width: 1200px; margin: 0 auto;
@@ -84,7 +78,6 @@
         .landing-nav .logo { font-size: 1.3rem; font-weight: 900; letter-spacing: -0.5px; }
         .landing-nav .logo span { color: var(--primary); }
         .landing-nav .nav-links { display: flex; gap: 8px; }
-
         .landing-hero {
             position: relative; z-index: 2; text-align: center;
             padding: 120px 20px 60px; max-width: 800px; margin: 0 auto;
@@ -93,8 +86,7 @@
             display: inline-block; padding: 6px 16px; border-radius: 50px;
             background: var(--primary-dim); color: var(--primary);
             font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
-            text-transform: uppercase; margin-bottom: 24px;
-            border: 1px solid rgba(61,220,132,0.2);
+            text-transform: uppercase; margin-bottom: 24px; border: 1px solid rgba(61,220,132,0.2);
         }
         .landing-hero h1 {
             font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900;
@@ -102,15 +94,10 @@
         }
         .landing-hero h1 .gradient-text {
             background: linear-gradient(135deg, var(--primary), #22d3ee, var(--primary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .landing-hero p {
-            color: var(--text-dim); font-size: 1.1rem; line-height: 1.7;
-            max-width: 550px; margin: 0 auto 40px;
-        }
+        .landing-hero p { color: var(--text-dim); font-size: 1.1rem; line-height: 1.7; max-width: 550px; margin: 0 auto 40px; }
         .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
         .landing-features {
             position: relative; z-index: 2; display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -125,17 +112,15 @@
         .feature-icon { font-size: 1.8rem; margin-bottom: 14px; }
         .feature-card h3 { font-size: 0.95rem; margin-bottom: 8px; font-weight: 700; }
         .feature-card p { font-size: 0.8rem; color: var(--text-dim); line-height: 1.6; }
-
         .landing-footer {
             position: relative; z-index: 2; text-align: center;
             padding: 80px 20px 40px; color: var(--text-dim); font-size: 0.7rem;
         }
 
-        /* ─── Auth Cards ─── */
+        /* ─── Auth ─── */
         .auth-card {
             background: var(--card); padding: 40px; border-radius: 24px;
-            border: 1px solid var(--border); max-width: 420px; margin: 60px auto;
-            position: relative; z-index: 2;
+            border: 1px solid var(--border); max-width: 420px; margin: 60px auto; position: relative; z-index: 2;
         }
         .auth-card h2 { margin-bottom: 4px; font-size: 1.4rem; }
         .auth-card .subtitle { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 24px; }
@@ -151,8 +136,7 @@
         }
         input:focus, textarea:focus, select:focus { border-color: var(--primary); }
         textarea { resize: vertical; min-height: 80px; }
-        select { cursor: pointer; }
-        select option { background: #111; }
+        select { cursor: pointer; } select option { background: #111; }
         .input-label { font-size: 0.7rem; color: var(--text-dim); margin: 10px 0 2px;
                        text-transform: uppercase; letter-spacing: 1px; display: block; }
 
@@ -164,15 +148,13 @@
         .btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .btn:active { transform: scale(0.98); }
         .btn-primary { background: var(--primary); color: #000; }
-        .btn-primary-glow { background: var(--primary); color: #000;
-                            box-shadow: 0 0 30px var(--primary-glow); }
-        .btn-dark { background: rgba(255,255,255,0.06); color: #fff;
-                    border: 1px solid var(--border); }
+        .btn-primary-glow { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--primary-glow); }
+        .btn-dark { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid var(--border); }
         .btn-danger { background: var(--danger); color: #fff; }
         .btn-sm { padding: 8px 16px; font-size: 0.75rem; width: auto; margin: 0; border-radius: 8px; }
         .btn-inline { width: auto; }
 
-        /* ─── Top Bar ─── */
+        /* ─── Topbar ─── */
         .topbar { display: flex; justify-content: space-between; align-items: center;
                   padding: 16px 0; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
         .topbar-left h1 { font-size: 1.3rem; font-weight: 900; }
@@ -185,11 +167,9 @@
 
         /* ─── Tabs ─── */
         .tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--card);
-                padding: 4px; border-radius: 14px; border: 1px solid var(--border);
-                overflow-x: auto; }
+                padding: 4px; border-radius: 14px; border: 1px solid var(--border); overflow-x: auto; }
         .tab { flex: 1; padding: 12px; text-align: center; border-radius: 10px; cursor: pointer;
-               font-size: 0.78rem; font-weight: 600; color: var(--text-dim); transition: all 0.2s;
-               white-space: nowrap; }
+               font-size: 0.78rem; font-weight: 600; color: var(--text-dim); transition: all 0.2s; white-space: nowrap; }
         .tab:hover { color: var(--text); }
         .tab.active { background: var(--primary); color: #000; }
         .tab-content { display: none; }
@@ -199,8 +179,7 @@
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px;
                 padding: 20px; margin-bottom: 12px; transition: all 0.2s; }
         .card:hover { background: var(--card-hover); border-color: rgba(255,255,255,0.1); }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start;
-                       margin-bottom: 10px; gap: 12px; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 12px; }
         .card-title { font-weight: 700; font-size: 0.95rem; }
         .card-meta { font-size: 0.7rem; color: var(--text-dim); }
         .card-body { color: var(--text-dim); font-size: 0.85rem; line-height: 1.6; }
@@ -222,6 +201,7 @@
             width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center;
             justify-content: center; font-size: 1.8rem; font-weight: 800;
             background: linear-gradient(135deg, var(--primary), #22d3ee); color: #000;
+            flex-shrink: 0; background-size: cover; background-position: center;
         }
         .profile-info h2 { font-size: 1.2rem; }
         .profile-info p { color: var(--text-dim); font-size: 0.8rem; }
@@ -235,18 +215,79 @@
         .user-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
         .user-table tr:hover td { background: var(--card-hover); }
 
-        /* ─── Empty ─── */
+        /* ─── Chat ─── */
+        .chat-container {
+            display: flex; flex-direction: column; height: 65vh;
+            background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
+        }
+        .chat-header {
+            padding: 16px 20px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-header h3 { font-size: 0.9rem; }
+        .chat-online { font-size: 0.65rem; color: var(--primary); display: flex; align-items: center; gap: 6px; }
+        .chat-online::before { content: ''; width: 6px; height: 6px; border-radius: 50%;
+                               background: var(--primary); display: inline-block; }
+        .chat-messages {
+            flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 8px;
+        }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        .chat-msg {
+            max-width: 75%; padding: 12px 16px; border-radius: 16px; font-size: 0.85rem;
+            line-height: 1.5; position: relative; word-wrap: break-word;
+        }
+        .chat-msg.mine {
+            align-self: flex-end; background: var(--primary); color: #000;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-msg.theirs {
+            align-self: flex-start; background: rgba(255,255,255,0.06);
+            border-bottom-left-radius: 4px;
+        }
+        .chat-msg .msg-author {
+            font-size: 0.65rem; font-weight: 700; margin-bottom: 4px; opacity: 0.7;
+        }
+        .chat-msg.mine .msg-author { color: #000; }
+        .chat-msg .msg-time {
+            font-size: 0.55rem; opacity: 0.5; margin-top: 4px; text-align: right;
+        }
+        .chat-msg.mine .msg-time { color: #000; }
+        .chat-input-bar {
+            padding: 16px; border-top: 1px solid var(--border); display: flex; gap: 10px;
+        }
+        .chat-input-bar input {
+            flex: 1; margin: 0; background: rgba(0,0,0,0.4); border-radius: 14px;
+        }
+        .chat-input-bar button { width: auto; margin: 0; padding: 12px 24px; border-radius: 14px; }
+        .chat-locked {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 50vh; color: var(--text-dim); text-align: center; gap: 12px;
+        }
+        .chat-locked-icon { font-size: 3rem; }
+
+        /* ─── Toggle Switch (for admin chat enable) ─── */
+        .toggle { position: relative; display: inline-block; width: 38px; height: 22px; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background: #333; transition: 0.3s; border-radius: 22px;
+        }
+        .toggle-slider:before {
+            content: ""; position: absolute; height: 16px; width: 16px; left: 3px; bottom: 3px;
+            background: #fff; transition: 0.3s; border-radius: 50%;
+        }
+        .toggle input:checked + .toggle-slider { background: var(--primary); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+        /* ─── Misc ─── */
         .empty { text-align: center; padding: 40px; color: var(--text-dim); }
         .empty-icon { font-size: 2rem; margin-bottom: 10px; }
-
-        /* ─── Form Section ─── */
         .form-section { background: var(--card); border: 1px solid var(--border);
                         border-radius: 16px; padding: 24px; margin-bottom: 24px; }
         .form-section h3 { margin-bottom: 16px; font-size: 0.95rem; }
         .form-row { display: flex; gap: 10px; }
         .form-row > * { flex: 1; }
-
-        /* ─── Stat Cards ─── */
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
                      gap: 12px; margin-bottom: 24px; }
         .stat-card { background: var(--card); border: 1px solid var(--border);
@@ -254,11 +295,8 @@
         .stat-value { font-size: 2rem; font-weight: 800; }
         .stat-label { color: var(--text-dim); font-size: 0.65rem; margin-top: 4px;
                       letter-spacing: 1px; text-transform: uppercase; }
-
         .section-title { margin-bottom: 12px; font-size: 0.75rem; color: var(--text-dim);
                          letter-spacing: 1.5px; text-transform: uppercase; }
-
-        /* ─── Divider ─── */
         .divider { height: 1px; background: var(--border); margin: 24px 0; }
 
         @media (max-width: 600px) {
@@ -269,6 +307,7 @@
             .landing-nav { padding: 16px 20px; }
             .profile-header { flex-direction: column; text-align: center; }
             .profile-grid { grid-template-columns: 1fr; }
+            .chat-msg { max-width: 88%; }
         }
     </style>
 </head>
@@ -280,7 +319,6 @@
 <div id="view-landing" class="view active">
     <div class="landing-bg"></div>
     <div class="grid-overlay"></div>
-
     <nav class="landing-nav">
         <div class="logo">VELO<span>.CLOUD</span></div>
         <div class="nav-links">
@@ -288,21 +326,15 @@
             <button onclick="router('signup')" class="btn btn-primary btn-sm btn-inline">Get Started</button>
         </div>
     </nav>
-
     <div class="landing-hero">
         <div class="pill">⚡ Umeå Engineering Node</div>
         <h1>Build faster.<br><span class="gradient-text">Ship smarter.</span></h1>
         <p>Native Android & Web engineering platform. Manage projects, track tickets, and collaborate — all from one secure cloud portal.</p>
         <div class="hero-buttons">
-            <button onclick="router('signup')" class="btn btn-primary-glow btn-inline" style="width:auto; padding:16px 40px;">
-                Start Free →
-            </button>
-            <button onclick="router('login')" class="btn btn-dark btn-inline" style="width:auto; padding:16px 40px;">
-                Client Login
-            </button>
+            <button onclick="router('signup')" class="btn btn-primary-glow btn-inline" style="width:auto; padding:16px 40px;">Start Free →</button>
+            <button onclick="router('login')" class="btn btn-dark btn-inline" style="width:auto; padding:16px 40px;">Client Login</button>
         </div>
     </div>
-
     <div class="landing-features">
         <div class="feature-card">
             <div class="feature-icon">🎫</div>
@@ -320,10 +352,7 @@
             <p>Admin and client roles with secure row-level policies. Your data stays yours.</p>
         </div>
     </div>
-
-    <div class="landing-footer">
-        <p>VELO.CLOUD &mdash; Umeå, Sweden &bull; Built with Supabase</p>
-    </div>
+    <div class="landing-footer"><p>VELO.CLOUD — Umeå, Sweden • Built with Supabase</p></div>
 </div>
 
 <!-- ====================== LOGIN ====================== -->
@@ -335,9 +364,7 @@
         <input type="email" id="login-email" placeholder="Email address">
         <input type="password" id="login-pass" placeholder="Password">
         <button onclick="handleLogin()" class="btn btn-primary" style="margin-top:16px;">Sign In</button>
-        <div class="auth-toggle">
-            Don't have an account? <a onclick="router('signup')">Create one</a>
-        </div>
+        <div class="auth-toggle">Don't have an account? <a onclick="router('signup')">Create one</a></div>
         <p onclick="router('landing')" style="margin-top:12px; cursor:pointer; font-size:0.75rem; color:var(--text-dim); text-align:center;">← Back to home</p>
     </div>
 </div>
@@ -352,9 +379,7 @@
         <input type="email" id="signup-email" placeholder="Email address">
         <input type="password" id="signup-pass" placeholder="Password (min 6 characters)">
         <button onclick="handleSignup()" class="btn btn-primary" style="margin-top:16px;">Create Account</button>
-        <div class="auth-toggle">
-            Already have an account? <a onclick="router('login')">Sign in</a>
-        </div>
+        <div class="auth-toggle">Already have an account? <a onclick="router('login')">Sign in</a></div>
         <p onclick="router('landing')" style="margin-top:12px; cursor:pointer; font-size:0.75rem; color:var(--text-dim); text-align:center;">← Back to home</p>
     </div>
 </div>
@@ -373,11 +398,12 @@
         </div>
 
         <div class="tabs" id="tab-bar">
-            <div class="tab active" onclick="switchTab('overview')">Overview</div>
-            <div class="tab" onclick="switchTab('tickets')">Tickets</div>
-            <div class="tab" onclick="switchTab('community')">Community</div>
-            <div class="tab" onclick="switchTab('profile')">Profile</div>
-            <div class="tab" id="tab-admin" onclick="switchTab('admin')" style="display:none;">Admin</div>
+            <div class="tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
+            <div class="tab" data-tab="tickets" onclick="switchTab('tickets')">Tickets</div>
+            <div class="tab" data-tab="community" onclick="switchTab('community')">Community</div>
+            <div class="tab" data-tab="chat" id="tab-chat" onclick="switchTab('chat')" style="display:none;">Chat</div>
+            <div class="tab" data-tab="profile" onclick="switchTab('profile')">Profile</div>
+            <div class="tab" data-tab="admin" id="tab-admin" onclick="switchTab('admin')" style="display:none;">Admin</div>
         </div>
 
         <!-- ── OVERVIEW ── -->
@@ -430,6 +456,34 @@
             <div id="post-list"></div>
         </div>
 
+        <!-- ── CHAT ── -->
+        <div id="panel-chat" class="tab-content">
+            <!-- Locked state (no access) -->
+            <div id="chat-locked" class="chat-locked">
+                <div class="chat-locked-icon">🔒</div>
+                <h3>Chat Access Required</h3>
+                <p style="color:var(--text-dim); font-size:0.85rem; max-width:400px;">
+                    Chat is invite-only. An admin must enable chat access for your account.
+                </p>
+            </div>
+
+            <!-- Unlocked chat UI -->
+            <div id="chat-unlocked" style="display:none;">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h3>💬 Team Chat</h3>
+                        <div class="chat-online">Live</div>
+                    </div>
+                    <div class="chat-messages" id="chat-messages"></div>
+                    <div class="chat-input-bar">
+                        <input type="text" id="chat-input" placeholder="Type a message..."
+                               onkeydown="if(event.key==='Enter')sendMessage()">
+                        <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ── PROFILE ── -->
         <div id="panel-profile" class="tab-content">
             <div class="profile-header">
@@ -440,7 +494,6 @@
                     <span id="profile-display-role" class="role-badge" style="margin-top:6px;"></span>
                 </div>
             </div>
-
             <div class="form-section">
                 <h3>✏️ Edit Profile</h3>
                 <label class="input-label">Full Name</label>
@@ -449,7 +502,6 @@
                 <input type="text" id="profile-avatar-url" placeholder="https://example.com/photo.jpg">
                 <button onclick="saveProfile()" class="btn btn-primary" style="margin-top:12px;">Save Changes</button>
             </div>
-
             <div class="form-section">
                 <h3>📊 Account Info</h3>
                 <div class="profile-grid">
@@ -467,31 +519,22 @@
 
         <!-- ── ADMIN ── -->
         <div id="panel-admin" class="tab-content">
-            <!-- Add User Form -->
             <div class="form-section">
                 <h3>➕ Add New User</h3>
                 <div class="form-row">
-                    <div>
-                        <label class="input-label">Full Name</label>
-                        <input type="text" id="admin-new-name" placeholder="Full name">
-                    </div>
-                    <div>
-                        <label class="input-label">Email</label>
-                        <input type="email" id="admin-new-email" placeholder="user@example.com">
-                    </div>
+                    <div><label class="input-label">Full Name</label>
+                        <input type="text" id="admin-new-name" placeholder="Full name"></div>
+                    <div><label class="input-label">Email</label>
+                        <input type="email" id="admin-new-email" placeholder="user@example.com"></div>
                 </div>
                 <div class="form-row">
-                    <div>
-                        <label class="input-label">Password</label>
-                        <input type="password" id="admin-new-pass" placeholder="Min 6 characters">
-                    </div>
-                    <div>
-                        <label class="input-label">Role</label>
+                    <div><label class="input-label">Password</label>
+                        <input type="password" id="admin-new-pass" placeholder="Min 6 characters"></div>
+                    <div><label class="input-label">Role</label>
                         <select id="admin-new-role">
                             <option value="client">Client</option>
                             <option value="admin">Admin</option>
-                        </select>
-                    </div>
+                        </select></div>
                 </div>
                 <button onclick="adminCreateUser()" class="btn btn-primary" style="margin-top:8px;">Create User</button>
                 <div id="admin-create-status" style="font-size:0.75rem; margin-top:8px; color:var(--primary);"></div>
@@ -501,7 +544,7 @@
             <div style="overflow-x:auto;">
                 <table class="user-table">
                     <thead>
-                        <tr><th>User</th><th>Role</th><th>Joined</th><th>Status</th></tr>
+                        <tr><th>User</th><th>Role</th><th>Chat</th><th>Joined</th><th>Status</th></tr>
                     </thead>
                     <tbody id="admin-user-list"></tbody>
                 </table>
@@ -519,9 +562,7 @@
     const SB_URL = 'https://lqkpxervwakucksrnoss.supabase.co';
     const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8';
 
-    let sb = null;
-    let currentUser = null;
-    let currentProfile = null;
+    let sb = null, currentUser = null, currentProfile = null, chatSubscription = null;
 
     // ─── Router ──────────────────────────────────
     function router(id) {
@@ -530,18 +571,17 @@
         if (id === 'dashboard') window.scrollTo(0, 0);
     }
 
-    // ─── Tab Switcher ────────────────────────────
+    // ─── Tab Switcher ───────────────────���────────
     function switchTab(name) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
         document.getElementById('panel-' + name)?.classList.add('active');
-        const allTabs = [...document.querySelectorAll('.tab')];
-        const tabMap = { overview:0, tickets:1, community:2, profile:3, admin:4 };
-        if (tabMap[name] !== undefined && allTabs[tabMap[name]]) allTabs[tabMap[name]].classList.add('active');
+        document.querySelector(`.tab[data-tab="${name}"]`)?.classList.add('active');
 
         if (name === 'overview')   loadOverview();
         if (name === 'tickets')    loadTickets();
         if (name === 'community')  loadPosts();
+        if (name === 'chat')       initChat();
         if (name === 'profile')    loadProfileTab();
         if (name === 'admin')      { loadAdminUsers(); loadAdminTickets(); }
     }
@@ -551,12 +591,10 @@
         const status = document.getElementById('status');
         let attempts = 0;
         while (!window.__supabaseReady && attempts < 40) {
-            await new Promise(r => setTimeout(r, 100));
-            attempts++;
+            await new Promise(r => setTimeout(r, 100)); attempts++;
         }
         if (!window.supabaseCreateClient) {
-            status.innerText = "CRITICAL: CDN BLOCKED — DISABLE AD-BLOCKER";
-            status.style.color = "#ff4b4b"; return;
+            status.innerText = "CRITICAL: CDN BLOCKED"; status.style.color = "#ff4b4b"; return;
         }
         try {
             sb = window.supabaseCreateClient(SB_URL, SB_KEY);
@@ -569,43 +607,34 @@
                 router('dashboard');
                 loadOverview();
             }
-        } catch (e) {
-            status.innerText = "ERROR: " + e.message;
-            status.style.color = "#ff4b4b";
-        }
+        } catch (e) { status.innerText = "ERROR: " + e.message; status.style.color = "#ff4b4b"; }
     }
 
     // ─── Auth ────────────────────────────────────
     async function handleLogin() {
         const email = document.getElementById('login-email').value.trim();
-        const pass  = document.getElementById('login-pass').value;
+        const pass = document.getElementById('login-pass').value;
         if (!sb) return alert("System not ready.");
         if (!email || !pass) return alert("Enter email and password.");
         const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-        if (error) alert("Login Failed: " + error.message);
-        else window.location.reload();
+        if (error) alert("Login Failed: " + error.message); else window.location.reload();
     }
 
     async function handleSignup() {
-        const name  = document.getElementById('signup-name').value.trim();
+        const name = document.getElementById('signup-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
-        const pass  = document.getElementById('signup-pass').value;
+        const pass = document.getElementById('signup-pass').value;
         if (!sb) return alert("System not ready.");
         if (!name || !email || !pass) return alert("All fields are required.");
         if (pass.length < 6) return alert("Password must be at least 6 characters.");
-
-        const { error } = await sb.auth.signUp({
-            email,
-            password: pass,
-            options: { data: { full_name: name } }
-        });
-
+        const { error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
         if (error) return alert("Signup Failed: " + error.message);
         alert("Account created! Check your email to confirm, then sign in.");
         router('login');
     }
 
     async function handleLogout() {
+        if (chatSubscription) sb.removeChannel(chatSubscription);
         if (sb) await sb.auth.signOut();
         window.location.reload();
     }
@@ -615,8 +644,8 @@
         const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
         if (data) currentProfile = data;
     }
-
     function isAdmin() { return currentProfile?.role === 'admin'; }
+    function hasChatAccess() { return isAdmin() || currentProfile?.chat_enabled === true; }
 
     function setupDashboard() {
         document.getElementById('dash-email').innerText = currentUser.email;
@@ -624,53 +653,48 @@
         badge.innerText = currentProfile?.role || 'client';
         badge.className = 'role-badge ' + (isAdmin() ? 'role-admin' : 'role-client');
         if (isAdmin()) document.getElementById('tab-admin').style.display = '';
+        // Show chat tab if user has access
+        if (hasChatAccess()) document.getElementById('tab-chat').style.display = '';
     }
 
     async function loadProfileTab() {
         const avatar = document.getElementById('profile-avatar');
         const initial = (currentProfile?.full_name || currentUser.email || '?')[0].toUpperCase();
-        avatar.innerText = initial;
         if (currentProfile?.avatar_url) {
             avatar.style.backgroundImage = `url(${currentProfile.avatar_url})`;
-            avatar.style.backgroundSize = 'cover';
             avatar.innerText = '';
-        }
+        } else { avatar.style.backgroundImage = ''; avatar.innerText = initial; }
         document.getElementById('profile-display-name').innerText = currentProfile?.full_name || '—';
         document.getElementById('profile-display-email').innerText = currentUser.email;
-        const roleBadge = document.getElementById('profile-display-role');
-        roleBadge.innerText = currentProfile?.role || 'client';
-        roleBadge.className = 'role-badge ' + (isAdmin() ? 'role-admin' : 'role-client');
+        const rb = document.getElementById('profile-display-role');
+        rb.innerText = currentProfile?.role || 'client';
+        rb.className = 'role-badge ' + (isAdmin() ? 'role-admin' : 'role-client');
         document.getElementById('profile-name').value = currentProfile?.full_name || '';
         document.getElementById('profile-avatar-url').value = currentProfile?.avatar_url || '';
-
-        const { count: tc } = await sb.from('tickets').select('*', { count:'exact', head:true }).eq('user_id', currentUser.id);
-        const { count: pc } = await sb.from('posts').select('*', { count:'exact', head:true }).eq('user_id', currentUser.id);
+        const { count: tc } = await sb.from('tickets').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);
+        const { count: pc } = await sb.from('posts').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);
         document.getElementById('profile-ticket-count').innerText = tc || 0;
         document.getElementById('profile-post-count').innerText = pc || 0;
     }
 
     async function saveProfile() {
-        const full_name  = document.getElementById('profile-name').value.trim();
+        const full_name = document.getElementById('profile-name').value.trim();
         const avatar_url = document.getElementById('profile-avatar-url').value.trim();
         if (!full_name) return alert("Name is required.");
-
         const { error } = await sb.from('profiles').update({ full_name, avatar_url }).eq('id', currentUser.id);
         if (error) return alert("Error: " + error.message);
-        await loadProfile();
-        setupDashboard();
-        loadProfileTab();
+        await loadProfile(); setupDashboard(); loadProfileTab();
         alert("Profile updated!");
     }
 
     // ─── Helpers ─────────────────────────────────
     function timeAgo(d) {
-        const diff = Date.now() - new Date(d).getTime();
-        const m = Math.floor(diff/60000);
-        if (m < 1) return 'just now';
-        if (m < 60) return m + 'm ago';
-        const h = Math.floor(m/60);
-        if (h < 24) return h + 'h ago';
-        return Math.floor(h/24) + 'd ago';
+        const diff = Date.now() - new Date(d).getTime(); const m = Math.floor(diff/60000);
+        if (m < 1) return 'just now'; if (m < 60) return m+'m ago';
+        const h = Math.floor(m/60); if (h < 24) return h+'h ago'; return Math.floor(h/24)+'d ago';
+    }
+    function formatTime(d) {
+        return new Date(d).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
     }
     function esc(s) { const d = document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
 
@@ -719,7 +743,7 @@
         const description = document.getElementById('ticket-desc').value.trim();
         const priority = document.getElementById('ticket-priority').value;
         if (!subject) return alert("Subject is required.");
-        const { error } = await sb.from('tickets').insert({ user_id:currentUser.id, subject, description, priority });
+        const { error } = await sb.from('tickets').insert({user_id:currentUser.id,subject,description,priority});
         if (error) return alert("Error: "+error.message);
         document.getElementById('ticket-subject').value='';
         document.getElementById('ticket-desc').value='';
@@ -736,24 +760,85 @@
             <div class="card-header">
                 <div><div class="card-title">${esc(p.author_name||'Anonymous')}</div><div class="card-meta">${timeAgo(p.created_at)}</div></div>
                 ${(p.user_id===currentUser.id||isAdmin())?`<button onclick="deletePost('${p.id}')" class="btn btn-danger btn-sm">✕</button>`:''}
-            </div>
-            <div class="card-body">${esc(p.content)}</div>
-        </div>`).join('');
+            </div><div class="card-body">${esc(p.content)}</div></div>`).join('');
     }
 
     async function createPost() {
         const content = document.getElementById('post-content').value.trim();
         if (!content) return alert("Write something!");
-        const { error } = await sb.from('posts').insert({ user_id:currentUser.id, author_name:currentProfile?.full_name||currentUser.email, content });
+        const { error } = await sb.from('posts').insert({user_id:currentUser.id,author_name:currentProfile?.full_name||currentUser.email,content});
         if (error) return alert("Error: "+error.message);
-        document.getElementById('post-content').value='';
-        loadPosts();
+        document.getElementById('post-content').value=''; loadPosts();
     }
 
     async function deletePost(id) {
         if (!confirm("Delete this post?")) return;
-        await sb.from('posts').delete().eq('id',id);
-        loadPosts();
+        await sb.from('posts').delete().eq('id',id); loadPosts();
+    }
+
+    // ─── Chat ────────────────────────────────────
+    async function initChat() {
+        if (hasChatAccess()) {
+            document.getElementById('chat-locked').style.display = 'none';
+            document.getElementById('chat-unlocked').style.display = 'block';
+            await loadMessages();
+            subscribeToChatRealtime();
+        } else {
+            document.getElementById('chat-locked').style.display = 'flex';
+            document.getElementById('chat-unlocked').style.display = 'none';
+        }
+    }
+
+    async function loadMessages() {
+        const { data } = await sb.from('messages').select('*').order('created_at',{ascending:true}).limit(200);
+        const container = document.getElementById('chat-messages');
+        if (!data?.length) {
+            container.innerHTML = `<div class="empty" style="padding:60px 20px;"><div class="empty-icon">💬</div>No messages yet. Say hello!</div>`;
+            return;
+        }
+        container.innerHTML = data.map(m => chatBubble(m)).join('');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function chatBubble(m) {
+        const mine = m.user_id === currentUser.id;
+        return `<div class="chat-msg ${mine ? 'mine' : 'theirs'}">
+            ${!mine ? `<div class="msg-author">${esc(m.author_name || 'User')}</div>` : ''}
+            <div>${esc(m.content)}</div>
+            <div class="msg-time">${formatTime(m.created_at)}</div>
+        </div>`;
+    }
+
+    function subscribeToChatRealtime() {
+        // Remove old subscription if any
+        if (chatSubscription) sb.removeChannel(chatSubscription);
+
+        chatSubscription = sb
+            .channel('public:messages')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+                const container = document.getElementById('chat-messages');
+                // Remove empty state if present
+                const emptyEl = container.querySelector('.empty');
+                if (emptyEl) emptyEl.remove();
+                container.insertAdjacentHTML('beforeend', chatBubble(payload.new));
+                container.scrollTop = container.scrollHeight;
+            })
+            .subscribe();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const content = input.value.trim();
+        if (!content) return;
+        input.value = '';
+
+        const { error } = await sb.from('messages').insert({
+            user_id: currentUser.id,
+            author_name: currentProfile?.full_name || currentUser.email,
+            content
+        });
+        if (error) alert("Error: " + error.message);
+        // Realtime subscription will add the bubble
     }
 
     // ─── Admin: Users ────────────────────────────
@@ -761,7 +846,7 @@
         if (!isAdmin()) return;
         const { data } = await sb.from('profiles').select('*').order('created_at',{ascending:true});
         const tb = document.getElementById('admin-user-list');
-        if (!data?.length) { tb.innerHTML='<tr><td colspan="4">No users</td></tr>'; return; }
+        if (!data?.length) { tb.innerHTML='<tr><td colspan="5">No users</td></tr>'; return; }
         tb.innerHTML = data.map(u=>`<tr>
             <td><div style="font-weight:600;">${esc(u.full_name||'—')}</div>
                 <div style="font-size:0.65rem;color:var(--text-dim);">${u.id.slice(0,12)}...</div></td>
@@ -769,8 +854,15 @@
                 <option value="client" ${u.role==='client'?'selected':''}>Client</option>
                 <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
             </select></td>
+            <td style="text-align:center;">
+                <label class="toggle">
+                    <input type="checkbox" ${u.chat_enabled?'checked':''} onchange="toggleChat('${u.id}',this.checked)">
+                    <span class="toggle-slider"></span>
+                </label>
+            </td>
             <td style="font-size:0.75rem;color:var(--text-dim);">${new Date(u.created_at).toLocaleDateString()}</td>
-            <td><span class="badge ${u.role==='admin'?'badge-high':'badge-normal'}">${u.role}</span></td>
+            <td><span class="badge ${u.role==='admin'?'badge-high':'badge-normal'}">${u.role}</span>
+                ${u.chat_enabled?'<span class="badge" style="background:var(--purple-dim);color:var(--purple);margin-left:4px;">chat</span>':''}</td>
         </tr>`).join('');
     }
 
@@ -778,58 +870,40 @@
         if (!isAdmin()) return;
         if (!confirm(`Change this user to "${role}"?`)) return;
         const { error } = await sb.from('profiles').update({role}).eq('id',uid);
-        if (error) alert("Error: "+error.message);
+        if (error) alert("Error: "+error.message); else loadAdminUsers();
+    }
+
+    async function toggleChat(uid, enabled) {
+        if (!isAdmin()) return;
+        const { error } = await sb.from('profiles').update({ chat_enabled: enabled }).eq('id', uid);
+        if (error) { alert("Error: " + error.message); loadAdminUsers(); }
         else loadAdminUsers();
     }
 
     // ─── Admin: Create User ──────────────────────
     async function adminCreateUser() {
         if (!isAdmin()) return;
-        const name  = document.getElementById('admin-new-name').value.trim();
+        const name = document.getElementById('admin-new-name').value.trim();
         const email = document.getElementById('admin-new-email').value.trim();
-        const pass  = document.getElementById('admin-new-pass').value;
-        const role  = document.getElementById('admin-new-role').value;
+        const pass = document.getElementById('admin-new-pass').value;
+        const role = document.getElementById('admin-new-role').value;
         const statusEl = document.getElementById('admin-create-status');
-
-        if (!name || !email || !pass) return alert("All fields are required.");
-        if (pass.length < 6) return alert("Password must be at least 6 characters.");
-
-        statusEl.innerText = "Creating user...";
-        statusEl.style.color = "var(--text-dim)";
-
-        // Sign up the new user (this triggers handle_new_user to create profile)
-        const { data, error } = await sb.auth.signUp({
-            email,
-            password: pass,
-            options: { data: { full_name: name } }
-        });
-
-        if (error) {
-            statusEl.innerText = "Error: " + error.message;
-            statusEl.style.color = "var(--danger)";
-            return;
+        if (!name||!email||!pass) return alert("All fields are required.");
+        if (pass.length<6) return alert("Password must be at least 6 characters.");
+        statusEl.innerText="Creating user..."; statusEl.style.color="var(--text-dim)";
+        const { data, error } = await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
+        if (error) { statusEl.innerText="Error: "+error.message; statusEl.style.color="var(--danger)"; return; }
+        if (role==='admin' && data?.user?.id) {
+            await new Promise(r=>setTimeout(r,500));
+            await sb.from('profiles').update({role:'admin'}).eq('id',data.user.id);
         }
-
-        // If role is admin, update the newly created profile
-        if (role === 'admin' && data?.user?.id) {
-            // Small delay to let the trigger create the profile row
-            await new Promise(r => setTimeout(r, 500));
-            await sb.from('profiles').update({ role: 'admin' }).eq('id', data.user.id);
-        }
-
-        statusEl.innerText = `✓ User "${name}" created as ${role}`;
-        statusEl.style.color = "var(--primary)";
-        document.getElementById('admin-new-name').value = '';
-        document.getElementById('admin-new-email').value = '';
-        document.getElementById('admin-new-pass').value = '';
-        document.getElementById('admin-new-role').value = 'client';
-
-        // Re-login as current admin (signUp switches the session)
-        // We reload to restore the admin session
-        setTimeout(() => {
-            statusEl.innerText += " — Restoring session...";
-            window.location.reload();
-        }, 1500);
+        statusEl.innerText=`✓ User "${name}" created as ${role}`;
+        statusEl.style.color="var(--primary)";
+        document.getElementById('admin-new-name').value='';
+        document.getElementById('admin-new-email').value='';
+        document.getElementById('admin-new-pass').value='';
+        document.getElementById('admin-new-role').value='client';
+        setTimeout(()=>{ statusEl.innerText+=" — Restoring session..."; window.location.reload(); },1500);
     }
 
     // ─── Admin: Tickets ──────────────────────────
@@ -841,7 +915,7 @@
             : data.map(t=>ticketCard(t,true)).join('');
     }
 
-    async function updateTicketStatus(id, status) {
+    async function updateTicketStatus(id,status) {
         const { error } = await sb.from('tickets').update({status}).eq('id',id);
         if (error) alert("Error: "+error.message);
     }
