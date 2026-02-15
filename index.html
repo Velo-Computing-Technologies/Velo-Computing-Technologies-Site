@@ -3,22 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velo Computing Technologies | Android & Web Engineering</title>
+    <meta name="description" content="Velo Computing Technologies - Specialized Android & Web Engineering in Umeå, Sweden">
+    <title>Velo Computing Technologies | Android & Web Specialists</title>
+    
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
+    <!-- Icons -->
     <script src="https://unpkg.com"></script>
+
     <style>
         :root {
             --bg: #050505;
-            --surface: #0f0f0f;
-            --card: #161616;
-            --primary: #3ddc84; /* Android Green */
+            --surface: #0a0a0a;
+            --card: #121212;
+            --primary: #3ddc84; /* Android Signature Green */
+            --primary-glow: rgba(61, 220, 132, 0.3);
             --secondary: #4285f4; /* Google Blue */
-            --text: #ffffff;
-            --text-dim: #9ca3af;
-            --border: rgba(255, 255, 255, 0.08);
-            --accent-gradient: linear-gradient(135deg, #3ddc84 0%, #4285f4 100%);
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.06);
+            --glass: rgba(255, 255, 255, 0.03);
+            --nav-height: 80px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* --- Base Reset & Core Styles --- */
         * {
             margin: 0;
             padding: 0;
@@ -26,232 +38,421 @@
             outline: none;
         }
 
-        html { scroll-behavior: smooth; }
+        html { 
+            scroll-behavior: smooth;
+            scrollbar-gutter: stable;
+        }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Scrollbar --- */
-        ::-webkit-scrollbar { width: 8px; }
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--card); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* --- Reusable Components --- */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(61, 220, 132, 0.1);
+            color: var(--primary);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px var(--primary-glow);
+        }
+
+        .btn-outline {
+            background: var(--glass);
+            color: var(--text-main);
+            border-color: var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--text-dim);
+            transform: translateY(-4px);
+        }
 
         /* --- Navigation --- */
         nav {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            padding: 20px 5%;
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        nav .container {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(15px);
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             letter-spacing: -1px;
             display: flex;
             align-items: center;
             gap: 10px;
+            color: var(--text-main);
+            text-decoration: none;
         }
 
         .logo span { color: var(--primary); }
 
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
+        .nav-menu { display: flex; gap: 35px; list-style: none; }
+        .nav-menu a {
             text-decoration: none;
             color: var(--text-dim);
             font-weight: 600;
             font-size: 0.9rem;
-            transition: 0.3s;
+            transition: var(--transition);
         }
-        .nav-links a:hover { color: var(--primary); }
+
+        .nav-menu a:hover { color: var(--primary); }
 
         /* --- Hero Section --- */
         .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 10%;
-            background: radial-gradient(circle at 80% 20%, rgba(61, 220, 132, 0.05) 0%, transparent 40%);
+            padding-top: calc(var(--nav-height) + 80px);
+            padding-bottom: 100px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero-content { max-width: 700px; z-index: 2; }
-        .hero-content h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(50px);
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(3rem, 6vw, 4.5rem);
             line-height: 1.1;
             font-weight: 800;
-            margin-bottom: 20px;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
+            margin-bottom: 25px;
         }
 
-        .hero-content p {
+        .hero-text p {
             font-size: 1.2rem;
             color: var(--text-dim);
             margin-bottom: 40px;
-            max-width: 500px;
+            max-width: 550px;
         }
 
-        .cta-group { display: flex; gap: 20px; }
-
-        .btn {
-            padding: 16px 32px;
-            border-radius: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.3s;
-            border: none;
+        /* Device Mockup */
+        .device-frame {
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 9/19;
+            background: #000;
+            border: 8px solid #1a1a1a;
+            border-radius: 40px;
+            padding: 10px;
+            position: relative;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            margin: 0 auto;
         }
 
-        .btn-primary {
-            background: var(--accent-gradient);
-            color: #000;
+        .device-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--card);
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text);
-            border: 1px solid var(--border);
+        .mock-ui-element {
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            margin-bottom: 10px;
         }
 
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(61, 220, 132, 0.2); }
+        /* --- App Showcase Section --- */
+        .section-header {
+            max-width: 700px;
+            margin-bottom: 60px;
+        }
 
-        /* --- Section Styling --- */
-        section { padding: 100px 10%; }
-        .section-tag { color: var(--primary); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; }
-        .section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; }
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
 
-        /* --- App Showcase Grid --- */
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .app-card {
             background: var(--card);
-            border-radius: 30px;
-            padding: 40px;
             border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 32px;
+            transition: var(--transition);
             position: relative;
-            overflow: hidden;
-            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
         }
 
         .app-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.02);
             border-color: var(--primary);
-            background: rgba(61, 220, 132, 0.02);
         }
 
         .app-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--surface);
-            border-radius: 20px;
+            width: 64px;
+            height: 64px;
+            background: var(--bg);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 25px;
             color: var(--primary);
+            margin-bottom: 30px;
+            box-shadow: inset 0 0 0 1px var(--border);
         }
 
-        .app-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
-        .app-card p { color: var(--text-dim); margin-bottom: 25px; font-size: 0.95rem; }
+        .app-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
 
-        .google-play-btn {
+        .app-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            flex: 1;
+        }
+
+        .gplay-btn {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
             color: var(--primary);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* --- Skills / Services --- */
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .skill-tag {
-            background: var(--surface);
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* --- Contact Form --- */
-        .contact-wrapper {
+        /* --- Web Services Section --- */
+        .services-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 100px;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .service-box {
+            padding: 40px;
+            background: var(--surface);
+            border-radius: 28px;
+            border: 1px solid var(--border);
+        }
+
+        .service-box h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .tag {
+            padding: 8px 16px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        /* --- Tech Marquee --- */
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 40px 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin: 60px 0;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+
+        .marquee-content span {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--border);
+            margin: 0 40px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- Contact Page Overlay Style --- */
+        #contact {
+            padding: 120px 0;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #050505 100%);
+        }
+
+        .contact-card {
             background: var(--card);
+            border: 1px solid var(--border);
             padding: 60px;
             border-radius: 40px;
-            border: 1px solid var(--border);
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dim); font-size: 0.8rem; }
-        .input-group input, .input-group textarea {
-            width: 100%;
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .contact-method {
+            padding: 30px;
             background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 15px;
-            border-radius: 12px;
-            color: white;
-            font-family: inherit;
+            border-radius: 24px;
+            transition: var(--transition);
         }
 
-        .input-group input:focus { border-color: var(--primary); }
+        .contact-method:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .contact-method i { margin-bottom: 20px; color: var(--primary); }
+        .contact-method h5 { font-size: 1.1rem; margin-bottom: 10px; }
+        .contact-method p { font-size: 0.85rem; color: var(--text-dim); }
 
         /* --- Footer --- */
         footer {
-            padding: 60px 10%;
+            padding: 60px 0;
             border-top: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .footer-flex {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--text-dim);
-            font-size: 0.9rem;
         }
 
+        .footer-info { color: var(--text-dim); font-size: 0.85rem; }
+
         /* --- Mobile Responsive --- */
-        @media (max-width: 900px) {
-            .nav-links { display: none; }
-            .hero { padding-top: 120px; align-items: flex-start; }
-            .contact-wrapper { grid-template-columns: 1fr; gap: 40px; padding: 30px; }
-            section { padding: 60px 5%; }
-            footer { flex-direction: column; gap: 20px; text-align: center; }
+        @media (max-width: 1024px) {
+            .hero-layout { grid-template-columns: 1fr; text-align: center; }
+            .hero-text p { margin-left: auto; margin-right: auto; }
+            .cta-group { justify-content: center; }
+            .services-layout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 25px; }
+            .nav-menu { display: none; }
+            .app-grid { grid-template-columns: 1fr; }
+            .contact-card { padding: 40px 20px; }
         }
 
         /* --- Animations --- */
         [data-reveal] {
             opacity: 0;
-            transform: translateY(30px);
-            transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        [data-reveal].visible {
+        [data-reveal].revealed {
             opacity: 1;
             transform: translateY(0);
         }
@@ -259,166 +460,249 @@
 </head>
 <body>
 
+    <!-- Navigation Header -->
     <nav>
-        <div class="logo">
-            <i data-lucide="zap" fill="var(--primary)"></i>
-            VELO<span>.TECH</span>
+        <div class="container">
+            <a href="#" class="logo">
+                <i data-lucide="zap" fill="var(--primary)" size="28"></i>
+                VELO<span>.TECH</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home">Ecosystem</a></li>
+                <li><a href="#apps">Android Apps</a></li>
+                <li><a href="#web">Web Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#contact" class="btn btn-outline" style="padding: 10px 24px; font-size: 0.85rem;">Work with us</a>
         </div>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#apps">Android Apps</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
-        </div>
-        <a href="#contact" class="btn btn-secondary" style="padding: 10px 20px; font-size: 0.8rem;">Let's Talk</a>
     </nav>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <span class="section-tag">Umeå, Sweden</span>
-            <h1>High Performance Android Engineering.</h1>
-            <p>Velo Computing Technologies specializes in building lightweight, feature-rich Android utilities and premium web experiences.</p>
-            <div class="cta-group">
-                <a href="#apps" class="btn btn-primary">View App Portfolio <i data-lucide="play"></i></a>
-                <a href="#services" class="btn btn-secondary">Web Services</a>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-layout">
+                <div class="hero-text" data-reveal>
+                    <span class="section-tag">Based in Umeå, Sweden</span>
+                    <h1>Engineering The Native Android Experience.</h1>
+                    <p>Velo Computing Technologies builds high-performance mobile utilities and responsive web architectures with a focus on minimalist design and speed.</p>
+                    <div class="cta-group">
+                        <a href="#apps" class="btn btn-primary">Our Play Store Apps</a>
+                        <a href="#web" class="btn btn-outline">Web Development</a>
+                    </div>
+                </div>
+                <div class="hero-image" data-reveal>
+                    <div class="device-frame">
+                        <div class="device-screen">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                                <i data-lucide="battery-full" size="14" color="var(--text-dim)"></i>
+                                <i data-lucide="wifi" size="14" color="var(--text-dim)"></i>
+                            </div>
+                            <div class="mock-ui-element" style="width:40%; background:var(--primary); height:20px;"></div>
+                            <div class="mock-ui-element" style="width:100%; height:80px; margin-top:20px;"></div>
+                            <div class="mock-ui-element" style="width:80%;"></div>
+                            <div class="mock-ui-element" style="width:90%;"></div>
+                            <div style="margin-top:auto; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                                <div class="mock-ui-element" style="height:40px;"></div>
+                                <div class="mock-ui-element" style="height:40px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Tech Marquee -->
+    <div class="marquee">
+        <div class="marquee-content">
+            <span>KOTLIN</span> <span>JETPACK COMPOSE</span> <span>TYPESCRIPT</span> 
+            <span>FIREBASE</span> <span>ANDROID SDK</span> <span>NEXT.JS</span> 
+            <span>KOTLIN</span> <span>JETPACK COMPOSE</span> <span>TYPESCRIPT</span> 
+            <span>FIREBASE</span> <span>ANDROID SDK</span> <span>NEXT.JS</span>
+        </div>
+    </div>
+
+    <!-- Android App Portfolio -->
     <section id="apps">
-        <span class="section-tag">Google Play Store</span>
-        <h2 class="section-title">Our Native Ecosystem</h2>
-        
-        <div class="app-grid">
-            <!-- App 1 -->
-            <div class="app-card" data-reveal>
-                <div class="app-icon"><i data-lucide="timer" size="32"></i></div>
-                <h3>Velo Timer</h3>
-                <p>A minimalist, battery-efficient timer for power users. Built with Kotlin and Jetpack Compose for native performance.</p>
-                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <span class="section-tag">Official Apps</span>
+                <h2>Mobile Intelligence.</h2>
+                <p>We specialize in native Android utilities that bridge the gap between complex functionality and effortless usability.</p>
             </div>
 
-            <!-- App 2 -->
-            <div class="app-card" data-reveal>
-                <div class="app-icon"><i data-lucide="alarm-clock" size="32"></i></div>
-                <h3>Kitchen Master</h3>
-                <p>Advanced multi-stage egg and cooking clock with custom haptic feedback and notification priority logic.</p>
-                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
-            </div>
-
-            <!-- App 3 -->
-            <div class="app-card" data-reveal>
-                <div class="app-icon"><i data-lucide="compass" size="32"></i></div>
-                <h3>Velo Compass</h3>
-                <p>Native orientation tracking using real-time magnetometer data with high-precision calibration tools.</p>
-                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
-            </div>
-
-            <!-- App 4 -->
-            <div class="app-card" data-reveal>
-                <div class="app-icon"><i data-lucide="check-square" size="32"></i></div>
-                <h3>Todo.Next</h3>
-                <p>A local-first, zero-tracker todo list. Productivity simplified with Android's latest Material You design language.</p>
-                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" style="background: var(--surface);">
-        <span class="section-tag">What we do</span>
-        <h2 class="section-title">Our Capabilities</h2>
-        
-        <div class="app-grid">
-            <div class="app-card" style="background: transparent; border:none; padding: 0;">
-                <h3 style="color: var(--primary)">Native Android</h3>
-                <p>We leverage Kotlin, Coroutines, and Room Database to build apps that are fast, stable, and offline-ready.</p>
-                <div class="skills-container">
-                    <span class="skill-tag">Kotlin</span>
-                    <span class="skill-tag">Jetpack Compose</span>
-                    <span class="skill-tag">Firebase</span>
+            <div class="app-grid">
+                <!-- App Item -->
+                <div class="app-card" data-reveal>
+                    <div class="app-icon"><i data-lucide="timer" size="30"></i></div>
+                    <h3>Velo Timer</h3>
+                    <p>A precision-focused timer engine built with Kotlin. Zero battery drain, sub-millisecond accuracy, and deep system integration.</p>
+                    <a href="https://play.google.com" class="gplay-btn">Get it on Google Play <i data-lucide="chevron-right" size="16"></i></a>
                 </div>
-            </div>
 
-            <div class="app-card" style="background: transparent; border:none; padding: 0;">
-                <h3 style="color: var(--secondary)">Modern Web</h3>
-                <p>From landing pages to complex dashboards, we build responsive web architectures that mirror app performance.</p>
-                <div class="skills-container">
-                    <span class="skill-tag">HTML5/CSS3</span>
-                    <span class="skill-tag">JavaScript ES6+</span>
-                    <span class="skill-tag">React/Next.js</span>
+                <div class="app-card" data-reveal>
+                    <div class="app-icon"><i data-lucide="clock" size="30"></i></div>
+                    <h3>Kitchen Master</h3>
+                    <p>Designed for culinary precision. Multi-timer support with specialized presets for egg timing and industrial kitchen workflows.</p>
+                    <a href="https://play.google.com" class="gplay-btn">Get it on Google Play <i data-lucide="chevron-right" size="16"></i></a>
+                </div>
+
+                <div class="app-card" data-reveal>
+                    <div class="app-icon"><i data-lucide="compass" size="30"></i></div>
+                    <h3>Velo Compass</h3>
+                    <p>Utilizing high-frequency magnetometer data for true-north orientation. Built-in GPS calibration and altitude tracking.</p>
+                    <a href="https://play.google.com" class="gplay-btn">Get it on Google Play <i data-lucide="chevron-right" size="16"></i></a>
+                </div>
+
+                <div class="app-card" data-reveal>
+                    <div class="app-icon"><i data-lucide="check-circle" size="30"></i></div>
+                    <h3>Todo.Native</h3>
+                    <p>Productivity without the cloud bloat. Local-first task management with Material You dynamic color support.</p>
+                    <a href="https://play.google.com" class="gplay-btn">Get it on Google Play <i data-lucide="chevron-right" size="16"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Services Section -->
+    <section id="web">
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <span class="section-tag">Studio Services</span>
+                <h2>Beyond The Smartphone.</h2>
+                <p>While our heart is in Android, our engineering team excels at creating cohesive web experiences that scale with your brand.</p>
+            </div>
+
+            <div class="services-layout">
+                <div class="service-box" data-reveal>
+                    <h4>Android Development</h4>
+                    <p>End-to-end native development using Kotlin and the latest Jetpack libraries. We focus on MVVM architecture for long-term maintainability.</p>
+                    <div class="tags-container">
+                        <span class="tag">Coroutines</span> <span class="tag">Room DB</span> <span class="tag">Retrofit</span> <span class="tag">Dagger Hilt</span>
+                    </div>
+                </div>
+                <div class="service-box" data-reveal>
+                    <h4>Web Engineering</h4>
+                    <p>Static and dynamic web solutions optimized for Core Web Vitals. We build sites that load instantly and work everywhere.</p>
+                    <div class="tags-container">
+                        <span class="tag">React</span> <span class="tag">Next.js</span> <span class="tag">Tailwind</span> <span class="tag">Node.js</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Direct Contact Section -->
     <section id="contact">
-        <div class="contact-wrapper">
-            <div>
-                <span class="section-tag">Collaboration</span>
-                <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 20px;">Let's build the next big thing.</h2>
-                <p style="color: var(--text-dim); margin-bottom: 40px;">Whether it's a new Android utility or a custom web platform, our team in Västerbotten is ready to help.</p>
+        <div class="container">
+            <div class="contact-card" data-reveal>
+                <span class="section-tag">Direct Access</span>
+                <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 20px;">Ready to collaborate?</h2>
+                <p style="color: var(--text-dim); max-width: 600px; margin: 0 auto 40px;">We are currently accepting new projects for Q3 2026. Reach out directly through the channels below.</p>
                 
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <i data-lucide="mail" color="var(--primary)"></i> hello@velo-tech.shastri
+                <div class="contact-grid">
+                    <div class="contact-method">
+                        <i data-lucide="mail" size="32"></i>
+                        <h5>Email</h5>
+                        <p>hello@velo.tech</p>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <i data-lucide="map-pin" color="var(--primary)"></i> Umeå, Sweden
+                    <div class="contact-method">
+                        <i data-lucide="github" size="32"></i>
+                        <h5>GitHub</h5>
+                        <p>@Velo-Computing-Technologies</p>
                     </div>
+                    <div class="contact-method">
+                        <i data-lucide="map" size="32"></i>
+                        <h5>Office</h5>
+                        <p>Umeå, Sweden</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 60px;">
+                    <a href="mailto:hello@velo.tech" class="btn btn-primary">Start A Conversation</a>
                 </div>
             </div>
-
-            <form onsubmit="event.preventDefault(); alert('Message sent to Velo Support!')">
-                <div class="input-group">
-                    <label>YOUR NAME</label>
-                    <input type="text" placeholder="John Doe" required>
-                </div>
-                <div class="input-group">
-                    <label>EMAIL ADDRESS</label>
-                    <input type="email" placeholder="john@example.com" required>
-                </div>
-                <div class="input-group">
-                    <label>PROJECT DETAILS</label>
-                    <textarea rows="5" placeholder="Tell us about your Android or Web project..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
-        <div>&copy; 2026 Velo Computing Technologies. All rights reserved.</div>
-        <div style="display: flex; gap: 20px;">
-            <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a>
-            <a href="#" style="color: inherit; text-decoration: none;">GitHub</a>
+        <div class="container">
+            <div class="footer-flex">
+                <div class="logo">VELO<span>.TECH</span></div>
+                <div class="footer-info">
+                    &copy; 2026 Velo Computing Technologies. AB Reg: Umeå, Sweden.
+                </div>
+                <div class="nav-menu" style="gap: 20px; font-size: 0.8rem;">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <!-- Core Interactive Script -->
     <script>
-        // Initialize Icons
+        // Initialize SVG Icons
         lucide.createIcons();
 
-        // Reveal animations on scroll
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
+        // High-Performance Scroll Reveal Engine
+        const revealCallback = (entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    entry.target.classList.add('revealed');
+                    // Optimization: stop observing once revealed
+                    observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        };
 
-        document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -50px 0px'
+        });
 
-        // Smooth Scroll handling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        document.querySelectorAll('[data-reveal]').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Navigation Background Logic
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.style.height = '70px';
+                nav.style.background = 'rgba(5, 5, 5, 0.95)';
+            } else {
+                nav.style.height = '80px';
+                nav.style.background = 'rgba(5, 5, 5, 0.85)';
+            }
+        });
+
+        // Smooth Anchor Links for Modern Browsers
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const offset = 80;
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = target.getBoundingClientRect().top;
+                    const elementPosition = elementRect - bodyRect;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
+
+        // Simple Mobile Interaction Logic
+        console.log("Velo Web Engine v1.0.4 Initialized | Region: Umeå, SE");
     </script>
 </body>
 </html>
