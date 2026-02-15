@@ -1,0 +1,11 @@
+{
+  "name": "Velo Tech",
+  "short_name": "Velo",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#6366f1",
+  "icons": [
+    { "src": "https://lucide.dev", "sizes": "512x512", "type": "image/png" }
+  ]
+}
