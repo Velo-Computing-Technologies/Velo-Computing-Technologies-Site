@@ -3,327 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velo Cloud | Managed Android & Web Systems</title>
+    <title>Velo Cloud | Managed Systems</title>
     
-    <!-- Dependencies -->
-    <script src="https://unpkg.com"></script>
-    <script src="https://unpkg.com"></script>
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
-
+    <!-- 1. CSS Loads First to prevent white screen -->
     <style>
         :root {
-            --bg: #050505; --surface: #0a0a0a; --card: #121212;
-            --primary: #3ddc84; --secondary: #4285f4; --error: #ff4b4b;
-            --text-main: #ffffff; --text-dim: #94a3b8; --border: rgba(255, 255, 255, 0.08);
-            --nav-height: 75px;
+            --bg: #050505; --card: #121212; --primary: #3ddc84;
+            --text: #ffffff; --text-dim: #94a3b8; --border: rgba(255, 255, 255, 0.08);
         }
-
-        /* --- Global Resets --- */
-        html, body { 
-            background: var(--bg); color: var(--text-main); 
-            margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif;
-            scroll-behavior: smooth; overflow-x: hidden;
+        body { 
+            background: var(--bg); color: var(--text); 
+            font-family: sans-serif; margin: 0; padding: 0;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
-        * { box-sizing: border-box; transition: 0.25s ease; }
-        .hidden { display: none !important; }
-        .reveal { opacity: 0; transform: translateY(15px); transition: 0.6s ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- Navigation --- */
         nav { 
-            position: fixed; top: 0; width: 100%; height: var(--nav-height); 
-            background: rgba(5,5,5,0.85); backdrop-filter: blur(25px); 
-            border-bottom: 1px solid var(--border); z-index: 2000; 
-            display: flex; align-items: center; padding: 0 5%; justify-content: space-between; 
+            height: 70px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 5%;
+            justify-content: space-between; background: #000;
         }
-        .logo { font-weight: 800; font-size: 1.4rem; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; }
-        .logo span { color: var(--primary); }
-
-        /* --- Sections & Containers --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 120px 24px; }
-        .hero { text-align: center; padding: 180px 5% 120px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 40px; }
-
-        /* --- App Dashboard Interface --- */
-        .dashboard-shell { display: grid; grid-template-columns: 260px 1fr; gap: 40px; min-height: 80vh; }
-        .sidebar { background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 30px; height: fit-content; }
-        .sidebar-btn { width: 100%; text-align: left; padding: 14px; border-radius: 12px; border: none; background: none; color: var(--text-dim); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .sidebar-btn.active { background: rgba(61, 220, 132, 0.1); color: var(--primary); }
-
-        /* --- Cards & UI Elements --- */
-        .app-card { background: var(--card); border: 1px solid var(--border); padding: 40px; border-radius: 32px; position: relative; overflow: hidden; }
-        .app-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .icon-wrap { width: 56px; height: 56px; background: var(--surface); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary); margin-bottom: 25px; }
-        
-        .ticket-row { background: #161616; padding: 20px; border-radius: 20px; border-left: 4px solid var(--secondary); margin-bottom: 15px; }
-        .badge { font-size: 0.7rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-dim); }
-
-        /* --- Forms & Auth --- */
-        .auth-box { max-width: 420px; margin: 100px auto; background: var(--card); border: 1px solid var(--border); padding: 50px; border-radius: 40px; text-align: center; }
-        .field { margin-bottom: 24px; text-align: left; }
-        label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-dim); margin-bottom: 10px; letter-spacing: 1px; }
-        input, textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); padding: 16px; border-radius: 14px; color: #fff; font-family: inherit; }
-        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(61, 220, 132, 0.1); }
-
-        /* --- Buttons --- */
-        .btn { padding: 16px 32px; border-radius: 16px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 12px; font-size: 0.95rem; text-decoration: none; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; flex: 1; }
+        .view { display: none; } /* Hidden by default, shown by JS */
+        .view.active { display: block; animation: fadeIn 0.3s ease; }
+        .auth-card { max-width: 400px; margin: 40px auto; background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid var(--border); color: #fff; border-radius: 8px; }
+        .btn { padding: 12px 24px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
         .btn-primary { background: var(--primary); color: #000; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: #fff; }
-        .btn-sm { padding: 8px 16px; font-size: 0.8rem; border-radius: 10px; }
-
-        /* --- Community Feed --- */
-        .post { border-bottom: 1px solid var(--border); padding: 30px 0; }
-        .author { display: flex; align-items: center; gap: 12px; font-weight: 700; margin-bottom: 10px; }
-        .author div { width: 32px; height: 32px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; }
-
-        /* --- Responsive Logic --- */
-        @media (max-width: 900px) {
-            .dashboard-shell { grid-template-columns: 1fr; }
-            .sidebar { display: flex; gap: 10px; overflow-x: auto; padding: 15px; margin-bottom: 20px; }
-            .sidebar-btn { width: auto; white-space: nowrap; margin-bottom: 0; }
-            .hero h1 { font-size: 3rem; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
+
+    <!-- 2. External Scripts -->
+    <script src="https://unpkg.com"></script>
 </head>
 <body>
 
-    <!-- NAV BAR -->
     <nav>
-        <a href="#" onclick="UI.showView('landing')" class="logo">
-            <i data-lucide="zap" fill="var(--primary)"></i> VELO<span>.CLOUD</span>
-        </a>
-        <div id="nav-actions">
-            <!-- Dynamic Login/Profile Button -->
-        </div>
+        <div style="font-weight: 800; font-size: 1.2rem;">VELO<span>.CLOUD</span></div>
+        <div id="nav-user">Checking Auth...</div>
     </nav>
 
-    <!-- CONTENT ROOT -->
-    <div id="app-root"></div>
+    <div class="container">
+        <!-- View: Landing -->
+        <div id="view-landing" class="view active">
+            <h1>Velo Computing Technologies</h1>
+            <p style="color:var(--text-dim)">Android & Web Engineering • Umeå, Sweden</p>
+            <div style="margin-top: 30px;">
+                <button onclick="router('login')" class="btn btn-primary">Client Portal</button>
+            </div>
+        </div>
 
-    <!-- VIEWS (JavaScript Handled) -->
+        <!-- View: Login -->
+        <div id="view-login" class="view">
+            <div class="auth-card">
+                <h2>Portal Login</h2>
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="pass" placeholder="Password">
+                <button onclick="signIn()" class="btn btn-primary" style="width:100%">Sign In</button>
+                <p style="text-align:center; font-size:0.8rem; margin-top:15px">
+                    <a href="#" onclick="router('landing')" style="color:var(--text-dim)">Back to Home</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- View: Dashboard -->
+        <div id="view-dashboard" class="view">
+            <h2>Welcome to Velo Cloud</h2>
+            <div id="dash-info"></div>
+            <button onclick="signOut()" class="btn" style="background:#333; color:#fff; margin-top:20px;">Logout</button>
+        </div>
+    </div>
+
+    <!-- 3. Logic -->
     <script>
-        // --- 1. SETUP ---
-        const SB_URL = 'lqkpxervwakucksrnoss.supabase.co';
+        // REPLACE THESE WITH YOUR ACTUAL SUPABASE KEYS
+        const SB_URL = 'https://lqkpxervwakucksrnoss.supabase.co';
         const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8';
+        
         const sb = supabase.createClient(SB_URL, SB_KEY);
 
-        const State = { user: null, view: 'landing', profile: null };
-
-        // --- 2. ENGINE ---
-        const UI = {
-            async init() {
-                const { data: { session } } = await sb.auth.getSession();
-                this.updateAuthState(session);
-
-                sb.auth.onAuthStateChange((event, session) => {
-                    this.updateAuthState(session);
-                });
-
-                this.showView('landing');
-            },
-
-            updateAuthState(session) {
-                State.user = session?.user || null;
-                const nav = document.getElementById('nav-actions');
-                if (State.user) {
-                    nav.innerHTML = `<button onclick="UI.showView('dashboard')" class="btn btn-outline btn-sm">${State.user.email}</button>`;
-                } else {
-                    nav.innerHTML = `<button onclick="UI.showView('login')" class="btn btn-primary btn-sm">Client Portal</button>`;
-                }
-                lucide.createIcons();
-            },
-
-            showView(view) {
-                State.view = view;
-                const root = document.getElementById('app-root');
-                
-                // Route Guard
-                if (['dashboard', 'tickets'].includes(view) && !State.user) {
-                    this.showView('login');
-                    return;
-                }
-
-                // Render Templates
-                switch(view) {
-                    case 'landing': this.renderLanding(root); break;
-                    case 'login': this.renderAuth(root, 'login'); break;
-                    case 'signup': this.renderAuth(root, 'signup'); break;
-                    case 'dashboard': this.renderDashboard(root, 'main'); break;
-                    case 'tickets': this.renderDashboard(root, 'tickets'); break;
-                    case 'community': this.renderDashboard(root, 'community'); break;
-                }
-                
-                lucide.createIcons();
-                this.applyScrollReveal();
-            },
-
-            renderLanding(root) {
-                root.innerHTML = `
-                    <section class="hero">
-                        <div class="reveal">
-                            <span class="badge" style="color:var(--primary)">PRODUCTION BACKEND ACTIVE</span>
-                            <h1>High Performance Android.</h1>
-                            <p>Specialized mobile engineering from Umeå, Sweden. Manage your tickets and community projects in our secure cloud.</p>
-                            <div style="margin-top:40px; display:flex; gap:15px; justify-content:center;">
-                                <button onclick="UI.showView('signup')" class="btn btn-primary">Start Building</button>
-                                <button onclick="UI.showView('community')" class="btn btn-outline">Community Feed</button>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="container" id="apps">
-                        <div class="grid">
-                            <div class="app-card reveal">
-                                <div class="icon-wrap"><i data-lucide="timer"></i></div>
-                                <h3>Velo Timer</h3>
-                                <p>Native Kotlin precision. Available on Google Play.</p>
-                            </div>
-                            <div class="app-card reveal">
-                                <div class="icon-wrap" style="color:var(--secondary)"><i data-lucide="compass"></i></div>
-                                <h3>Velo Compass</h3>
-                                <p>Hardware magnetometer tracking. Beta active.</p>
-                            </div>
-                        </div>
-                    </section>
-                `;
-            },
-
-            renderAuth(root, mode) {
-                root.innerHTML = `
-                    <div class="auth-box">
-                        <h2>${mode === 'login' ? 'Welcome Back' : 'Join Velo'}</h2>
-                        <div class="field">
-                            <label>EMAIL</label>
-                            <input type="email" id="email" placeholder="shastri@velo.tech">
-                        </div>
-                        <div class="field">
-                            <label>PASSWORD</label>
-                            <input type="password" id="pass" placeholder="••••••••">
-                        </div>
-                        <button onclick="Actions.auth('${mode}')" class="btn btn-primary" style="width:100%; justify-content:center;">
-                            ${mode === 'login' ? 'Sign In' : 'Create Account'}
-                        </button>
-                        <p style="margin-top:25px; font-size:0.9rem; color:var(--text-dim)">
-                            ${mode === 'login' ? 'New here? <a href="#" onclick="UI.showView(\'signup\')" style="color:var(--primary)">Sign up</a>' : 'Already have an account? <a href="#" onclick="UI.showView(\'login\')" style="color:var(--primary)">Log in</a>'}
-                        </p>
-                    </div>
-                `;
-            },
-
-            renderDashboard(root, subview) {
-                root.innerHTML = `
-                    <div class="container">
-                        <div class="dashboard-shell">
-                            <aside class="sidebar">
-                                <h4 style="margin-bottom:30px;">Workspace</h4>
-                                <button onclick="UI.showView('dashboard')" class="sidebar-btn ${subview === 'main' ? 'active' : ''}"><i data-lucide="layout"></i> Overview</button>
-                                <button onclick="UI.showView('tickets')" class="sidebar-btn ${subview === 'tickets' ? 'active' : ''}"><i data-lucide="ticket"></i> Tickets</button>
-                                <button onclick="UI.showView('community')" class="sidebar-btn ${subview === 'community' ? 'active' : ''}"><i data-lucide="users"></i> Community</button>
-                                <button onclick="Actions.logout()" class="sidebar-btn" style="margin-top:30px; color:var(--error)"><i data-lucide="log-out"></i> Logout</button>
-                            </aside>
-                            <div id="dash-content">Loading...</div>
-                        </div>
-                    </div>
-                `;
-                if(subview === 'main') this.loadOverview();
-                if(subview === 'tickets') this.loadTickets();
-                if(subview === 'community') this.loadCommunity();
-            },
-
-            async loadOverview() {
-                const content = document.getElementById('dash-content');
-                content.innerHTML = `
-                    <h2>Project Status</h2>
-                    <div class="app-card" style="background:var(--surface)">
-                        <p>User: <strong>${State.user.email}</strong></p>
-                        <p style="color:var(--text-dim)">Your account is connected to our secure Supabase production cluster. Use the sidebar to manage your Android development tickets.</p>
-                    </div>
-                `;
-            },
-
-            async loadTickets() {
-                const content = document.getElementById('dash-content');
-                content.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                        <h2>Support Tickets</h2>
-                        <button onclick="Actions.newTicket()" class="btn btn-primary btn-sm"><i data-lucide="plus"></i> Create Ticket</button>
-                    </div>
-                    <div id="list-target">Fetching...</div>
-                `;
-                const { data } = await sb.from('tickets').select('*').order('created_at', { ascending: false });
-                document.getElementById('list-target').innerHTML = data?.length ? data.map(t => `
-                    <div class="ticket-row">
-                        <div style="display:flex; justify-content:space-between;">
-                            <strong>${t.subject}</strong>
-                            <span class="status-badge">${t.status}</span>
-                        </div>
-                        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:10px;">${t.description}</p>
-                    </div>
-                `).join('') : '<p>No active tickets.</p>';
-            },
-
-            async loadCommunity() {
-                const content = document.getElementById('dash-content');
-                content.innerHTML = `
-                    <h2>Community Feed</h2>
-                    <div class="app-card" style="margin-bottom:30px;">
-                        <textarea id="post-text" placeholder="Share an update with the Velo team..." rows="3"></textarea>
-                        <button onclick="Actions.submitPost()" class="btn btn-primary" style="margin-top:10px;">Post Update</button>
-                    </div>
-                    <div id="feed-target"></div>
-                `;
-                const { data } = await sb.from('posts').select('*').order('created_at', { ascending: false });
-                document.getElementById('feed-target').innerHTML = data?.map(p => `
-                    <div class="post">
-                        <div class="author"><div>V</div> @User_${p.user_id.slice(0,5)}</div>
-                        <p>${p.content}</p>
-                        <small style="color:var(--text-dim)">${new Date(p.created_at).toLocaleString()}</small>
-                    </div>
-                `).join('');
-                lucide.createIcons();
-            },
-
-            applyScrollReveal() {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-                }, { threshold: 0.1 });
-                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        async function checkUser() {
+            const { data: { session } } = await sb.auth.getSession();
+            const navUser = document.getElementById('nav-user');
+            
+            if (session) {
+                navUser.innerText = session.user.email;
+                router('dashboard');
+                document.getElementById('dash-info').innerText = "Signed in as: " + session.user.email;
+            } else {
+                navUser.innerText = "Guest";
             }
-        };
+        }
 
-        // --- 3. DATA ACTIONS ---
-        const Actions = {
-            async auth(mode) {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('pass').value;
-                const { error } = mode === 'signup' 
-                    ? await sb.auth.signUp({ email, password }) 
-                    : await sb.auth.signInWithPassword({ email, password });
-                
-                if (error) alert(error.message);
-                else if (mode === 'signup') alert('Check your email for the confirmation link!');
-            },
+        function router(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            // Show target view
+            const target = document.getElementById('view-' + viewId);
+            if (target) target.classList.add('active');
+        }
 
-            async logout() { await sb.auth.signOut(); UI.showView('landing'); },
+        async function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('pass').value;
+            const { error } = await sb.auth.signInWithPassword({ email, password });
+            if (error) alert(error.message);
+            else window.location.reload();
+        }
 
-            async newTicket() {
-                const subject = prompt("Subject:");
-                const description = prompt("Details:");
-                if(subject && description) {
-                    await sb.from('tickets').insert([{ subject, description, user_id: State.user.id }]);
-                    UI.loadTickets();
-                }
-            },
+        async function signOut() {
+            await sb.auth.signOut();
+            window.location.reload();
+        }
 
-            async submitPost() {
-                const content = document.getElementById('post-text').value;
-                if(!content) return;
-                await sb.from('posts').insert([{ content, user_id: State.user.id }]);
-                UI.loadCommunity();
-            }
-        };
-
-        UI.init();
+        // Initialize
+        checkUser();
     </script>
 </body>
 </html>
-
