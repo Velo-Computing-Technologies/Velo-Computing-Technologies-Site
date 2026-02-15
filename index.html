@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Velo Cloud | Engineering & Systems</title>
     
-    <!-- FIX: SPECIFIC FILE PATHS (No more jsdelivr.com/ homepage errors) -->
-    <script src="https://cdn.jsdelivr.net"></script>
-    <script src="https://cdn.jsdelivr.net"></script>
+    <!-- FIX: Using UNPKG for stable, direct JS delivery (No MIME errors) -->
+    <script src="https://unpkg.com"></script>
+    <script src="https://unpkg.com"></script>
     
     <link href="https://fonts.googleapis.com" rel="stylesheet">
 
@@ -19,36 +19,30 @@
             --nav-height: 75px;
         }
 
-        /* --- UI Reset --- */
         html, body { background: var(--bg); color: var(--text); margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         * { box-sizing: border-box; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
         .hidden { display: none !important; }
 
-        /* --- Branding --- */
         .version-tag { position: fixed; bottom: 15px; right: 15px; font-size: 0.65rem; color: var(--text-dim); background: var(--card); padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); z-index: 9999; }
 
         nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); background: rgba(5,5,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); z-index: 2000; display: flex; align-items: center; padding: 0 5%; justify-content: space-between; }
         .logo { font-weight: 800; font-size: 1.4rem; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; }
         .logo span { color: var(--primary); }
 
-        /* --- Dynamic Views --- */
         .view { display: none; min-height: 100vh; padding-top: calc(var(--nav-height) + 50px); animation: fadeIn 0.5s ease; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Hero --- */
         .hero { text-align: center; padding: 100px 0; }
         h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.1; letter-spacing: -2.5px; margin-bottom: 24px; }
         .hero p { color: var(--text-dim); font-size: 1.25rem; max-width: 700px; margin: 0 auto 40px; }
 
-        /* --- App Cards --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 50px; }
         .app-card { background: var(--card); border: 1px solid var(--border); padding: 40px; border-radius: 32px; text-align: left; }
         .app-card:hover { border-color: var(--primary); transform: translateY(-5px); }
         .icon-box { width: 52px; height: 52px; background: #1a1a1a; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--primary); margin-bottom: 24px; }
 
-        /* --- Portal UI --- */
         .auth-card { max-width: 420px; margin: 60px auto; background: var(--card); padding: 45px; border-radius: 35px; border: 1px solid var(--border); text-align: center; }
         .field { margin-bottom: 20px; text-align: left; }
         label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--text-dim); margin-bottom: 8px; letter-spacing: 1px; }
@@ -59,31 +53,26 @@
         .nav-item { width: 100%; text-align: left; background: none; border: none; padding: 14px; border-radius: 12px; color: var(--text-dim); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
         .nav-item.active { background: rgba(61, 220, 132, 0.1); color: var(--primary); }
 
-        /* --- Buttons --- */
         .btn { padding: 15px 30px; border-radius: 14px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 10px; font-size: 0.95rem; text-decoration: none; }
         .btn-primary { background: var(--primary); color: #000; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: #fff; }
 
-        /* --- Error Handling --- */
         #error-shield { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; align-items: center; justify-content: center; text-align: center; }
         .error-box { background: rgba(255, 75, 75, 0.05); padding: 50px; border-radius: 40px; border: 1px solid var(--error); max-width: 550px; }
     </style>
 </head>
 <body>
 
-    <!-- VERSION FLAG -->
-    <div class="version-tag">Production Build 2.0.8 (Final CDN Fix)</div>
+    <div class="version-tag">Production Build 2.0.9 (UNPKG Stable)</div>
 
-    <!-- CONNECTION ERROR OVERLAY -->
     <div id="error-shield">
         <div class="error-box">
-            <h1 style="color:var(--error); margin:0 0 15px;">Supabase Offline</h1>
-            <p style="color:var(--text-dim)">The connection to the Velo Cloud API was blocked. This usually happens when an <strong>Ad-Blocker</strong> (uBlock, AdBlock) treats "supabase" as a tracking script.</p>
-            <button onclick="location.reload()" class="btn btn-primary" style="margin-top:20px;">Retry System</button>
+            <h1 style="color:var(--error); margin:0 0 15px;">System Failure</h1>
+            <p style="color:var(--text-dim)">Velo Engine could not verify the Supabase identity. This happens if your <strong>Ad-Blocker</strong> treats the database as a tracker.</p>
+            <button onclick="location.reload()" class="btn btn-primary" style="margin-top:20px;">Retry Velo Engine</button>
         </div>
     </div>
 
-    <!-- NAVBAR -->
     <nav>
         <a href="#" onclick="Router.go('landing')" class="logo">VELO<span>.CLOUD</span></a>
         <div id="auth-header">
@@ -91,7 +80,6 @@
         </div>
     </nav>
 
-    <!-- VIEWS -->
     <div id="view-landing" class="view container active">
         <section class="hero">
             <span style="color:var(--primary); font-weight:800; font-size:0.7rem; letter-spacing:3px;">UMEÅ • SWEDEN</span>
@@ -115,7 +103,7 @@
                 <p>Managed encryption and support ticket tunneling for verified academic partners.</p>
             </div>
         </div>
-    </section>
+    </div>
 
     <div id="view-login" class="view container">
         <div class="auth-card">
@@ -123,7 +111,7 @@
             <div class="field"><label>EMAIL</label><input type="email" id="l-email" placeholder="user@velo-tech.shastri"></div>
             <div class="field"><label>PASSWORD</label><input type="password" id="l-pass" placeholder="••••••••"></div>
             <button onclick="Auth.login()" id="l-btn" class="btn btn-primary" style="width:100%; justify-content:center;">Enter Workspace</button>
-            <p style="margin-top:20px; font-size:0.8rem; color:var(--text-dim)">New to Velo? <a href="#" onclick="Router.go('signup')" style="color:var(--primary)">Initialize ID</a></p>
+            <p style="margin-top:20px; font-size:0.8rem; color:var(--text-dim)">New? <a href="#" onclick="Router.go('signup')" style="color:var(--primary)">Initialize ID</a></p>
         </div>
     </div>
 
@@ -140,26 +128,19 @@
         <div class="dash-shell">
             <aside class="sidebar">
                 <button onclick="Router.go('dashboard')" class="nav-item active"><i data-lucide="layout"></i> Dashboard</button>
-                <button onclick="Router.go('tickets')" class="nav-item"><i data-lucide="ticket"></i> Tickets</button>
                 <button onclick="Auth.logout()" class="nav-item" style="color:var(--error); margin-top:40px;"><i data-lucide="log-out"></i> Logout</button>
             </aside>
             <main>
                 <div class="app-card">
                     <h2 id="dash-title">Developer Console</h2>
                     <p id="user-tag" style="color:var(--primary); font-weight:700;">Connecting...</p>
-                    <p style="margin-top:20px; color:var(--text-dim); line-height:1.7;">
-                        Project Status: <strong>Production Ready</strong><br>
-                        Active Grant: <strong>GitHub Education Verified</strong><br>
-                        Location Cluster: <strong>Umeå North</strong>
-                    </p>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- ENGINE -->
     <script>
-        // 1. SUPABASE CONNECTION PARAMS (Fixed Typo)
+        // 1. SUPABASE CONNECTION (Corrected Typo)
         const SB_URL = 'https://lqkpxervwakucksrnoss.supabase.co'; 
         const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8'; 
         
@@ -170,7 +151,7 @@
                 document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
                 const el = document.getElementById('view-' + view);
                 if (el) el.classList.add('active');
-                if (typeof lucide !== 'undefined') lucide.createIcons();
+                if (window.lucide) lucide.createIcons();
             }
         };
 
@@ -198,23 +179,19 @@
         };
 
         async function bootstrap() {
-            // 2. CHECK IF LIBRARY IS DEFINED
-            if (typeof supabase === 'undefined') {
+            // 2. CHECK IF LIBRARY LOADED CORRECTLY
+            if (!window.supabase) {
                 document.getElementById('error-shield').style.display = 'flex';
                 console.error("Velo Error: Supabase Library failed to load.");
                 return;
             }
 
             try {
-                // Initialize Client
                 sb = supabase.createClient(SB_URL, SB_KEY);
-                
-                // Monitor Auth Status
                 const { data: { session } } = await sb.auth.getSession();
                 refreshUI(session);
                 sb.auth.onAuthStateChange((_e, session) => refreshUI(session));
-
-                if (typeof lucide !== 'undefined') lucide.createIcons();
+                if (window.lucide) lucide.createIcons();
             } catch (err) {
                 console.error("Velo Core Crash:", err);
             }
