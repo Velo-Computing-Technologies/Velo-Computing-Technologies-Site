@@ -2,203 +2,204 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Velo Computing Technologies</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velo Computing | Ecosystem</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <script src="https://unpkg.com"></script>
     <style>
         :root {
-            --bg: #050505; --card: #111111; --primary: #6366f1;
+            --bg: #050505; --card: #111111; --primary: #6366f1; --accent: #06b6d4;
             --text: #ffffff; --text-dim: #94a3b8; --border: rgba(255,255,255,0.08);
         }
         [data-theme="light"] {
-            --bg: #f1f5f9; --card: #ffffff; --text: #0f172a;
+            --bg: #f8fafc; --card: #ffffff; --text: #0f172a;
             --text-dim: #64748b; --border: rgba(0,0,0,0.08);
         }
 
-        * { box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         body { 
             margin: 0; background: var(--bg); color: var(--text); 
             font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
         }
 
-        /* Desktop Sidebar / Mobile Header */
-        header {
-            padding: 20px; display: flex; justify-content: space-between;
-            align-items: center; border-bottom: 1px solid var(--border);
-            background: var(--bg); z-index: 10;
+        /* Responsive Shell */
+        .app-container { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+        /* Desktop Sidebar */
+        aside {
+            width: 280px; background: var(--bg); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; padding: 2rem 1.5rem;
         }
 
-        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; margin-bottom: 3rem; }
         .logo span { color: var(--primary); }
 
-        /* Responsive Layout Container */
-        .main-container { display: flex; flex: 1; overflow: hidden; }
+        .nav-link {
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+            border-radius: 12px; color: var(--text-dim); text-decoration: none;
+            font-weight: 600; margin-bottom: 8px; border: none; background: none; width: 100%; cursor: pointer;
+        }
+        .nav-link.active { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+        .nav-link:hover:not(.active) { background: rgba(255,255,255,0.03); color: var(--text); }
 
         /* Content Area */
-        #content { 
-            flex: 1; overflow-y: auto; padding: 2rem; 
-            max-width: 1200px; margin: 0 auto; width: 100%;
+        main { flex: 1; overflow-y: auto; padding: 2.5rem; }
+        .page { max-width: 1000px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+
+        /* App Grid */
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .app-card {
+            background: var(--card); border: 1px solid var(--border); padding: 24px;
+            border-radius: 24px; position: relative; overflow: hidden;
+        }
+        .app-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
+        
+        .icon-wrap { 
+            width: 56px; height: 56px; border-radius: 16px; 
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
         }
 
-        /* Grid for Desktop */
-        .grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 1.5rem; margin-top: 1rem;
-        }
+        .tag { font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-dim); }
 
-        /* UI Cards */
-        .card {
-            background: var(--card); border: 1px solid var(--border);
-            padding: 1.5rem; border-radius: 20px; position: relative;
+        /* Contact Section */
+        .contact-btn {
+            margin-top: auto; background: var(--text); color: var(--bg);
+            padding: 14px; border-radius: 14px; font-weight: 700; text-align: center;
+            cursor: pointer; border: none;
         }
-        .card:hover { border-color: var(--primary); }
+        .contact-btn:hover { opacity: 0.9; transform: scale(0.98); }
 
-        .badge {
-            font-size: 0.7rem; font-weight: 800; padding: 4px 10px;
-            border-radius: 8px; background: rgba(99, 102, 241, 0.15); color: var(--primary);
-        }
-
-        /* Navigation Strategy */
-        nav {
-            background: var(--card); border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around; padding: 10px 0;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .nav-btn {
-            background: none; border: none; color: var(--text-dim);
-            display: flex; flex-direction: column; align-items: center;
-            gap: 5px; cursor: pointer; font-size: 0.75rem; font-weight: 600;
-        }
-        .nav-btn.active { color: var(--primary); }
-
-        /* Desktop Adjustments */
-        @media (min-width: 768px) {
-            nav {
-                flex-direction: column; width: 240px; height: 100%;
-                justify-content: flex-start; padding: 2rem 1rem; border-top: none;
-                border-right: 1px solid var(--border);
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            aside { display: none; }
+            nav.mobile-tabs {
+                display: flex; position: fixed; bottom: 0; width: 100%;
+                background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(20px);
+                border-top: 1px solid var(--border); justify-content: space-around; padding: 12px 0;
             }
-            .nav-btn { 
-                flex-direction: row; padding: 12px; border-radius: 12px;
-                width: 100%; font-size: 0.9rem; gap: 12px;
-            }
-            .nav-btn.active { background: rgba(99,102,241,0.1); }
-            header { display: none; } /* Use sidebar logo instead */
-            .sidebar-logo { display: block !important; margin-bottom: 2rem; }
+            main { padding: 1.5rem; padding-bottom: 100px; }
+            .header-mobile { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
         }
+        @media (min-width: 769px) { .mobile-tabs, .header-mobile { display: none; } }
 
-        /* Components */
-        .btn-toggle {
-            width: 40px; height: 20px; background: #334155;
-            border-radius: 20px; position: relative; cursor: pointer;
-        }
-        .btn-toggle::before {
-            content: ''; position: absolute; width: 16px; height: 16px;
-            background: white; border-radius: 50%; top: 2px; left: 2px;
-            transition: 0.3s;
-        }
-        [data-theme="light"] .btn-toggle::before { transform: translateX(20px); background: var(--primary); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <header>
+<div class="app-container">
+    <!-- Desktop Navigation -->
+    <aside>
         <div class="logo">VELO<span>.TECH</span></div>
-        <button onclick="UI.toggleTheme()" style="background:none; border:none; color:var(--text);"><i data-lucide="sun-moon"></i></button>
-    </header>
+        <button class="nav-link active" onclick="Router.go('home')"><i data-lucide="layout-grid"></i> Dashboard</button>
+        <button class="nav-link" onclick="Router.go('apps')"><i data-lucide="smartphone"></i> My Apps</button>
+        <button class="nav-link" onclick="Router.go('settings')"><i data-lucide="sliders"></i> Settings</button>
+        
+        <button class="contact-btn" onclick="Router.go('contact')">Get in Touch</button>
+    </aside>
 
-    <div class="main-container">
-        <!-- Sidebar for Desktop / Bottom for Mobile -->
-        <nav id="main-nav">
-            <div class="logo sidebar-logo" style="display:none; padding: 0 12px;">VELO<span>.TECH</span></div>
-            <button class="nav-btn active" onclick="UI.render('home')"><i data-lucide="home"></i> Home</button>
-            <button class="nav-btn" onclick="UI.render('apps')"><i data-lucide="smartphone"></i> Mobile Apps</button>
-            <button class="nav-btn" onclick="UI.render('settings')"><i data-lucide="settings"></i> Settings</button>
-        </nav>
+    <!-- Mobile View -->
+    <main id="view-root">
+        <div class="header-mobile">
+            <div class="logo" style="margin:0">VELO<span>.TECH</span></div>
+            <i data-lucide="user-circle"></i>
+        </div>
+        <div id="page-content"></div>
+    </main>
 
-        <main id="content">
-            <!-- Dynamic Content -->
-        </main>
-    </div>
+    <!-- Mobile Bottom Tabs -->
+    <nav class="mobile-tabs">
+        <button class="nav-link active" onclick="Router.go('home')"><i data-lucide="home"></i></button>
+        <button class="nav-link" onclick="Router.go('apps')"><i data-lucide="smartphone"></i></button>
+        <button class="nav-link" onclick="Router.go('contact')"><i data-lucide="mail"></i></button>
+    </nav>
+</div>
 
-    <script>
-        const UI = {
-            state: {
-                theme: localStorage.getItem('theme') || 'dark',
-                pages: {
-                    home: `
-                        <h1>Velo Computing</h1>
-                        <p style="color:var(--text-dim)">Next-generation hardware-software synergy from Umeå, Sweden.</p>
-                        <div class="grid">
-                            <div class="card">
-                                <h3>Active Research</h3>
-                                <p style="font-size:0.9rem; color:var(--text-dim)">We are currently optimizing CI/CD workflows for rapid mobile deployment.</p>
-                            </div>
-                            <div class="card">
-                                <h3>Cloud Integration</h3>
-                                <p style="font-size:0.9rem; color:var(--text-dim)">Native systems built to sync with GitHub Enterprise environments.</p>
-                            </div>
+<script>
+    const Router = {
+        pages: {
+            home: `
+                <div class="page">
+                    <span class="tag" style="background:rgba(99,102,241,0.1); color:var(--primary)">PRODUCTION READY</span>
+                    <h1 style="font-size:2.5rem; margin:10px 0;">Computing evolved.</h1>
+                    <p style="color:var(--text-dim); font-size:1.1rem; max-width:600px;">
+                        Velo Computing Technologies is building native-performance mobile ecosystems directly from Umeå, Sweden.
+                    </p>
+                    <div class="app-grid">
+                        <div class="app-card">
+                            <h3>Project Status</h3>
+                            <p style="color:var(--text-dim); font-size:0.9rem;">Verified Student Developer Pack active. GitHub Support Ticket #4087767 in review.</p>
                         </div>
-                    `,
-                    apps: `
-                        <h1>Mobile Ecosystem</h1>
-                        <div class="grid">
-                            <div class="card">
-                                <span class="badge">PLANNED</span>
-                                <h3 style="margin:10px 0">Velo Hub</h3>
-                                <p style="font-size:0.9rem; color:var(--text-dim)">A centralized control point for high-performance computing assets.</p>
-                            </div>
-                            <div class="card">
-                                <span class="badge">R&D</span>
-                                <h3 style="margin:10px 0">SecureSync</h3>
-                                <p style="font-size:0.9rem; color:var(--text-dim)">End-to-end encrypted mobile-to-desktop bridging.</p>
-                            </div>
+                    </div>
+                </div>`,
+            apps: `
+                <div class="page">
+                    <h2>My App List</h2>
+                    <p style="color:var(--text-dim)">Native mobile solutions coming soon to iOS & Android.</p>
+                    <div class="app-grid">
+                        <div class="app-card">
+                            <div class="icon-wrap"><i data-lucide="cpu" color="white"></i></div>
+                            <span class="tag">INTERNAL ALPHA</span>
+                            <h3 style="margin:12px 0 8px">Velo Core</h3>
+                            <p style="color:var(--text-dim); font-size:0.85rem;">System-wide optimization and CI/CD hardware bridge.</p>
                         </div>
-                    `,
-                    settings: `
-                        <h1>Settings</h1>
-                        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                            <span>Dark Mode</span>
-                            <div class="btn-toggle" onclick="UI.toggleTheme()"></div>
+                        <div class="app-card">
+                            <div class="icon-wrap" style="background:linear-gradient(135deg, #a855f7, #6366f1)"><i data-lucide="shield-check" color="white"></i></div>
+                            <span class="tag">PLANNED</span>
+                            <h3 style="margin:12px 0 8px">Velo Shield</h3>
+                            <p style="color:var(--text-dim); font-size:0.85rem;">High-performance encryption and secure mobile access.</p>
                         </div>
-                        <p style="margin-top:2rem; font-size:0.8rem; color:var(--text-dim)">Support Ticket #4087767: Academic Status Active</p>
-                    `
-                }
-            },
+                        <div class="app-card">
+                            <div class="icon-wrap" style="background:linear-gradient(135deg, #06b6d4, #10b981)"><i data-lucide="bar-chart-3" color="white"></i></div>
+                            <span class="tag">R&D</span>
+                            <h3 style="margin:12px 0 8px">Velo Metrics</h3>
+                            <p style="color:var(--text-dim); font-size:0.85rem;">Real-time analytics for distributed computing nodes.</p>
+                        </div>
+                    </div>
+                </div>`,
+            contact: `
+                <div class="page">
+                    <h2>Contact Velo</h2>
+                    <div class="app-card" style="max-width:500px">
+                        <p style="margin-bottom:20px">Have a question about our mobile roadmap?</p>
+                        <a href="mailto:support@velo-tech.example" style="text-decoration:none">
+                            <button class="contact-btn" style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px;">
+                                <i data-lucide="send" size="18"></i> Send an Email
+                            </button>
+                        </a>
+                        <div style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px; font-size:0.85rem; color:var(--text-dim)">
+                            <p><i data-lucide="map-pin" size="14"></i> Tankvägen 20B, Umeå, Sweden</p>
+                        </div>
+                    </div>
+                </div>`,
+            settings: `
+                <div class="page">
+                    <h2>Preferences</h2>
+                    <div class="app-card" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>Appearance</span>
+                        <button onclick="Router.toggleTheme()" style="background:var(--border); border:none; padding:8px 16px; border-radius:10px; color:var(--text); cursor:pointer;">Switch Theme</button>
+                    </div>
+                </div>`
+        },
+        go(page) {
+            document.getElementById('page-content').innerHTML = this.pages[page];
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.toggle('active', l.innerText.toLowerCase().includes(page) || l.innerHTML.includes(page));
+            });
+            lucide.createIcons();
+            if(window.innerWidth <= 768) window.scrollTo(0,0);
+        },
+        toggleTheme() {
+            const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        }
+    };
 
-            render(page) {
-                const container = document.getElementById('content');
-                container.innerHTML = `<div style="animation: fade 0.3s ease">${this.state.pages[page]}</div>`;
-                
-                // Update Nav UI
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.innerText.toLowerCase().includes(page));
-                });
-                
-                lucide.createIcons();
-            },
-
-            toggleTheme() {
-                this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', this.state.theme);
-                localStorage.setItem('theme', this.state.theme);
-            },
-
-            init() {
-                document.documentElement.setAttribute('data-theme', this.state.theme);
-                this.render('home');
-            }
-        };
-
-        UI.init();
-    </script>
-
-    <style>
-        @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+    window.onload = () => Router.go('home');
+</script>
 </body>
 </html>
+
 
