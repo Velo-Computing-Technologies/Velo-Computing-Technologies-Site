@@ -3,203 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velo Computing | Ecosystem</title>
+    <title>Velo Computing Technologies | Android & Web Engineering</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <script src="https://unpkg.com"></script>
     <style>
         :root {
-            --bg: #050505; --card: #111111; --primary: #6366f1; --accent: #06b6d4;
-            --text: #ffffff; --text-dim: #94a3b8; --border: rgba(255,255,255,0.08);
-        }
-        [data-theme="light"] {
-            --bg: #f8fafc; --card: #ffffff; --text: #0f172a;
-            --text-dim: #64748b; --border: rgba(0,0,0,0.08);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-        body { 
-            margin: 0; background: var(--bg); color: var(--text); 
-            font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh;
-            display: flex; flex-direction: column; overflow: hidden;
+            --bg: #050505;
+            --surface: #0f0f0f;
+            --card: #161616;
+            --primary: #3ddc84; /* Android Green */
+            --secondary: #4285f4; /* Google Blue */
+            --text: #ffffff;
+            --text-dim: #9ca3af;
+            --border: rgba(255, 255, 255, 0.08);
+            --accent-gradient: linear-gradient(135deg, #3ddc84 0%, #4285f4 100%);
         }
 
-        /* Responsive Shell */
-        .app-container { display: flex; flex: 1; overflow: hidden; position: relative; }
-
-        /* Desktop Sidebar */
-        aside {
-            width: 280px; background: var(--bg); border-right: 1px solid var(--border);
-            display: flex; flex-direction: column; padding: 2rem 1.5rem;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
         }
 
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; margin-bottom: 3rem; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--card); border-radius: 10px; }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .logo span { color: var(--primary); }
 
-        .nav-link {
-            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
-            border-radius: 12px; color: var(--text-dim); text-decoration: none;
-            font-weight: 600; margin-bottom: 8px; border: none; background: none; width: 100%; cursor: pointer;
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
         }
-        .nav-link.active { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
-        .nav-link:hover:not(.active) { background: rgba(255,255,255,0.03); color: var(--text); }
+        .nav-links a:hover { color: var(--primary); }
 
-        /* Content Area */
-        main { flex: 1; overflow-y: auto; padding: 2.5rem; }
-        .page { max-width: 1000px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at 80% 20%, rgba(61, 220, 132, 0.05) 0%, transparent 40%);
+        }
 
-        /* App Grid */
-        .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .hero-content { max-width: 700px; z-index: 2; }
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+        .cta-group { display: flex; gap: 20px; }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(61, 220, 132, 0.2); }
+
+        /* --- Section Styling --- */
+        section { padding: 100px 10%; }
+        .section-tag { color: var(--primary); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; }
+        .section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; }
+
+        /* --- App Showcase Grid --- */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
         .app-card {
-            background: var(--card); border: 1px solid var(--border); padding: 24px;
-            border-radius: 24px; position: relative; overflow: hidden;
-        }
-        .app-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
-        
-        .icon-wrap { 
-            width: 56px; height: 56px; border-radius: 16px; 
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+            background: var(--card);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
         }
 
-        .tag { font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-dim); }
-
-        /* Contact Section */
-        .contact-btn {
-            margin-top: auto; background: var(--text); color: var(--bg);
-            padding: 14px; border-radius: 14px; font-weight: 700; text-align: center;
-            cursor: pointer; border: none;
+        .app-card:hover {
+            border-color: var(--primary);
+            background: rgba(61, 220, 132, 0.02);
         }
-        .contact-btn:hover { opacity: 0.9; transform: scale(0.98); }
 
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            aside { display: none; }
-            nav.mobile-tabs {
-                display: flex; position: fixed; bottom: 0; width: 100%;
-                background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(20px);
-                border-top: 1px solid var(--border); justify-content: space-around; padding: 12px 0;
-            }
-            main { padding: 1.5rem; padding-bottom: 100px; }
-            .header-mobile { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .app-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--surface);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            color: var(--primary);
         }
-        @media (min-width: 769px) { .mobile-tabs, .header-mobile { display: none; } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .app-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .app-card p { color: var(--text-dim); margin-bottom: 25px; font-size: 0.95rem; }
+
+        .google-play-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* --- Skills / Services --- */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: var(--surface);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* --- Contact Form --- */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            background: var(--card);
+            padding: 60px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dim); font-size: 0.8rem; }
+        .input-group input, .input-group textarea {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .input-group input:focus { border-color: var(--primary); }
+
+        /* --- Footer --- */
+        footer {
+            padding: 60px 10%;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .hero { padding-top: 120px; align-items: flex-start; }
+            .contact-wrapper { grid-template-columns: 1fr; gap: 40px; padding: 30px; }
+            section { padding: 60px 5%; }
+            footer { flex-direction: column; gap: 20px; text-align: center; }
+        }
+
+        /* --- Animations --- */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-reveal].visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- Desktop Navigation -->
-    <aside>
-        <div class="logo">VELO<span>.TECH</span></div>
-        <button class="nav-link active" onclick="Router.go('home')"><i data-lucide="layout-grid"></i> Dashboard</button>
-        <button class="nav-link" onclick="Router.go('apps')"><i data-lucide="smartphone"></i> My Apps</button>
-        <button class="nav-link" onclick="Router.go('settings')"><i data-lucide="sliders"></i> Settings</button>
-        
-        <button class="contact-btn" onclick="Router.go('contact')">Get in Touch</button>
-    </aside>
-
-    <!-- Mobile View -->
-    <main id="view-root">
-        <div class="header-mobile">
-            <div class="logo" style="margin:0">VELO<span>.TECH</span></div>
-            <i data-lucide="user-circle"></i>
+    <nav>
+        <div class="logo">
+            <i data-lucide="zap" fill="var(--primary)"></i>
+            VELO<span>.TECH</span>
         </div>
-        <div id="page-content"></div>
-    </main>
-
-    <!-- Mobile Bottom Tabs -->
-    <nav class="mobile-tabs">
-        <button class="nav-link active" onclick="Router.go('home')"><i data-lucide="home"></i></button>
-        <button class="nav-link" onclick="Router.go('apps')"><i data-lucide="smartphone"></i></button>
-        <button class="nav-link" onclick="Router.go('contact')"><i data-lucide="mail"></i></button>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#apps">Android Apps</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <a href="#contact" class="btn btn-secondary" style="padding: 10px 20px; font-size: 0.8rem;">Let's Talk</a>
     </nav>
-</div>
 
-<script>
-    const Router = {
-        pages: {
-            home: `
-                <div class="page">
-                    <span class="tag" style="background:rgba(99,102,241,0.1); color:var(--primary)">PRODUCTION READY</span>
-                    <h1 style="font-size:2.5rem; margin:10px 0;">Computing evolved.</h1>
-                    <p style="color:var(--text-dim); font-size:1.1rem; max-width:600px;">
-                        Velo Computing Technologies is building native-performance mobile ecosystems directly from Umeå, Sweden.
-                    </p>
-                    <div class="app-grid">
-                        <div class="app-card">
-                            <h3>Project Status</h3>
-                            <p style="color:var(--text-dim); font-size:0.9rem;">Verified Student Developer Pack active. GitHub Support Ticket #4087767 in review.</p>
-                        </div>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <span class="section-tag">Umeå, Sweden</span>
+            <h1>High Performance Android Engineering.</h1>
+            <p>Velo Computing Technologies specializes in building lightweight, feature-rich Android utilities and premium web experiences.</p>
+            <div class="cta-group">
+                <a href="#apps" class="btn btn-primary">View App Portfolio <i data-lucide="play"></i></a>
+                <a href="#services" class="btn btn-secondary">Web Services</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="apps">
+        <span class="section-tag">Google Play Store</span>
+        <h2 class="section-title">Our Native Ecosystem</h2>
+        
+        <div class="app-grid">
+            <!-- App 1 -->
+            <div class="app-card" data-reveal>
+                <div class="app-icon"><i data-lucide="timer" size="32"></i></div>
+                <h3>Velo Timer</h3>
+                <p>A minimalist, battery-efficient timer for power users. Built with Kotlin and Jetpack Compose for native performance.</p>
+                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
+            </div>
+
+            <!-- App 2 -->
+            <div class="app-card" data-reveal>
+                <div class="app-icon"><i data-lucide="alarm-clock" size="32"></i></div>
+                <h3>Kitchen Master</h3>
+                <p>Advanced multi-stage egg and cooking clock with custom haptic feedback and notification priority logic.</p>
+                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
+            </div>
+
+            <!-- App 3 -->
+            <div class="app-card" data-reveal>
+                <div class="app-icon"><i data-lucide="compass" size="32"></i></div>
+                <h3>Velo Compass</h3>
+                <p>Native orientation tracking using real-time magnetometer data with high-precision calibration tools.</p>
+                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
+            </div>
+
+            <!-- App 4 -->
+            <div class="app-card" data-reveal>
+                <div class="app-icon"><i data-lucide="check-square" size="32"></i></div>
+                <h3>Todo.Next</h3>
+                <p>A local-first, zero-tracker todo list. Productivity simplified with Android's latest Material You design language.</p>
+                <a href="#" class="google-play-btn">VIEW ON GOOGLE PLAY <i data-lucide="external-link" size="14"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" style="background: var(--surface);">
+        <span class="section-tag">What we do</span>
+        <h2 class="section-title">Our Capabilities</h2>
+        
+        <div class="app-grid">
+            <div class="app-card" style="background: transparent; border:none; padding: 0;">
+                <h3 style="color: var(--primary)">Native Android</h3>
+                <p>We leverage Kotlin, Coroutines, and Room Database to build apps that are fast, stable, and offline-ready.</p>
+                <div class="skills-container">
+                    <span class="skill-tag">Kotlin</span>
+                    <span class="skill-tag">Jetpack Compose</span>
+                    <span class="skill-tag">Firebase</span>
+                </div>
+            </div>
+
+            <div class="app-card" style="background: transparent; border:none; padding: 0;">
+                <h3 style="color: var(--secondary)">Modern Web</h3>
+                <p>From landing pages to complex dashboards, we build responsive web architectures that mirror app performance.</p>
+                <div class="skills-container">
+                    <span class="skill-tag">HTML5/CSS3</span>
+                    <span class="skill-tag">JavaScript ES6+</span>
+                    <span class="skill-tag">React/Next.js</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-wrapper">
+            <div>
+                <span class="section-tag">Collaboration</span>
+                <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 20px;">Let's build the next big thing.</h2>
+                <p style="color: var(--text-dim); margin-bottom: 40px;">Whether it's a new Android utility or a custom web platform, our team in Västerbotten is ready to help.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i data-lucide="mail" color="var(--primary)"></i> hello@velo-tech.shastri
                     </div>
-                </div>`,
-            apps: `
-                <div class="page">
-                    <h2>My App List</h2>
-                    <p style="color:var(--text-dim)">Native mobile solutions coming soon to iOS & Android.</p>
-                    <div class="app-grid">
-                        <div class="app-card">
-                            <div class="icon-wrap"><i data-lucide="cpu" color="white"></i></div>
-                            <span class="tag">INTERNAL ALPHA</span>
-                            <h3 style="margin:12px 0 8px">Velo Core</h3>
-                            <p style="color:var(--text-dim); font-size:0.85rem;">System-wide optimization and CI/CD hardware bridge.</p>
-                        </div>
-                        <div class="app-card">
-                            <div class="icon-wrap" style="background:linear-gradient(135deg, #a855f7, #6366f1)"><i data-lucide="shield-check" color="white"></i></div>
-                            <span class="tag">PLANNED</span>
-                            <h3 style="margin:12px 0 8px">Velo Shield</h3>
-                            <p style="color:var(--text-dim); font-size:0.85rem;">High-performance encryption and secure mobile access.</p>
-                        </div>
-                        <div class="app-card">
-                            <div class="icon-wrap" style="background:linear-gradient(135deg, #06b6d4, #10b981)"><i data-lucide="bar-chart-3" color="white"></i></div>
-                            <span class="tag">R&D</span>
-                            <h3 style="margin:12px 0 8px">Velo Metrics</h3>
-                            <p style="color:var(--text-dim); font-size:0.85rem;">Real-time analytics for distributed computing nodes.</p>
-                        </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i data-lucide="map-pin" color="var(--primary)"></i> Umeå, Sweden
                     </div>
-                </div>`,
-            contact: `
-                <div class="page">
-                    <h2>Contact Velo</h2>
-                    <div class="app-card" style="max-width:500px">
-                        <p style="margin-bottom:20px">Have a question about our mobile roadmap?</p>
-                        <a href="mailto:support@velo-tech.example" style="text-decoration:none">
-                            <button class="contact-btn" style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px;">
-                                <i data-lucide="send" size="18"></i> Send an Email
-                            </button>
-                        </a>
-                        <div style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px; font-size:0.85rem; color:var(--text-dim)">
-                            <p><i data-lucide="map-pin" size="14"></i> Tankvägen 20B, Umeå, Sweden</p>
-                        </div>
-                    </div>
-                </div>`,
-            settings: `
-                <div class="page">
-                    <h2>Preferences</h2>
-                    <div class="app-card" style="display:flex; justify-content:space-between; align-items:center;">
-                        <span>Appearance</span>
-                        <button onclick="Router.toggleTheme()" style="background:var(--border); border:none; padding:8px 16px; border-radius:10px; color:var(--text); cursor:pointer;">Switch Theme</button>
-                    </div>
-                </div>`
-        },
-        go(page) {
-            document.getElementById('page-content').innerHTML = this.pages[page];
-            document.querySelectorAll('.nav-link').forEach(l => {
-                l.classList.toggle('active', l.innerText.toLowerCase().includes(page) || l.innerHTML.includes(page));
+                </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('Message sent to Velo Support!')">
+                <div class="input-group">
+                    <label>YOUR NAME</label>
+                    <input type="text" placeholder="John Doe" required>
+                </div>
+                <div class="input-group">
+                    <label>EMAIL ADDRESS</label>
+                    <input type="email" placeholder="john@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>PROJECT DETAILS</label>
+                    <textarea rows="5" placeholder="Tell us about your Android or Web project..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div>&copy; 2026 Velo Computing Technologies. All rights reserved.</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a>
+            <a href="#" style="color: inherit; text-decoration: none;">GitHub</a>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Reveal animations on scroll
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
-            lucide.createIcons();
-            if(window.innerWidth <= 768) window.scrollTo(0,0);
-        },
-        toggleTheme() {
-            const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', t);
-        }
-    };
+        }, observerOptions);
 
-    window.onload = () => Router.go('home');
-</script>
+        document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+
+        // Smooth Scroll handling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-
-
