@@ -2,468 +2,328 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Velo Computing Technologies - High Performance Android & Web Engineering in Umeå, Sweden.">
-    <title>Velo Computing Technologies | Android Engineering Specialists</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velo Cloud | Managed Android & Web Systems</title>
     
-    <!-- Instant Render Styles -->
+    <!-- Dependencies -->
+    <script src="https://unpkg.com"></script>
+    <script src="https://unpkg.com"></script>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #050505;
-            --surface: #0a0a0a;
-            --card: #121212;
-            --card-hover: #1a1a1a;
-            --primary: #3ddc84; /* Android Green */
-            --secondary: #4285f4; /* Google Blue */
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --border: rgba(255, 255, 255, 0.06);
-            --nav-height: 80px;
-            --accent-gradient: linear-gradient(135deg, #3ddc84 0%, #4285f4 100%);
+            --bg: #050505; --surface: #0a0a0a; --card: #121212;
+            --primary: #3ddc84; --secondary: #4285f4; --error: #ff4b4b;
+            --text-main: #ffffff; --text-dim: #94a3b8; --border: rgba(255, 255, 255, 0.08);
+            --nav-height: 75px;
         }
 
-        /* Anti-Blank Screen Reset */
-        html, body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
+        /* --- Global Resets --- */
+        html, body { 
+            background: var(--bg); color: var(--text-main); 
+            margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth; overflow-x: hidden;
         }
+        * { box-sizing: border-box; transition: 0.25s ease; }
+        .hidden { display: none !important; }
+        .reveal { opacity: 0; transform: translateY(15px); transition: 0.6s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        * { box-sizing: border-box; }
-
-        /* Typography */
-        h1, h2, h3 { letter-spacing: -0.04em; margin: 0; }
-        p { line-height: 1.6; }
-
-        /* Navbar Styling */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: var(--nav-height);
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            padding: 0 6%;
-            justify-content: space-between;
+        /* --- Navigation --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; height: var(--nav-height); 
+            background: rgba(5,5,5,0.85); backdrop-filter: blur(25px); 
+            border-bottom: 1px solid var(--border); z-index: 2000; 
+            display: flex; align-items: center; padding: 0 5%; justify-content: space-between; 
         }
-
-        .logo { 
-            font-weight: 800; 
-            font-size: 1.4rem; 
-            text-decoration: none; 
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .logo { font-weight: 800; font-size: 1.4rem; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; }
         .logo span { color: var(--primary); }
 
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--primary); }
+        /* --- Sections & Containers --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 120px 24px; }
+        .hero { text-align: center; padding: 180px 5% 120px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 40px; }
 
-        /* Hero Layout */
-        .hero {
-            min-height: 90vh;
-            padding: 180px 6% 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #0a0a0a 0%, #050505 100%);
-        }
+        /* --- App Dashboard Interface --- */
+        .dashboard-shell { display: grid; grid-template-columns: 260px 1fr; gap: 40px; min-height: 80vh; }
+        .sidebar { background: var(--card); border: 1px solid var(--border); border-radius: 30px; padding: 30px; height: fit-content; }
+        .sidebar-btn { width: 100%; text-align: left; padding: 14px; border-radius: 12px; border: none; background: none; color: var(--text-dim); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .sidebar-btn.active { background: rgba(61, 220, 132, 0.1); color: var(--primary); }
 
-        .hero-tag {
-            background: rgba(61, 220, 132, 0.1);
-            color: var(--primary);
-            padding: 6px 16px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-        }
-
-        h1 { font-size: clamp(3rem, 10vw, 5.5rem); line-height: 1.05; margin-bottom: 24px; }
-        .hero p { 
-            color: var(--text-dim); 
-            max-width: 700px; 
-            font-size: 1.25rem; 
-            margin-bottom: 48px; 
-        }
-
-        /* Grid Framework */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        /* --- Cards & UI Elements --- */
+        .app-card { background: var(--card); border: 1px solid var(--border); padding: 40px; border-radius: 32px; position: relative; overflow: hidden; }
+        .app-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .icon-wrap { width: 56px; height: 56px; background: var(--surface); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary); margin-bottom: 25px; }
         
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 3rem; margin-bottom: 16px; }
-        .section-header p { color: var(--text-dim); font-size: 1.1rem; }
+        .ticket-row { background: #161616; padding: 20px; border-radius: 20px; border-left: 4px solid var(--secondary); margin-bottom: 15px; }
+        .badge { font-size: 0.7rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-dim); }
 
-        .app-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 24px; 
-            margin-top: 40px; 
-        }
+        /* --- Forms & Auth --- */
+        .auth-box { max-width: 420px; margin: 100px auto; background: var(--card); border: 1px solid var(--border); padding: 50px; border-radius: 40px; text-align: center; }
+        .field { margin-bottom: 24px; text-align: left; }
+        label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-dim); margin-bottom: 10px; letter-spacing: 1px; }
+        input, textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); padding: 16px; border-radius: 14px; color: #fff; font-family: inherit; }
+        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(61, 220, 132, 0.1); }
 
-        /* App Cards */
-        .app-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 48px;
-            border-radius: 32px;
-            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-        }
-        .app-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 2px;
-            background: var(--accent-gradient);
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .app-card:hover { 
-            background: var(--card-hover);
-            transform: translateY(-8px); 
-            border-color: rgba(255,255,255,0.1);
-        }
-        .app-card:hover::after { opacity: 1; }
+        /* --- Buttons --- */
+        .btn { padding: 16px 32px; border-radius: 16px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 12px; font-size: 0.95rem; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: #fff; }
+        .btn-sm { padding: 8px 16px; font-size: 0.8rem; border-radius: 10px; }
 
-        .icon-box { 
-            width: 64px; height: 64px; 
-            background: #1a1a1a; 
-            border-radius: 16px; 
-            display: flex; align-items: center; 
-            justify-content: center; 
-            margin-bottom: 32px; 
-            color: var(--primary);
-            box-shadow: inset 0 0 0 1px var(--border);
-        }
+        /* --- Community Feed --- */
+        .post { border-bottom: 1px solid var(--border); padding: 30px 0; }
+        .author { display: flex; align-items: center; gap: 12px; font-weight: 700; margin-bottom: 10px; }
+        .author div { width: 32px; height: 32px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; }
 
-        /* Buttons */
-        .btn {
-            padding: 18px 36px; 
-            border-radius: 16px; 
-            font-weight: 700;
-            text-decoration: none; 
-            display: inline-flex; 
-            align-items: center;
-            gap: 12px;
-            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-size: 1rem;
+        /* --- Responsive Logic --- */
+        @media (max-width: 900px) {
+            .dashboard-shell { grid-template-columns: 1fr; }
+            .sidebar { display: flex; gap: 10px; overflow-x: auto; padding: 15px; margin-bottom: 20px; }
+            .sidebar-btn { width: auto; white-space: nowrap; margin-bottom: 0; }
+            .hero h1 { font-size: 3rem; }
         }
-        .btn-primary { 
-            background: var(--primary); 
-            color: #000; 
-        }
-        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 40px rgba(61, 220, 132, 0.2); }
-
-        .btn-outline { 
-            border: 1px solid var(--border); 
-            color: #fff; 
-            margin-left: 12px;
-            background: rgba(255,255,255,0.02);
-        }
-        .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: #fff; }
-
-        /* Technical Specs Section */
-        .specs { background: var(--surface); padding: 120px 0; border-radius: 60px 60px 0 0; }
-        .spec-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-        .tag { 
-            padding: 10px 20px; 
-            background: rgba(255,255,255,0.05); 
-            border: 1px solid var(--border);
-            border-radius: 100px; 
-            font-size: 0.85rem; 
-            font-weight: 600;
-            color: var(--text-dim); 
-        }
-
-        /* Contact Block */
-        #contact { padding: 120px 0; text-align: center; }
-        .contact-box { 
-            background: var(--card); 
-            padding: 80px 40px; 
-            border-radius: 48px; 
-            border: 1px solid var(--border);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .method-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 40px; 
-            margin: 60px 0; 
-        }
-        .method-item i { margin-bottom: 16px; color: var(--primary); }
-        .method-item h4 { margin-bottom: 8px; font-size: 1.1rem; }
-        .method-item p { color: var(--text-dim); font-size: 0.9rem; }
-
-        /* Footer Engineering */
-        footer { 
-            padding: 80px 6% 40px; 
-            border-top: 1px solid var(--border); 
-            background: var(--bg);
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 60px;
-            margin-bottom: 60px;
-        }
-        .footer-logo { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; display: block; text-decoration: none; color: #fff; }
-        .footer-col h5 { color: var(--text-main); font-size: 1rem; margin-bottom: 24px; }
-        .footer-col ul { list-style: none; padding: 0; margin: 0; }
-        .footer-col ul li { margin-bottom: 12px; }
-        .footer-col ul li a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
-        .footer-col ul li a:hover { color: var(--primary); }
-
-        /* Mobile Polish */
-        @media (max-width: 850px) {
-            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .btn-outline { margin-left: 0; margin-top: 16px; display: flex; width: 100%; justify-content: center; }
-            .btn-primary { display: flex; width: 100%; justify-content: center; }
-            .nav-links { display: none; }
-            h1 { font-size: 3.5rem; }
-        }
-
-        /* Scroll Animations */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
-    <!-- Delayed Load Fonts -->
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
 </head>
 <body>
 
+    <!-- NAV BAR -->
     <nav>
-        <a href="#" class="logo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)"><path d="m13 2-2 10h3L11 22l2-10h-3l2-10z"/></svg>
-            VELO<span>.TECH</span>
+        <a href="#" onclick="UI.showView('landing')" class="logo">
+            <i data-lucide="zap" fill="var(--primary)"></i> VELO<span>.CLOUD</span>
         </a>
-        <div class="nav-links">
-            <a href="#apps">Ecosystem</a>
-            <a href="#services">Architecture</a>
-            <a href="#contact">Contact</a>
+        <div id="nav-actions">
+            <!-- Dynamic Login/Profile Button -->
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="reveal">
-            <span class="hero-tag">UMEÅ • SWEDEN</span>
-            <h1>Native Android Engineering.</h1>
-            <p>We architect high-performance utility ecosystems and ultra-responsive web experiences for the next generation of mobile computing.</p>
-            <div style="margin-top: 24px;">
-                <a href="#apps" class="btn btn-primary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    Explore Apps
-                </a>
-                <a href="#contact" class="btn btn-outline">Consultation</a>
-            </div>
-        </div>
-    </header>
+    <!-- CONTENT ROOT -->
+    <div id="app-root"></div>
 
-    <section id="apps" class="container">
-        <div class="section-header reveal">
-            <h2>The App List</h2>
-            <p>Specialized Android utilities built for native performance and Material You aesthetics.</p>
-        </div>
-        
-        <div class="app-grid">
-            <!-- Item 1 -->
-            <div class="app-card reveal">
-                <div class="icon-box"><i data-lucide="timer"></i></div>
-                <h3>Velo Timer</h3>
-                <p>Native Kotlin-based engine for high-precision background timing with notification channel prioritization.</p>
-                <div class="spec-list" style="margin-top: 20px;">
-                    <span class="tag">INTERNAL ALPHA</span>
-                </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="app-card reveal">
-                <div class="icon-box" style="color:var(--secondary)"><i data-lucide="clock"></i></div>
-                <h3>Kitchen Clock</h3>
-                <p>Specialized multi-stage countdowns for culinary precision. Supports custom haptics and Android alarm hooks.</p>
-                <div class="spec-list" style="margin-top: 20px;">
-                    <span class="tag">INTERNAL TEST</span>
-                </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="app-card reveal">
-                <div class="icon-box" style="color:var(--primary)"><i data-lucide="compass"></i></div>
-                <h3>Compass</h3>
-                <p>Hardware-level magnetometer integration for real-time orientation. Optimized for low battery consumption.</p>
-                <div class="spec-list" style="margin-top: 20px;">
-                    <span class="tag">Internal Test</span>
-                </div>
-            </div>
-
-            <!-- Item 4 -->
-            <div class="app-card reveal">
-                <div class="icon-box" style="color:#fff"><i data-lucide="check-circle-2"></i></div>
-                <h3>Todo List</h3>
-                <p>Privacy-first task management. Local SQL storage ensures your data never leaves the device without permission.</p>
-                <div class="spec-list" style="margin-top: 20px;">
-                    <span class="tag">STABLE v1.2</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="specs" id="services" style="margin-top: 120px;">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Our Tech Stack</h2>
-                <p>Engineering robust solutions using modern industry standards.</p>
-            </div>
-            
-            <div class="app-grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
-                <div class="reveal">
-                    <h3 style="color:var(--primary); margin-bottom: 20px;">Android Core</h3>
-                    <p style="color:var(--text-dim)">We specialize in the modern Android development lifecycle, from UI design to hardware interaction.</p>
-                    <div class="spec-list">
-                        <span class="tag">Kotlin</span> 
-                        <span class="tag">Jetpack Compose</span> 
-                        <span class="tag">Coroutines</span> 
-                        <span class="tag">Room Persistence</span>
-                        <span class="tag">MVVM Architecture</span>
-                        <span class="tag">Material You</span>
-                    </div>
-                </div>
-                <div class="reveal">
-                    <h3 style="color:var(--secondary); margin-bottom: 20px;">Web Systems</h3>
-                    <p style="color:var(--text-dim)">Responsive, accessible, and ultra-fast web architectures built to bridge the gap between app and browser.</p>
-                    <div class="spec-list">
-                        <span class="tag">HTML5 / CSS3</span> 
-                        <span class="tag">JavaScript (ES6+)</span> 
-                        <span class="tag">TypeScript</span> 
-                        <span class="tag">Vercel Deployment</span>
-                        <span class="tag">SEO Optimization</span>
-                        <span class="tag">React Patterns</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="container">
-        <div class="contact-box reveal">
-            <h2 style="font-size: 3.5rem;">Let's build.</h2>
-            <p style="color:var(--text-dim); margin-top: 16px;">Inquiries for Android development and web consulting.</p>
-            
-            <div class="method-grid">
-                <div class="method-item">
-                    <i data-lucide="mail" size="32"></i>
-                    <h4>Email</h4>
-                    <p>support@velocomputing.tech</p>
-                </div>
-                <div class="method-item">
-                    <i data-lucide="github" size="32"></i>
-                    <h4>GitHub</h4>
-                    <p>@Velo-Computing</p>
-                </div>
-                <div class="method-item">
-                    <i data-lucide="map-pin" size="32"></i>
-                    <h4>HQ</h4>
-                    <p>Umeå, Sweden</p>
-                </div>
-            </div>
-            
-            <a href="mailto:support@velocomputing.tech" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                Launch Project Inquiry
-            </a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <a href="#" class="footer-logo">VELO<span>.TECH</span></a>
-                    <p style="color: var(--text-dim); font-size: 0.9rem; max-width: 300px;">
-                        Specializing in the intersection of native hardware performance and modern software aesthetics.
-                    </p>
-                </div>
-                <div class="footer-col">
-                    <h5>Navigation</h5>
-                    <ul>
-                        <li><a href="#apps">Ecosystem</a></li>
-                        <li><a href="#services">Stack</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h5>Company</h5>
-                    <ul>
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Terms</a></li>
-                        <li><a href="#">GitHub</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div style="border-top: 1px solid var(--border); padding-top: 40px; text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-                &copy; 2026 Velo Computing Technologies. All rights reserved. <br>
-                Tankvägen 20B, Umeå, SE.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripting Engine -->
-    <script src="https://unpkg.com"></script>
+    <!-- VIEWS (JavaScript Handled) -->
     <script>
-        // Init Icons with Fail-safe
-        function initIcons() {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        }
+        // --- 1. SETUP ---
+        const SB_URL = 'lqkpxervwakucksrnoss.supabase.co';
+        const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8';
+        const sb = supabase.createClient(SB_URL, SB_KEY);
 
-        // Scroll Observer for Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
+        const State = { user: null, view: 'landing', profile: null };
+
+        // --- 2. ENGINE ---
+        const UI = {
+            async init() {
+                const { data: { session } } = await sb.auth.getSession();
+                this.updateAuthState(session);
+
+                sb.auth.onAuthStateChange((event, session) => {
+                    this.updateAuthState(session);
+                });
+
+                this.showView('landing');
+            },
+
+            updateAuthState(session) {
+                State.user = session?.user || null;
+                const nav = document.getElementById('nav-actions');
+                if (State.user) {
+                    nav.innerHTML = `<button onclick="UI.showView('dashboard')" class="btn btn-outline btn-sm">${State.user.email}</button>`;
+                } else {
+                    nav.innerHTML = `<button onclick="UI.showView('login')" class="btn btn-primary btn-sm">Client Portal</button>`;
                 }
-            });
-        }, { threshold: 0.15 });
+                lucide.createIcons();
+            },
 
-        // Bootstrap on Load
-        window.addEventListener('DOMContentLoaded', () => {
-            initIcons();
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        });
+            showView(view) {
+                State.view = view;
+                const root = document.getElementById('app-root');
+                
+                // Route Guard
+                if (['dashboard', 'tickets'].includes(view) && !State.user) {
+                    this.showView('login');
+                    return;
+                }
 
-        // Sticky Navbar Effect
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.height = '70px';
-                nav.style.background = 'rgba(5, 5, 5, 0.95)';
-            } else {
-                nav.style.height = '80px';
-                nav.style.background = 'rgba(5, 5, 5, 0.85)';
+                // Render Templates
+                switch(view) {
+                    case 'landing': this.renderLanding(root); break;
+                    case 'login': this.renderAuth(root, 'login'); break;
+                    case 'signup': this.renderAuth(root, 'signup'); break;
+                    case 'dashboard': this.renderDashboard(root, 'main'); break;
+                    case 'tickets': this.renderDashboard(root, 'tickets'); break;
+                    case 'community': this.renderDashboard(root, 'community'); break;
+                }
+                
+                lucide.createIcons();
+                this.applyScrollReveal();
+            },
+
+            renderLanding(root) {
+                root.innerHTML = `
+                    <section class="hero">
+                        <div class="reveal">
+                            <span class="badge" style="color:var(--primary)">PRODUCTION BACKEND ACTIVE</span>
+                            <h1>High Performance Android.</h1>
+                            <p>Specialized mobile engineering from Umeå, Sweden. Manage your tickets and community projects in our secure cloud.</p>
+                            <div style="margin-top:40px; display:flex; gap:15px; justify-content:center;">
+                                <button onclick="UI.showView('signup')" class="btn btn-primary">Start Building</button>
+                                <button onclick="UI.showView('community')" class="btn btn-outline">Community Feed</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="container" id="apps">
+                        <div class="grid">
+                            <div class="app-card reveal">
+                                <div class="icon-wrap"><i data-lucide="timer"></i></div>
+                                <h3>Velo Timer</h3>
+                                <p>Native Kotlin precision. Available on Google Play.</p>
+                            </div>
+                            <div class="app-card reveal">
+                                <div class="icon-wrap" style="color:var(--secondary)"><i data-lucide="compass"></i></div>
+                                <h3>Velo Compass</h3>
+                                <p>Hardware magnetometer tracking. Beta active.</p>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            },
+
+            renderAuth(root, mode) {
+                root.innerHTML = `
+                    <div class="auth-box">
+                        <h2>${mode === 'login' ? 'Welcome Back' : 'Join Velo'}</h2>
+                        <div class="field">
+                            <label>EMAIL</label>
+                            <input type="email" id="email" placeholder="shastri@velo.tech">
+                        </div>
+                        <div class="field">
+                            <label>PASSWORD</label>
+                            <input type="password" id="pass" placeholder="••••••••">
+                        </div>
+                        <button onclick="Actions.auth('${mode}')" class="btn btn-primary" style="width:100%; justify-content:center;">
+                            ${mode === 'login' ? 'Sign In' : 'Create Account'}
+                        </button>
+                        <p style="margin-top:25px; font-size:0.9rem; color:var(--text-dim)">
+                            ${mode === 'login' ? 'New here? <a href="#" onclick="UI.showView(\'signup\')" style="color:var(--primary)">Sign up</a>' : 'Already have an account? <a href="#" onclick="UI.showView(\'login\')" style="color:var(--primary)">Log in</a>'}
+                        </p>
+                    </div>
+                `;
+            },
+
+            renderDashboard(root, subview) {
+                root.innerHTML = `
+                    <div class="container">
+                        <div class="dashboard-shell">
+                            <aside class="sidebar">
+                                <h4 style="margin-bottom:30px;">Workspace</h4>
+                                <button onclick="UI.showView('dashboard')" class="sidebar-btn ${subview === 'main' ? 'active' : ''}"><i data-lucide="layout"></i> Overview</button>
+                                <button onclick="UI.showView('tickets')" class="sidebar-btn ${subview === 'tickets' ? 'active' : ''}"><i data-lucide="ticket"></i> Tickets</button>
+                                <button onclick="UI.showView('community')" class="sidebar-btn ${subview === 'community' ? 'active' : ''}"><i data-lucide="users"></i> Community</button>
+                                <button onclick="Actions.logout()" class="sidebar-btn" style="margin-top:30px; color:var(--error)"><i data-lucide="log-out"></i> Logout</button>
+                            </aside>
+                            <div id="dash-content">Loading...</div>
+                        </div>
+                    </div>
+                `;
+                if(subview === 'main') this.loadOverview();
+                if(subview === 'tickets') this.loadTickets();
+                if(subview === 'community') this.loadCommunity();
+            },
+
+            async loadOverview() {
+                const content = document.getElementById('dash-content');
+                content.innerHTML = `
+                    <h2>Project Status</h2>
+                    <div class="app-card" style="background:var(--surface)">
+                        <p>User: <strong>${State.user.email}</strong></p>
+                        <p style="color:var(--text-dim)">Your account is connected to our secure Supabase production cluster. Use the sidebar to manage your Android development tickets.</p>
+                    </div>
+                `;
+            },
+
+            async loadTickets() {
+                const content = document.getElementById('dash-content');
+                content.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                        <h2>Support Tickets</h2>
+                        <button onclick="Actions.newTicket()" class="btn btn-primary btn-sm"><i data-lucide="plus"></i> Create Ticket</button>
+                    </div>
+                    <div id="list-target">Fetching...</div>
+                `;
+                const { data } = await sb.from('tickets').select('*').order('created_at', { ascending: false });
+                document.getElementById('list-target').innerHTML = data?.length ? data.map(t => `
+                    <div class="ticket-row">
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong>${t.subject}</strong>
+                            <span class="status-badge">${t.status}</span>
+                        </div>
+                        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:10px;">${t.description}</p>
+                    </div>
+                `).join('') : '<p>No active tickets.</p>';
+            },
+
+            async loadCommunity() {
+                const content = document.getElementById('dash-content');
+                content.innerHTML = `
+                    <h2>Community Feed</h2>
+                    <div class="app-card" style="margin-bottom:30px;">
+                        <textarea id="post-text" placeholder="Share an update with the Velo team..." rows="3"></textarea>
+                        <button onclick="Actions.submitPost()" class="btn btn-primary" style="margin-top:10px;">Post Update</button>
+                    </div>
+                    <div id="feed-target"></div>
+                `;
+                const { data } = await sb.from('posts').select('*').order('created_at', { ascending: false });
+                document.getElementById('feed-target').innerHTML = data?.map(p => `
+                    <div class="post">
+                        <div class="author"><div>V</div> @User_${p.user_id.slice(0,5)}</div>
+                        <p>${p.content}</p>
+                        <small style="color:var(--text-dim)">${new Date(p.created_at).toLocaleString()}</small>
+                    </div>
+                `).join('');
+                lucide.createIcons();
+            },
+
+            applyScrollReveal() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
             }
-        });
+        };
+
+        // --- 3. DATA ACTIONS ---
+        const Actions = {
+            async auth(mode) {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('pass').value;
+                const { error } = mode === 'signup' 
+                    ? await sb.auth.signUp({ email, password }) 
+                    : await sb.auth.signInWithPassword({ email, password });
+                
+                if (error) alert(error.message);
+                else if (mode === 'signup') alert('Check your email for the confirmation link!');
+            },
+
+            async logout() { await sb.auth.signOut(); UI.showView('landing'); },
+
+            async newTicket() {
+                const subject = prompt("Subject:");
+                const description = prompt("Details:");
+                if(subject && description) {
+                    await sb.from('tickets').insert([{ subject, description, user_id: State.user.id }]);
+                    UI.loadTickets();
+                }
+            },
+
+            async submitPost() {
+                const content = document.getElementById('post-text').value;
+                if(!content) return;
+                await sb.from('posts').insert([{ content, user_id: State.user.id }]);
+                UI.loadCommunity();
+            }
+        };
+
+        UI.init();
     </script>
 </body>
 </html>
+
