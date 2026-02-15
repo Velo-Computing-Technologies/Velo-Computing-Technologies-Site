@@ -2,120 +2,207 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velo Cloud | Umeå Engineering</title>
-
-    <!-- 1. TRY SKYPACK (Often bypasses esm.sh/unpkg blocks) -->
-    <script type="module">
-        import supabaseJs from 'https://cdn.skypack.dev';
-        window.supabase = supabaseJs;
-        console.log("Velo Engine: Skypack Loaded");
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Velo Cloud | Global Android & Web Hub</title>
+    
+    <!-- 1. THE GLOBAL FIX: Using Cloudflare Mirror (Most reliable for public web) -->
+    <script src="https://cdnjs.cloudflare.com"></script>
+    <script src="https://cdnjs.cloudflare.com"></script>
+    
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
 
     <style>
         :root {
             --bg: #050505; --card: #121212; --primary: #3ddc84;
-            --text: #ffffff; --text-dim: #94a3b8; --border: rgba(255, 255, 255, 0.1);
+            --error: #ff4b4b; --text: #ffffff; --border: rgba(255, 255, 255, 0.08);
         }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; }
-        .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; text-align: center; }
-        .view { display: none; }
+
+        /* --- Framework & Polish --- */
+        html, body { background: var(--bg); color: var(--text); margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        * { box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .hidden { display: none !important; }
+
+        /* --- Nav & Layout --- */
+        nav { position: fixed; top: 0; width: 100%; height: 75px; background: rgba(5,5,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); z-index: 2000; display: flex; align-items: center; padding: 0 5%; justify-content: space-between; }
+        .logo { font-weight: 800; font-size: 1.4rem; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--primary); }
+
+        .view { display: none; min-height: 100vh; padding-top: 120px; animation: fadeIn 0.4s ease; }
         .view.active { display: block; }
-        .auth-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); max-width: 400px; margin: 0 auto; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid var(--border); color: #fff; border-radius: 12px; }
-        .btn { padding: 15px 30px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; background: var(--primary); color: #000; width: 100%; }
-        #status { font-size: 0.7rem; padding: 10px; color: var(--primary); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- UI Components --- */
+        .hero { text-align: center; padding: 60px 0; }
+        h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.1; letter-spacing: -2.5px; margin-bottom: 24px; }
+        
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 50px; }
+        .app-card { background: var(--card); border: 1px solid var(--border); padding: 40px; border-radius: 32px; text-align: left; }
+        .app-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+
+        /* --- Auth Card --- */
+        .auth-card { max-width: 420px; margin: 0 auto; background: var(--card); padding: 45px; border-radius: 35px; border: 1px solid var(--border); text-align: center; position: relative; }
+        .field { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #777; margin-bottom: 8px; letter-spacing: 1px; }
+        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 16px; border-radius: 12px; color: #fff; font-family: inherit; font-size: 1rem; }
+        
+        .btn { padding: 15px 30px; border-radius: 14px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 10px; font-size: 0.95rem; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: #fff; }
+
+        /* --- Functional Alerts --- */
+        #status-bar { position: fixed; top: 0; left: 0; width: 100%; font-size: 0.7rem; padding: 8px; text-align: center; background: #111; color: var(--primary); z-index: 3000; border-bottom: 1px solid var(--border); }
+        #error-alert { color: var(--error); font-size: 0.85rem; margin-top: 15px; display: none; }
+        .shake { animation: shake 0.3s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
     </style>
 </head>
 <body>
 
-    <div id="status">INITIALIZING SYSTEM...</div>
+    <div id="status-bar">AWAITING SYSTEM IDENTITY...</div>
 
-    <div class="container">
-        <!-- LANDING -->
-        <div id="view-landing" class="view active">
-            <h1 style="font-size: 3rem;">VELO<span>.CLOUD</span></h1>
-            <p style="color:var(--text-dim)">Native Android & Web Engineering Node</p>
-            <button onclick="router('login')" class="btn" style="margin-top: 20px;">Client Portal</button>
+    <nav>
+        <a href="#" onclick="Router.go('landing')" class="logo">VELO<span>.CLOUD</span></a>
+        <div id="nav-auth">
+            <button onclick="Router.go('login')" class="btn btn-outline" style="padding: 8px 18px; font-size: 0.8rem;">Client Login</button>
         </div>
+    </nav>
 
-        <!-- LOGIN -->
-        <div id="view-login" class="view">
-            <div class="auth-card">
-                <h2>Portal Login</h2>
-                <input type="email" id="email" placeholder="Email">
-                <input type="password" id="pass" placeholder="Password">
-                <button onclick="handleLogin()" class="btn">Enter Cloud</button>
-                <p onclick="router('landing')" style="margin-top:20px; cursor:pointer; font-size:0.8rem; color:var(--text-dim)">← Back</p>
+    <div id="view-landing" class="view container active">
+        <section class="hero">
+            <h1>Android Specialists. <br> Powered by Velo Cloud.</h1>
+            <p style="color:var(--border); font-weight:800; letter-spacing:2px; font-size:0.8rem; margin-bottom:20px;">UMEÅ • SWEDEN</p>
+            <p style="color:var(--text-dim); font-size:1.25rem; max-width:700px; margin:0 auto 40px;">Native mobile engineering meeting high-performance web security. Join the ecosystem today.</p>
+            <div style="display:flex; gap:15px; justify-content:center;">
+                <button onclick="Router.go('signup')" class="btn btn-primary">Start Project</button>
+                <button onclick="Router.go('login')" class="btn btn-outline">Portal Login</button>
+            </div>
+        </section>
+        
+        <div class="app-grid">
+            <div class="app-card">
+                <h3>Timer v1.0</h3>
+                <p style="color:var(--text-dim)">Native Kotlin engine for background-safe high precision timing.</p>
+            </div>
+            <div class="app-card">
+                <h3>Velo Shield</h3>
+                <p style="color:var(--text-dim)">Verified academic support tunnel for mobile asset encryption.</p>
             </div>
         </div>
+    </div>
 
-        <!-- DASHBOARD -->
-        <div id="view-dashboard" class="view">
-            <h2>Welcome, Developer</h2>
-            <div id="user-mail" style="color:var(--primary); margin-bottom: 20px;"></div>
-            <button onclick="handleLogout()" class="btn" style="background:#222; color:#fff;">Sign Out</button>
+    <div id="view-login" class="view container">
+        <div class="auth-card" id="login-card">
+            <h2>Welcome Back</h2>
+            <div class="field"><label>EMAIL ADDRESS</label><input type="email" id="l-email" placeholder="shastri@velo.tech"></div>
+            <div class="field"><label>PASSWORD</label><input type="password" id="l-pass" placeholder="••••••••"></div>
+            <button onclick="Auth.login()" id="l-btn" class="btn btn-primary" style="width:100%; justify-content:center;">Enter Cloud</button>
+            <div id="error-alert"></div>
+            <p style="margin-top:20px; font-size:0.8rem; color:var(--text-dim)">New? <a href="#" onclick="Router.go('signup')" style="color:var(--primary); text-decoration:none;">Initialize ID</a></p>
+        </div>
+    </div>
+
+    <div id="view-signup" class="view container">
+        <div class="auth-card">
+            <h2>Create Developer ID</h2>
+            <div class="field"><label>EMAIL</label><input type="email" id="s-email"></div>
+            <div class="field"><label>PASSWORD</label><input type="password" id="s-pass"></div>
+            <button onclick="Auth.signup()" class="btn btn-primary" style="width:100%; justify-content:center;">Complete Setup</button>
+            <p onclick="Router.go('login')" style="margin-top:20px; cursor:pointer; font-size:0.8rem; color:var(--text-dim)">Already have an account? Sign In</p>
+        </div>
+    </div>
+
+    <div id="view-dashboard" class="view container">
+        <div class="app-card">
+            <h2>Project Overview</h2>
+            <p id="user-display" style="color:var(--primary); font-weight:800;"></p>
+            <p style="color:var(--text-dim); line-height:1.7;">Project Cluster: <strong>Umeå_01</strong><br>Status: <strong>Operational</strong></p>
+            <button onclick="Auth.logout()" class="btn btn-outline" style="margin-top:20px;">Logout</button>
         </div>
     </div>
 
     <script>
-        const SB_URL = 'https://lqkpxervwakucksrnoss.supabase.co';
-        const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8';
+        // 2. THE PRODUCTION ENGINE (Corrected URL/Key)
+        const SB_URL = 'https://lqkpxervwakucksrnoss.supabase.co'; 
+        const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8'; 
         let sb;
 
-        function router(id) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-' + id).classList.add('active');
-        }
-
-        async function bootstrap() {
-            const status = document.getElementById('status');
-            
-            // Wait up to 2 seconds for Skypack to register
-            let attempts = 0;
-            while (!window.supabase && attempts < 20) {
-                await new Promise(r => setTimeout(r, 100));
-                attempts++;
+        const Router = {
+            go(view) {
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                const target = document.getElementById('view-' + view);
+                if (target) target.classList.add('active');
+                if (window.lucide) lucide.createIcons();
+                window.scrollTo(0,0);
             }
+        };
 
-            if (!window.supabase) {
-                status.innerText = "CRITICAL ERROR: ALL CDNs BLOCKED. DISABLE AD-BLOCKER.";
+        const Auth = {
+            async login() {
+                const btn = document.getElementById('l-btn');
+                const err = document.getElementById('error-alert');
+                const card = document.getElementById('login-card');
+                btn.innerText = "Authenticating...";
+                err.style.display = 'none';
+
+                const { data, error } = await sb.auth.signInWithPassword({
+                    email: document.getElementById('l-email').value,
+                    password: document.getElementById('l-pass').value
+                });
+
+                if (error) {
+                    btn.innerText = "Enter Cloud";
+                    err.innerText = error.message;
+                    err.style.display = 'block';
+                    card.classList.add('shake');
+                    setTimeout(() => card.classList.remove('shake'), 300);
+                } else {
+                    this.refreshUI(data.session);
+                }
+            },
+            async signup() {
+                const { error } = await sb.auth.signUp({
+                    email: document.getElementById('s-email').value,
+                    password: document.getElementById('s-pass').value
+                });
+                if (error) alert("Signup Error: " + error.message);
+                else alert("Velo Cloud ID Initialized! Check your email for the link.");
+            },
+            async logout() {
+                await sb.auth.signOut();
+                window.location.reload();
+            },
+            refreshUI(session) {
+                const nav = document.getElementById('nav-auth');
+                if (session) {
+                    nav.innerHTML = `<button onclick="Router.go('dashboard')" class="btn btn-outline" style="padding:8px 18px;">${session.user.email}</button>`;
+                    document.getElementById('user-display').innerText = "Velo Dev ID: " + session.user.id.slice(0,8);
+                    Router.go('dashboard');
+                } else {
+                    nav.innerHTML = `<button onclick="Router.go('login')" class="btn btn-primary" style="padding: 8px 18px;">Client Login</button>`;
+                }
+            }
+        };
+
+        async function init() {
+            const status = document.getElementById('status-bar');
+            
+            // Wait for Supabase to be available in the window
+            if (typeof supabase === 'undefined') {
+                status.innerText = "SYSTEM ERROR: API LIBRARY BLOCKED. CHECK AD-BLOCKER.";
                 status.style.color = "#ff4b4b";
                 return;
             }
 
-            try {
-                // Initialize
-                sb = window.supabase.createClient(SB_URL, SB_KEY);
-                status.innerText = "SYSTEM ONLINE • DATA API CONNECTED";
-                
-                const { data: { session } } = await sb.auth.getSession();
-                if (session) {
-                    document.getElementById('user-mail').innerText = session.user.email;
-                    router('dashboard');
-                }
-            } catch (e) {
-                status.innerText = "AUTH ERROR: " + e.message;
-            }
-        }
-
-        async function handleLogin() {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('pass').value;
+            sb = supabase.createClient(SB_URL, SB_KEY);
+            status.innerText = "SYSTEM ONLINE • PRODUCTION DATA LINK READY";
             
-            if (!sb) { alert("Database not ready yet."); return; }
-            
-            const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-            if (error) alert("Login Failed: " + error.message);
-            else window.location.reload();
+            const { data: { session } } = await sb.auth.getSession();
+            Auth.refreshUI(session);
+            sb.auth.onAuthStateChange((_e, session) => Auth.refreshUI(session));
         }
 
-        async function handleLogout() {
-            await sb.auth.signOut();
-            window.location.reload();
-        }
-
-        bootstrap();
+        window.onload = init;
     </script>
 </body>
 </html>
