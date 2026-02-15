@@ -5,12 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Velo Cloud | Umeå Engineering</title>
 
-    <!-- Supabase JS v2 via Skypack (full package path) -->
+    <!--
+        Load supabase-js v2.95+ (supports sb_publishable_ keys)
+        Skypack often pins older versions — use esm.sh or unpkg with an explicit version.
+        We try esm.sh first (latest), then unpkg as fallback.
+    -->
     <script type="module">
-        import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
-        window.supabaseCreateClient = createClient;
-        window.__supabaseReady = true;
-        console.log("Velo Engine: Supabase loaded via Skypack");
+        let loaded = false;
+
+        // Strategy 1: esm.sh (always resolves latest)
+        try {
+            const mod = await import('https://esm.sh/@supabase/supabase-js@2');
+            window.supabaseCreateClient = mod.createClient;
+            loaded = true;
+            console.log("Velo Engine: Loaded via esm.sh");
+        } catch (e) {
+            console.warn("esm.sh blocked, trying unpkg...", e);
+        }
+
+        // Strategy 2: unpkg UMD bundle
+        if (!loaded) {
+            try {
+                const mod = await import('https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js');
+                window.supabaseCreateClient = mod.createClient;
+                loaded = true;
+                console.log("Velo Engine: Loaded via unpkg");
+            } catch (e) {
+                console.warn("unpkg also blocked.", e);
+            }
+        }
+
+        // Strategy 3: Skypack (last resort — may serve older version)
+        if (!loaded) {
+            try {
+                const mod = await import('https://cdn.skypack.dev/@supabase/supabase-js@2');
+                window.supabaseCreateClient = mod.createClient;
+                loaded = true;
+                console.log("Velo Engine: Loaded via Skypack (may be outdated)");
+            } catch (e) {
+                console.warn("Skypack also blocked.", e);
+            }
+        }
+
+        window.__supabaseReady = loaded;
     </script>
 
     <style>
@@ -22,9 +59,20 @@
         .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; text-align: center; }
         .view { display: none; }
         .view.active { display: block; }
-        .auth-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); max-width: 400px; margin: 0 auto; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid var(--border); color: #fff; border-radius: 12px; box-sizing: border-box; }
-        .btn { padding: 15px 30px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; background: var(--primary); color: #000; width: 100%; margin-top: 10px; }
+        .auth-card {
+            background: var(--card); padding: 40px; border-radius: 24px;
+            border: 1px solid var(--border); max-width: 400px; margin: 0 auto;
+        }
+        input {
+            width: 100%; padding: 15px; margin: 10px 0; background: #000;
+            border: 1px solid var(--border); color: #fff; border-radius: 12px;
+            box-sizing: border-box; font-size: 1rem;
+        }
+        .btn {
+            padding: 15px 30px; border-radius: 12px; border: none; font-weight: 800;
+            cursor: pointer; background: var(--primary); color: #000; width: 100%;
+            margin-top: 10px; font-size: 1rem;
+        }
         .btn:hover { opacity: 0.9; }
         #status { font-size: 0.7rem; padding: 10px; color: var(--primary); text-align: center; }
     </style>
@@ -54,17 +102,16 @@
 
         <!-- DASHBOARD -->
         <div id="view-dashboard" class="view">
-            <h2>Welcome, <span id="user-name">Developer</span></h2>
+            <h2>Welcome, Developer</h2>
             <div id="user-mail" style="color:var(--primary); margin-bottom: 20px;"></div>
             <button onclick="handleLogout()" class="btn" style="background:#222; color:#fff;">Sign Out</button>
         </div>
     </div>
 
     <script>
-        // ⚠️ REPLACE these with your real Supabase credentials
-        // Dashboard → Settings → API
-        const SB_URL  = 'https://lqkpxervwakucksrnoss.supabase.co';
-        const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.REPLACE_WITH_YOUR_REAL_ANON_KEY';
+        // ✅ Your real Supabase credentials (sb_publishable_ format is correct)
+        const SB_URL = 'https://lqkpxervwakucksrnoss.supabase.co';
+        const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8';
 
         let sb = null;
 
@@ -76,15 +123,15 @@
         async function bootstrap() {
             const status = document.getElementById('status');
 
-            // Wait for the module to register the factory on `window`
+            // Wait for the <script type="module"> to finish loading
             let attempts = 0;
-            while (!window.__supabaseReady && attempts < 30) {
+            while (!window.__supabaseReady && attempts < 40) {
                 await new Promise(r => setTimeout(r, 100));
                 attempts++;
             }
 
             if (!window.supabaseCreateClient) {
-                status.innerText = "CRITICAL: CDN BLOCKED — DISABLE AD-BLOCKER & REFRESH.";
+                status.innerText = "CRITICAL: ALL CDNs BLOCKED — DISABLE AD-BLOCKER & REFRESH.";
                 status.style.color = "#ff4b4b";
                 return;
             }
@@ -108,7 +155,7 @@
             const email = document.getElementById('email').value.trim();
             const pass  = document.getElementById('pass').value;
 
-            if (!sb)    return alert("System not ready yet. Please wait.");
+            if (!sb)            return alert("System not ready yet. Please wait.");
             if (!email || !pass) return alert("Please enter both email and password.");
 
             const { error } = await sb.auth.signInWithPassword({ email, password: pass });
