@@ -517,7 +517,7 @@
             </div>
         </div>
 
-        <!-- ── ADMIN ── -->
+         <!-- ── ADMIN ── -->
         <div id="panel-admin" class="tab-content">
             <div class="form-section">
                 <h3>➕ Add New User</h3>
@@ -536,19 +536,21 @@
                             <option value="admin">Admin</option>
                         </select></div>
                 </div>
-                <button onclick="adminCreateUser()" class="btn btn-primary" style="margin-top:8px;">Create User</button>
+                <div style="margin-top:12px; display:flex; align-items:center; gap:10px;">
+                    <label class="toggle">
+                        <input type="checkbox" id="admin-new-chat">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span style="font-size:0.8rem; color:var(--text-dim);">Enable Chat Access</span>
+                </div>
+                <button onclick="adminCreateUser()" class="btn btn-primary" style="margin-top:12px;">Create User</button>
                 <div id="admin-create-status" style="font-size:0.75rem; margin-top:8px; color:var(--primary);"></div>
             </div>
 
-            <div class="section-title">🔐 User Management</div>
-            <div style="overflow-x:auto;">
-                <table class="user-table">
-                    <thead>
-                        <tr><th>User</th><th>Role</th><th>Chat</th><th>Joined</th><th>Status</th></tr>
-                    </thead>
-                    <tbody id="admin-user-list"></tbody>
-                </table>
-            </div>
+            <div class="divider"></div>
+            <div class="section-title">📋 All Tickets</div>
+            <div id="admin-ticket-list"></div>
+        </div>
 
             <div class="divider"></div>
             <div class="section-title">📋 All Tickets</div>
