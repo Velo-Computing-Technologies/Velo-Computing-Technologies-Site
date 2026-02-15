@@ -2,194 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#6366f1">
-    <title>Velo | Mobile Hub</title>
-    <!-- PWA Manifest Link -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velo Systems | All-in-One Engineering Suite</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com" rel="stylesheet">
-    <script src="https://unpkg.com"></script>
-    <style>
-        :root {
-            --bg: #050505; --card: #121212; --primary: #6366f1;
-            --text: #ffffff; --text-dim: #a1a1aa; --border: rgba(255,255,255,0.1);
-        }
-        /* Light Theme Variable Overrides */
-        [data-theme="light"] {
-            --bg: #f8fafc; --card: #ffffff; --text: #0f172a;
-            --text-dim: #64748b; --border: rgba(0,0,0,0.1);
-        }
-
-        body {
-            margin: 0; background: var(--bg); color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh; overflow: hidden; display: flex; flex-direction: column;
-            transition: background 0.3s ease;
-        }
-
-        header {
-            padding: 20px; display: flex; justify-content: space-between;
-            align-items: center; background: var(--bg); border-bottom: 1px solid var(--border);
-        }
-
-        .logo { font-weight: 800; font-size: 1.1rem; }
-        .logo span { color: var(--primary); }
-
-        #app-shell { flex: 1; overflow-y: auto; padding: 20px; }
-
-        /* Navigation Bar */
-        nav {
-            height: 75px; background: var(--card);
-            border-top: 1px solid var(--border);
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; color: var(--text-dim); text-decoration: none;
-            font-size: 0.7rem; gap: 4px; transition: 0.2s;
-        }
-        .nav-item.active { color: var(--primary); }
-
-        /* Settings UI Components */
-        .settings-group { margin-bottom: 24px; }
-        .settings-label { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; display: block; }
-        .settings-item {
-            background: var(--card); border: 1px solid var(--border);
-            padding: 16px; border-radius: 16px; display: flex;
-            justify-content: space-between; align-items: center; margin-bottom: 8px;
-        }
-
-        /* Toggle Switch Styling */
-        .switch {
-            position: relative; display: inline-block; width: 44px; height: 24px;
-        }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #334155; transition: .4s; border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px;
-            left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(20px); }
-
-        /* App Cards */
-        .app-card {
-            background: var(--card); border: 1px solid var(--border);
-            padding: 20px; border-radius: 24px; margin-bottom: 16px;
-        }
-        .status { font-size: 0.65rem; padding: 4px 8px; border-radius: 6px; background: rgba(99,102,241,0.1); color: var(--primary); font-weight: 700; }
-    </style>
 </head>
 <body>
+    <div id="app-container">
+        <!-- SIDEBAR NAVIGATION -->
+        <nav id="sidebar">
+            <div class="logo">VELO<span>.</span></div>
+            <ul class="nav-links">
+                <li class="active" onclick="showApp('timer')">System Timer</li>
+                <li onclick="showApp('egg')">Kitchen Sync</li>
+                <li onclick="showApp('compass')">Nav Compass</li>
+                <li onclick="showApp('todo')">Task Stack</li>
+            </ul>
+            <div class="founder">FND DEC 2025<br>H. SHASTRI</div>
+        </nav>
 
-<header>
-    <div class="logo">VELO<span>.TECH</span></div>
-    <div id="connection-status" style="font-size: 0.7rem; color: var(--text-dim);">Production v1.0</div>
-</header>
-
-<main id="app-shell"></main>
-
-<nav>
-    <a href="#" class="nav-item active" onclick="App.navigate('home', event)">
-        <i data-lucide="layout-grid"></i><span>Apps</span>
-    </a>
-    <a href="#" class="nav-item" onclick="App.navigate('updates', event)">
-        <i data-lucide="bell"></i><span>Updates</span>
-    </a>
-    <a href="#" class="nav-item" onclick="App.navigate('settings', event)">
-        <i data-lucide="settings"></i><span>Settings</span>
-    </a>
-</nav>
-
-<script>
-    const App = {
-        views: {
-            home: `
-                <div class="view">
-                    <h2 style="margin-bottom: 20px;">Your Ecosystem</h2>
-                    <div class="app-card">
-                        <div style="display:flex; justify-content:space-between; align-items:start;">
-                            <div><h3>Velo Core</h3><p style="color:var(--text-dim);font-size:0.85rem;">Main System Control</p></div>
-                            <span class="status">PLANNED</span>
-                        </div>
-                    </div>
-                    <div class="app-card">
-                        <div style="display:flex; justify-content:space-between; align-items:start;">
-                            <div><h3>Velo Shield</h3><p style="color:var(--text-dim);font-size:0.85rem;">Encryption & VPN</p></div>
-                            <span class="status">BETA</span>
-                        </div>
-                    </div>
+        <!-- MAIN VIEWPORT -->
+        <main id="viewport">
+            <!-- APPS LOAD HERE DYNAMICALLY -->
+            <section id="timer" class="app-view active">
+                <h2>System Timer</h2>
+                <div class="display" id="stopwatch">00:00:00</div>
+                <div class="controls">
+                    <button class="btn" onclick="startSw()">Start</button>
+                    <button class="btn" onclick="stopSw()">Stop</button>
+                    <button class="btn" onclick="resetSw()">Reset</button>
                 </div>
-            `,
-            updates: `
-                <div class="view">
-                    <h2>Live Updates</h2>
-                    <div class="app-card"><strong>Feb 15, 2026</strong><br><small>Production site deployed to GitHub Pages.</small></div>
+            </section>
+
+            <section id="egg" class="app-view">
+                <h2>Kitchen Sync</h2>
+                <div class="display" id="eggClock">05:00</div>
+                <div class="controls">
+                    <button class="btn" onclick="startEgg(300)">5m</button>
+                    <button class="btn" onclick="startEgg(600)">10m</button>
+                    <button class="btn" onclick="resetEgg()">Clear</button>
                 </div>
-            `,
-            settings: `
-                <div class="view">
-                    <h2>Settings</h2>
-                    <div class="settings-group">
-                        <span class="settings-label">APPEARANCE</span>
-                        <div class="settings-item">
-                            <span>Dark Mode</span>
-                            <label class="switch">
-                                <input type="checkbox" id="theme-toggle" onchange="App.toggleTheme()" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="settings-group">
-                        <span class="settings-label">ABOUT</span>
-                        <div class="settings-item"><span>Version</span><span style="color:var(--text-dim)">1.0.4-Stable</span></div>
-                        <div class="settings-item"><span>Region</span><span style="color:var(--text-dim)">Umeå, SE</span></div>
-                    </div>
+            </section>
+
+            <section id="compass" class="app-view">
+                <h2>Navigational Compass</h2>
+                <div class="compass-disc">
+                    <div id="needle"></div>
+                    <div class="cardinals"><span>N</span><span>E</span><span>S</span><span>W</span></div>
                 </div>
-            `
-        },
+                <p id="heading">0° NORTH</p>
+                <button class="btn" onclick="calibrateCompass()">Re-Calibrate</button>
+            </section>
 
-        navigate(route, e) {
-            if(e) e.preventDefault();
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            const target = [...document.querySelectorAll('.nav-item')].find(el => el.textContent.toLowerCase().includes(route));
-            if(target) target.classList.add('active');
+            <section id="todo" class="app-view">
+                <h2>Task Stack</h2>
+                <div class="todo-ui">
+                    <input type="text" id="todoIn" placeholder="New System Task...">
+                    <button class="btn" onclick="addTodo()">Push</button>
+                </div>
+                <ul id="todoList"></ul>
+            </section>
+        </main>
+    </div>
 
-            const shell = document.getElementById('app-shell');
-            shell.innerHTML = this.views[route];
-            lucide.createIcons();
-            
-            // Re-sync theme toggle if on settings page
-            if(route === 'settings') {
-                document.getElementById('theme-toggle').checked = document.documentElement.getAttribute('data-theme') !== 'light';
-            }
-        },
-
-        toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const target = current === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', target);
-            localStorage.setItem('velo-theme', target);
+    <script src="app.js"></script>
+    <script>
+        // PWA Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
         }
-    };
-
-    // Initialization
-    window.onload = () => {
-        const savedTheme = localStorage.getItem('velo-theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        App.navigate('home');
-    };
-
-    // Register Service Worker for PWA Production
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW failed', err));
-        });
-    }
-</script>
+    </script>
 </body>
 </html>
