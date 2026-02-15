@@ -552,10 +552,6 @@
             <div id="admin-ticket-list"></div>
         </div>
 
-            <div class="divider"></div>
-            <div class="section-title">📋 All Tickets</div>
-            <div id="admin-ticket-list"></div>
-        </div>
 
     </div>
 </div>
@@ -585,7 +581,7 @@
         if (name === 'community')  loadPosts();
         if (name === 'chat')       initChat();
         if (name === 'profile')    loadProfileTab();
-        if (name === 'admin')      { loadAdminUsers(); loadAdminTickets(); }
+        if (name === 'admin')      loadAdminTickets();
     }
 
     // ─── Bootstrap ───────────────────────────────
@@ -882,30 +878,54 @@
         else loadAdminUsers();
     }
 
-    // ─── Admin: Create User ──────────────────────
     async function adminCreateUser() {
         if (!isAdmin()) return;
-        const name = document.getElementById('admin-new-name').value.trim();
-        const email = document.getElementById('admin-new-email').value.trim();
-        const pass = document.getElementById('admin-new-pass').value;
-        const role = document.getElementById('admin-new-role').value;
+        const name    = document.getElementById('admin-new-name').value.trim();
+        const email   = document.getElementById('admin-new-email').value.trim();
+        const pass    = document.getElementById('admin-new-pass').value;
+        const role    = document.getElementById('admin-new-role').value;
+        const chat    = document.getElementById('admin-new-chat').checked;
         const statusEl = document.getElementById('admin-create-status');
-        if (!name||!email||!pass) return alert("All fields are required.");
-        if (pass.length<6) return alert("Password must be at least 6 characters.");
-        statusEl.innerText="Creating user..."; statusEl.style.color="var(--text-dim)";
-        const { data, error } = await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
-        if (error) { statusEl.innerText="Error: "+error.message; statusEl.style.color="var(--danger)"; return; }
-        if (role==='admin' && data?.user?.id) {
-            await new Promise(r=>setTimeout(r,500));
-            await sb.from('profiles').update({role:'admin'}).eq('id',data.user.id);
+
+        if (!name || !email || !pass) return alert("All fields are required.");
+        if (pass.length < 6) return alert("Password must be at least 6 characters.");
+
+        statusEl.innerText = "Creating user...";
+        statusEl.style.color = "var(--text-dim)";
+
+        const { data, error } = await sb.auth.signUp({
+            email, password: pass,
+            options: { data: { full_name: name } }
+        });
+
+        if (error) {
+            statusEl.innerText = "Error: " + error.message;
+            statusEl.style.color = "var(--danger)";
+            return;
         }
-        statusEl.innerText=`✓ User "${name}" created as ${role}`;
-        statusEl.style.color="var(--primary)";
-        document.getElementById('admin-new-name').value='';
-        document.getElementById('admin-new-email').value='';
-        document.getElementById('admin-new-pass').value='';
-        document.getElementById('admin-new-role').value='client';
-        setTimeout(()=>{ statusEl.innerText+=" — Restoring session..."; window.location.reload(); },1500);
+
+        if (data?.user?.id) {
+            await new Promise(r => setTimeout(r, 500));
+            await sb.from('profiles').update({
+                role: role,
+                chat_enabled: chat
+            }).eq('id', data.user.id);
+        }
+
+        const chatLabel = chat ? ' + chat enabled' : '';
+        statusEl.innerText = `✓ "${name}" created as ${role}${chatLabel}`;
+        statusEl.style.color = "var(--primary)";
+
+        document.getElementById('admin-new-name').value = '';
+        document.getElementById('admin-new-email').value = '';
+        document.getElementById('admin-new-pass').value = '';
+        document.getElementById('admin-new-role').value = 'client';
+        document.getElementById('admin-new-chat').checked = false;
+
+        setTimeout(() => {
+            statusEl.innerText += " — Restoring session...";
+            window.location.reload();
+        }, 1500);
     }
 
     // ─── Admin: Tickets ──────────────────────────
