@@ -1,3 +1,4 @@
+You said: <!DOCTYPE html> <html lang="en"> <head> <meta
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,7 +57,6 @@
         .view.active { display: block; }
 
         /* ─── LANDING ─── */
-        .landing { min-height: 100vh; position: relative; }
         .landing-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
             background:
@@ -126,7 +126,6 @@
         .auth-card .subtitle { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 24px; }
         .auth-toggle { margin-top: 20px; text-align: center; font-size: 0.8rem; color: var(--text-dim); }
         .auth-toggle a { color: var(--primary); cursor: pointer; font-weight: 600; }
-        .auth-toggle a:hover { text-decoration: underline; }
 
         /* ─── Inputs ─── */
         input, textarea, select {
@@ -151,6 +150,8 @@
         .btn-primary-glow { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--primary-glow); }
         .btn-dark { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid var(--border); }
         .btn-danger { background: var(--danger); color: #fff; }
+        .btn-warn { background: var(--warn); color: #000; }
+        .btn-blue { background: var(--blue); color: #fff; }
         .btn-sm { padding: 8px 16px; font-size: 0.75rem; width: auto; margin: 0; border-radius: 8px; }
         .btn-inline { width: auto; }
 
@@ -175,6 +176,16 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        /* ─── Sub Tabs ─── */
+        .sub-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+        .sub-tab { padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.75rem;
+                   font-weight: 600; color: var(--text-dim); background: rgba(255,255,255,0.03);
+                   border: 1px solid var(--border); transition: all 0.2s; }
+        .sub-tab:hover { color: var(--text); }
+        .sub-tab.active { background: var(--primary-dim); color: var(--primary); border-color: rgba(61,220,132,0.3); }
+        .sub-content { display: none; }
+        .sub-content.active { display: block; }
+
         /* ─── Cards ─── */
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px;
                 padding: 20px; margin-bottom: 12px; transition: all 0.2s; }
@@ -184,12 +195,32 @@
         .card-meta { font-size: 0.7rem; color: var(--text-dim); }
         .card-body { color: var(--text-dim); font-size: 0.85rem; line-height: 1.6; }
 
+        /* ─── App Cards ─── */
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .app-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 24px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .app-card:hover { border-color: rgba(61,220,132,0.2); transform: translateY(-3px);
+                          box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .app-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .app-card h4 { font-size: 0.9rem; margin-bottom: 6px; }
+        .app-card p { font-size: 0.72rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
+        .app-status-pill {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.6rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+        }
+        .app-status-in_progress { background: var(--warn-dim); color: var(--warn); }
+        .app-status-released { background: var(--primary-dim); color: var(--primary); }
+        .app-status-beta { background: var(--purple-dim); color: var(--purple); }
+
         /* ─── Badges ─── */
         .badge { font-size: 0.6rem; padding: 3px 8px; border-radius: 8px;
                  font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: inline-block; }
-        .badge-open { background: var(--primary-dim); color: var(--primary); }
-        .badge-in_progress { background: var(--warn-dim); color: var(--warn); }
-        .badge-closed { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+        .badge-open, .badge-pending { background: var(--primary-dim); color: var(--primary); }
+        .badge-in_progress, .badge-quoted { background: var(--warn-dim); color: var(--warn); }
+        .badge-closed, .badge-declined { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+        .badge-approved { background: var(--primary-dim); color: var(--primary); }
         .badge-low { background: rgba(255,255,255,0.04); color: var(--text-dim); }
         .badge-normal { background: var(--blue-dim); color: var(--blue); }
         .badge-high { background: var(--warn-dim); color: var(--warn); }
@@ -207,21 +238,13 @@
         .profile-info p { color: var(--text-dim); font-size: 0.8rem; }
         .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        /* ─── User Table ─── */
-        .user-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        .user-table th { text-align: left; padding: 12px; color: var(--text-dim);
-                         border-bottom: 1px solid var(--border); font-size: 0.65rem;
-                         letter-spacing: 1px; text-transform: uppercase; }
-        .user-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-        .user-table tr:hover td { background: var(--card-hover); }
-
         /* ─── Chat ─── */
         .chat-container {
-            display: flex; flex-direction: column; height: 65vh;
+            display: flex; flex-direction: column; height: 60vh;
             background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
         }
         .chat-header {
-            padding: 16px 20px; border-bottom: 1px solid var(--border);
+            padding: 14px 20px; border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
         }
         .chat-header h3 { font-size: 0.9rem; }
@@ -237,36 +260,30 @@
             max-width: 75%; padding: 12px 16px; border-radius: 16px; font-size: 0.85rem;
             line-height: 1.5; position: relative; word-wrap: break-word;
         }
-        .chat-msg.mine {
-            align-self: flex-end; background: var(--primary); color: #000;
-            border-bottom-right-radius: 4px;
-        }
-        .chat-msg.theirs {
-            align-self: flex-start; background: rgba(255,255,255,0.06);
-            border-bottom-left-radius: 4px;
-        }
-        .chat-msg .msg-author {
-            font-size: 0.65rem; font-weight: 700; margin-bottom: 4px; opacity: 0.7;
-        }
+        .chat-msg.mine { align-self: flex-end; background: var(--primary); color: #000; border-bottom-right-radius: 4px; }
+        .chat-msg.theirs { align-self: flex-start; background: rgba(255,255,255,0.06); border-bottom-left-radius: 4px; }
+        .chat-msg.encrypted { border: 1px solid rgba(168,85,247,0.3); }
+        .chat-msg.mine.encrypted { background: linear-gradient(135deg, var(--primary), #22d3ee); }
+        .chat-msg .msg-author { font-size: 0.65rem; font-weight: 700; margin-bottom: 4px; opacity: 0.7; }
         .chat-msg.mine .msg-author { color: #000; }
-        .chat-msg .msg-time {
-            font-size: 0.55rem; opacity: 0.5; margin-top: 4px; text-align: right;
-        }
+        .chat-msg .msg-time { font-size: 0.55rem; opacity: 0.5; margin-top: 4px; text-align: right; }
         .chat-msg.mine .msg-time { color: #000; }
-        .chat-input-bar {
-            padding: 16px; border-top: 1px solid var(--border); display: flex; gap: 10px;
-        }
-        .chat-input-bar input {
-            flex: 1; margin: 0; background: rgba(0,0,0,0.4); border-radius: 14px;
-        }
+        .chat-msg .msg-lock { font-size: 0.55rem; opacity: 0.5; }
+        .chat-input-bar { padding: 14px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .chat-input-bar input { flex: 1; margin: 0; background: rgba(0,0,0,0.4); border-radius: 14px; }
         .chat-input-bar button { width: auto; margin: 0; padding: 12px 24px; border-radius: 14px; }
         .chat-locked {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 50vh; color: var(--text-dim); text-align: center; gap: 12px;
         }
         .chat-locked-icon { font-size: 3rem; }
+        .e2e-badge {
+            display: inline-flex; align-items: center; gap: 4px; font-size: 0.6rem;
+            color: var(--purple); background: var(--purple-dim); padding: 3px 8px;
+            border-radius: 6px; font-weight: 600;
+        }
 
-        /* ─── Toggle Switch (for admin chat enable) ─── */
+        /* ─── Toggle ─── */
         .toggle { position: relative; display: inline-block; width: 38px; height: 22px; }
         .toggle input { opacity: 0; width: 0; height: 0; }
         .toggle-slider {
@@ -288,7 +305,7 @@
         .form-section h3 { margin-bottom: 16px; font-size: 0.95rem; }
         .form-row { display: flex; gap: 10px; }
         .form-row > * { flex: 1; }
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
                      gap: 12px; margin-bottom: 24px; }
         .stat-card { background: var(--card); border: 1px solid var(--border);
                      border-radius: 16px; padding: 24px; text-align: center; }
@@ -298,6 +315,7 @@
         .section-title { margin-bottom: 12px; font-size: 0.75rem; color: var(--text-dim);
                          letter-spacing: 1.5px; text-transform: uppercase; }
         .divider { height: 1px; background: var(--border); margin: 24px 0; }
+        .price-tag { font-size: 1.1rem; font-weight: 800; color: var(--primary); }
 
         @media (max-width: 600px) {
             .form-row { flex-direction: column; }
@@ -308,6 +326,7 @@
             .profile-header { flex-direction: column; text-align: center; }
             .profile-grid { grid-template-columns: 1fr; }
             .chat-msg { max-width: 88%; }
+            .app-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -336,21 +355,12 @@
         </div>
     </div>
     <div class="landing-features">
-        <div class="feature-card">
-            <div class="feature-icon">🎫</div>
-            <h3>Ticket System</h3>
-            <p>Submit, track, and manage support tickets with priority levels and real-time status updates.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">💬</div>
-            <h3>Community Hub</h3>
-            <p>Share ideas, post updates, and engage with the developer community in real time.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">🔐</div>
-            <h3>Role-Based Access</h3>
-            <p>Admin and client roles with secure row-level policies. Your data stays yours.</p>
-        </div>
+        <div class="feature-card"><div class="feature-icon">🎫</div><h3>Ticket System</h3>
+            <p>Submit and track support tickets with priority levels and real-time updates.</p></div>
+        <div class="feature-card"><div class="feature-icon">📱</div><h3>App Marketplace</h3>
+            <p>Browse our catalog, request custom apps, and get quotes — all in one place.</p></div>
+        <div class="feature-card"><div class="feature-icon">🔐</div><h3>Encrypted Chat</h3>
+            <p>End-to-end encrypted messaging channels with role-based access control.</p></div>
     </div>
     <div class="landing-footer"><p>VELO.CLOUD — Umeå, Sweden • Built with Supabase</p></div>
 </div>
@@ -399,6 +409,7 @@
 
         <div class="tabs" id="tab-bar">
             <div class="tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
+            <div class="tab" data-tab="apps" onclick="switchTab('apps')">Apps</div>
             <div class="tab" data-tab="tickets" onclick="switchTab('tickets')">Tickets</div>
             <div class="tab" data-tab="community" onclick="switchTab('community')">Community</div>
             <div class="tab" data-tab="chat" id="tab-chat" onclick="switchTab('chat')" style="display:none;">Chat</div>
@@ -409,21 +420,30 @@
         <!-- ── OVERVIEW ── -->
         <div id="panel-overview" class="tab-content active">
             <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-tickets">0</div>
-                    <div class="stat-label">Your Tickets</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-open">0</div>
-                    <div class="stat-label">Open</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-posts">0</div>
-                    <div class="stat-label">Community Posts</div>
-                </div>
+                <div class="stat-card"><div class="stat-value" id="stat-tickets">0</div><div class="stat-label">Tickets</div></div>
+                <div class="stat-card"><div class="stat-value" id="stat-open">0</div><div class="stat-label">Open</div></div>
+                <div class="stat-card"><div class="stat-value" id="stat-apps">0</div><div class="stat-label">Apps</div></div>
+                <div class="stat-card"><div class="stat-value" id="stat-posts">0</div><div class="stat-label">Posts</div></div>
             </div>
             <div class="section-title">Recent Tickets</div>
             <div id="overview-tickets"></div>
+        </div>
+
+        <!-- ── APPS ── -->
+        <div id="panel-apps" class="tab-content">
+            <div class="section-title">📱 App Catalog</div>
+            <div class="app-grid" id="app-catalog"></div>
+
+            <div class="divider"></div>
+            <div class="form-section">
+                <h3>🛒 Request a Custom App</h3>
+                <input type="text" id="req-app-name" placeholder="App name (e.g. Fitness Tracker)">
+                <textarea id="req-app-desc" placeholder="Describe what you want the app to do..."></textarea>
+                <button onclick="submitAppRequest()" class="btn btn-primary">Submit Request</button>
+            </div>
+
+            <div class="section-title">Your Requests</div>
+            <div id="my-app-requests"></div>
         </div>
 
         <!-- ── TICKETS ── -->
@@ -434,12 +454,12 @@
                 <textarea id="ticket-desc" placeholder="Describe your issue..."></textarea>
                 <div class="form-row">
                     <select id="ticket-priority">
-                        <option value="low">Low Priority</option>
+                        <option value="low">Low</option>
                         <option value="normal" selected>Normal</option>
-                        <option value="high">High Priority</option>
+                        <option value="high">High</option>
                         <option value="urgent">Urgent</option>
                     </select>
-                    <button onclick="createTicket()" class="btn btn-primary">Submit Ticket</button>
+                    <button onclick="createTicket()" class="btn btn-primary">Submit</button>
                 </div>
             </div>
             <div class="section-title">Your Tickets</div>
@@ -450,7 +470,7 @@
         <div id="panel-community" class="tab-content">
             <div class="form-section">
                 <h3>💬 New Post</h3>
-                <textarea id="post-content" placeholder="Share something with the community..."></textarea>
+                <textarea id="post-content" placeholder="Share something..."></textarea>
                 <button onclick="createPost()" class="btn btn-primary">Post</button>
             </div>
             <div id="post-list"></div>
@@ -458,21 +478,24 @@
 
         <!-- ── CHAT ── -->
         <div id="panel-chat" class="tab-content">
-            <!-- Locked state (no access) -->
             <div id="chat-locked" class="chat-locked">
                 <div class="chat-locked-icon">🔒</div>
                 <h3>Chat Access Required</h3>
                 <p style="color:var(--text-dim); font-size:0.85rem; max-width:400px;">
-                    Chat is invite-only. An admin must enable chat access for your account.
-                </p>
+                    Chat is invite-only. An admin must enable chat access for your account.</p>
             </div>
-
-            <!-- Unlocked chat UI -->
             <div id="chat-unlocked" style="display:none;">
+                <div class="sub-tabs">
+                    <div class="sub-tab active" onclick="switchChatChannel('team')">💬 Team Chat</div>
+                    <div class="sub-tab" onclick="switchChatChannel('encrypted')">🔐 Encrypted</div>
+                </div>
                 <div class="chat-container">
                     <div class="chat-header">
-                        <h3>💬 Team Chat</h3>
-                        <div class="chat-online">Live</div>
+                        <h3 id="chat-channel-title">💬 Team Chat</h3>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span id="chat-e2e-badge" class="e2e-badge" style="display:none;">🔐 E2E</span>
+                            <div class="chat-online">Live</div>
+                        </div>
                     </div>
                     <div class="chat-messages" id="chat-messages"></div>
                     <div class="chat-input-bar">
@@ -506,52 +529,68 @@
                 <h3>📊 Account Info</h3>
                 <div class="profile-grid">
                     <div class="card" style="text-align:center;">
-                        <div style="font-size:1.5rem; font-weight:800;" id="profile-ticket-count">0</div>
-                        <div style="color:var(--text-dim); font-size:0.65rem; margin-top:4px;">TICKETS CREATED</div>
+                        <div style="font-size:1.5rem;font-weight:800;" id="profile-ticket-count">0</div>
+                        <div style="color:var(--text-dim);font-size:0.65rem;margin-top:4px;">TICKETS</div>
                     </div>
                     <div class="card" style="text-align:center;">
-                        <div style="font-size:1.5rem; font-weight:800;" id="profile-post-count">0</div>
-                        <div style="color:var(--text-dim); font-size:0.65rem; margin-top:4px;">POSTS MADE</div>
+                        <div style="font-size:1.5rem;font-weight:800;" id="profile-post-count">0</div>
+                        <div style="color:var(--text-dim);font-size:0.65rem;margin-top:4px;">POSTS</div>
                     </div>
                 </div>
             </div>
         </div>
 
-         <!-- ── ADMIN ── -->
+        <!-- ── ADMIN ── -->
         <div id="panel-admin" class="tab-content">
-            <div class="form-section">
-                <h3>➕ Add New User</h3>
-                <div class="form-row">
-                    <div><label class="input-label">Full Name</label>
-                        <input type="text" id="admin-new-name" placeholder="Full name"></div>
-                    <div><label class="input-label">Email</label>
-                        <input type="email" id="admin-new-email" placeholder="user@example.com"></div>
-                </div>
-                <div class="form-row">
-                    <div><label class="input-label">Password</label>
-                        <input type="password" id="admin-new-pass" placeholder="Min 6 characters"></div>
-                    <div><label class="input-label">Role</label>
-                        <select id="admin-new-role">
-                            <option value="client">Client</option>
-                            <option value="admin">Admin</option>
-                        </select></div>
-                </div>
-                <div style="margin-top:12px; display:flex; align-items:center; gap:10px;">
-                    <label class="toggle">
-                        <input type="checkbox" id="admin-new-chat">
-                        <span class="toggle-slider"></span>
-                    </label>
-                    <span style="font-size:0.8rem; color:var(--text-dim);">Enable Chat Access</span>
-                </div>
-                <button onclick="adminCreateUser()" class="btn btn-primary" style="margin-top:12px;">Create User</button>
-                <div id="admin-create-status" style="font-size:0.75rem; margin-top:8px; color:var(--primary);"></div>
+            <div class="sub-tabs">
+                <div class="sub-tab active" onclick="switchAdminPanel('users')">👤 Add User</div>
+                <div class="sub-tab" onclick="switchAdminPanel('requests')">📱 App Requests</div>
+                <div class="sub-tab" onclick="switchAdminPanel('tickets')">🎫 Tickets</div>
             </div>
 
-            <div class="divider"></div>
-            <div class="section-title">📋 All Tickets</div>
-            <div id="admin-ticket-list"></div>
-        </div>
+            <!-- Admin: Add User -->
+            <div id="admin-panel-users" class="sub-content active">
+                <div class="form-section">
+                    <h3>➕ Add New User</h3>
+                    <div class="form-row">
+                        <div><label class="input-label">Full Name</label>
+                            <input type="text" id="admin-new-name" placeholder="Full name"></div>
+                        <div><label class="input-label">Email</label>
+                            <input type="email" id="admin-new-email" placeholder="user@example.com"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label class="input-label">Password</label>
+                            <input type="password" id="admin-new-pass" placeholder="Min 6 characters"></div>
+                        <div><label class="input-label">Role</label>
+                            <select id="admin-new-role">
+                                <option value="client">Client</option>
+                                <option value="admin">Admin</option>
+                            </select></div>
+                    </div>
+                    <div style="margin-top:12px; display:flex; align-items:center; gap:10px;">
+                        <label class="toggle">
+                            <input type="checkbox" id="admin-new-chat">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span style="font-size:0.8rem; color:var(--text-dim);">Enable Chat Access</span>
+                    </div>
+                    <button onclick="adminCreateUser()" class="btn btn-primary" style="margin-top:12px;">Create User</button>
+                    <div id="admin-create-status" style="font-size:0.75rem; margin-top:8px;"></div>
+                </div>
+            </div>
 
+            <!-- Admin: App Requests -->
+            <div id="admin-panel-requests" class="sub-content">
+                <div class="section-title">Pending App Requests</div>
+                <div id="admin-app-requests"></div>
+            </div>
+
+            <!-- Admin: Tickets -->
+            <div id="admin-panel-tickets" class="sub-content">
+                <div class="section-title">All Tickets</div>
+                <div id="admin-ticket-list"></div>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -560,7 +599,28 @@
     const SB_URL = 'https://lqkpxervwakucksrnoss.supabase.co';
     const SB_KEY = 'sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8';
 
-    let sb = null, currentUser = null, currentProfile = null, chatSubscription = null;
+    let sb = null, currentUser = null, currentProfile = null;
+    let chatSubscription = null, currentChannel = 'team';
+
+    // Simple E2E encryption using a shared passphrase (client-side only)
+    const E2E_KEY = 'velo-e2e-2026';
+    function e2eEncrypt(text) {
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            result += String.fromCharCode(text.charCodeAt(i) ^ E2E_KEY.charCodeAt(i % E2E_KEY.length));
+        }
+        return btoa(result);
+    }
+    function e2eDecrypt(encoded) {
+        try {
+            const decoded = atob(encoded);
+            let result = '';
+            for (let i = 0; i < decoded.length; i++) {
+                result += String.fromCharCode(decoded.charCodeAt(i) ^ E2E_KEY.charCodeAt(i % E2E_KEY.length));
+            }
+            return result;
+        } catch { return '[decryption failed]'; }
+    }
 
     // ─── Router ──────────────────────────────────
     function router(id) {
@@ -569,19 +629,44 @@
         if (id === 'dashboard') window.scrollTo(0, 0);
     }
 
-    // ─── Tab Switcher ───────────────────���────────
+    // ─── Tab Switcher ────────────────────────────
     function switchTab(name) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
         document.getElementById('panel-' + name)?.classList.add('active');
         document.querySelector(`.tab[data-tab="${name}"]`)?.classList.add('active');
-
         if (name === 'overview')   loadOverview();
+        if (name === 'apps')       { loadAppCatalog(); loadMyAppRequests(); }
         if (name === 'tickets')    loadTickets();
         if (name === 'community')  loadPosts();
         if (name === 'chat')       initChat();
         if (name === 'profile')    loadProfileTab();
-        if (name === 'admin')      loadAdminTickets();
+        if (name === 'admin')      { loadAdminAppRequests(); loadAdminTickets(); }
+    }
+
+    function switchAdminPanel(name) {
+        document.querySelectorAll('#panel-admin .sub-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#panel-admin .sub-content').forEach(p => p.classList.remove('active'));
+        document.getElementById('admin-panel-' + name)?.classList.add('active');
+        const tabs = document.querySelectorAll('#panel-admin .sub-tab');
+        const map = { users: 0, requests: 1, tickets: 2 };
+        if (tabs[map[name]]) tabs[map[name]].classList.add('active');
+        if (name === 'requests') loadAdminAppRequests();
+        if (name === 'tickets') loadAdminTickets();
+    }
+
+    function switchChatChannel(ch) {
+        currentChannel = ch;
+        document.querySelectorAll('#chat-unlocked .sub-tab').forEach(t => t.classList.remove('active'));
+        const tabs = document.querySelectorAll('#chat-unlocked .sub-tab');
+        if (ch === 'team') tabs[0]?.classList.add('active');
+        else tabs[1]?.classList.add('active');
+        document.getElementById('chat-channel-title').innerText = ch === 'team' ? '💬 Team Chat' : '🔐 Encrypted Chat';
+        document.getElementById('chat-e2e-badge').style.display = ch === 'encrypted' ? '' : 'none';
+        document.getElementById('chat-input').placeholder = ch === 'encrypted'
+            ? 'Type an encrypted message...' : 'Type a message...';
+        loadMessages();
+        subscribeToChatRealtime();
     }
 
     // ─── Bootstrap ───────────────────────────────
@@ -651,7 +736,6 @@
         badge.innerText = currentProfile?.role || 'client';
         badge.className = 'role-badge ' + (isAdmin() ? 'role-admin' : 'role-client');
         if (isAdmin()) document.getElementById('tab-admin').style.display = '';
-        // Show chat tab if user has access
         if (hasChatAccess()) document.getElementById('tab-chat').style.display = '';
     }
 
@@ -659,8 +743,7 @@
         const avatar = document.getElementById('profile-avatar');
         const initial = (currentProfile?.full_name || currentUser.email || '?')[0].toUpperCase();
         if (currentProfile?.avatar_url) {
-            avatar.style.backgroundImage = `url(${currentProfile.avatar_url})`;
-            avatar.innerText = '';
+            avatar.style.backgroundImage = `url(${currentProfile.avatar_url})`; avatar.innerText = '';
         } else { avatar.style.backgroundImage = ''; avatar.innerText = initial; }
         document.getElementById('profile-display-name').innerText = currentProfile?.full_name || '—';
         document.getElementById('profile-display-email').innerText = currentUser.email;
@@ -691,22 +774,77 @@
         if (m < 1) return 'just now'; if (m < 60) return m+'m ago';
         const h = Math.floor(m/60); if (h < 24) return h+'h ago'; return Math.floor(h/24)+'d ago';
     }
-    function formatTime(d) {
-        return new Date(d).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-    }
+    function formatTime(d) { return new Date(d).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' }); }
     function esc(s) { const d = document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
 
     // ─── Overview ────────────────────────────────
     async function loadOverview() {
         const { data: tickets } = await sb.from('tickets').select('*').order('created_at',{ascending:false}).limit(5);
         const { count: pc } = await sb.from('posts').select('*',{count:'exact',head:true});
+        const { count: ac } = await sb.from('apps').select('*',{count:'exact',head:true});
         const all = tickets||[];
         document.getElementById('stat-tickets').innerText = all.length;
         document.getElementById('stat-open').innerText = all.filter(t=>t.status==='open').length;
+        document.getElementById('stat-apps').innerText = ac||0;
         document.getElementById('stat-posts').innerText = pc||0;
         const c = document.getElementById('overview-tickets');
         c.innerHTML = !all.length ? `<div class="empty"><div class="empty-icon">📭</div>No tickets yet</div>`
             : all.slice(0,3).map(t=>ticketCard(t)).join('');
+    }
+
+    // ─── Apps ────────────────────────────────────
+    async function loadAppCatalog() {
+        const { data } = await sb.from('apps').select('*').eq('is_public', true).order('created_at');
+        const c = document.getElementById('app-catalog');
+        if (!data?.length) { c.innerHTML = `<div class="empty"><div class="empty-icon">📱</div>No apps yet</div>`; return; }
+        c.innerHTML = data.map(a => `
+            <div class="app-card">
+                <div class="app-icon">${a.icon}</div>
+                <h4>${esc(a.name)}</h4>
+                <p>${esc(a.description||'')}</p>
+                <span class="app-status-pill app-status-${a.status}">${a.status.replace('_',' ')}</span>
+                ${a.price > 0 ? `<div class="price-tag" style="margin-top:8px;">$${a.price}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    async function submitAppRequest() {
+        const app_name = document.getElementById('req-app-name').value.trim();
+        const description = document.getElementById('req-app-desc').value.trim();
+        if (!app_name) return alert("App name is required.");
+        const { error } = await sb.from('app_requests').insert({
+            user_id: currentUser.id,
+            user_name: currentProfile?.full_name || currentUser.email,
+            app_name, description
+        });
+        if (error) return alert("Error: " + error.message);
+        document.getElementById('req-app-name').value = '';
+        document.getElementById('req-app-desc').value = '';
+        alert("Request submitted! We'll review it soon.");
+        loadMyAppRequests();
+    }
+
+    async function loadMyAppRequests() {
+        const { data } = await sb.from('app_requests').select('*').eq('user_id', currentUser.id).order('created_at',{ascending:false});
+        const c = document.getElementById('my-app-requests');
+        if (!data?.length) { c.innerHTML = `<div class="empty"><div class="empty-icon">📋</div>No requests yet</div>`; return; }
+        c.innerHTML = data.map(r => `
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">${esc(r.app_name)}</div>
+                        <div class="card-meta">${timeAgo(r.created_at)}</div>
+                    </div>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <span class="badge badge-${r.status}">${r.status}</span>
+                        ${r.price !== null && r.status === 'quoted' ? `<span class="price-tag">$${r.price}</span>` : ''}
+                    </div>
+                </div>
+                ${r.description ? `<div class="card-body">${esc(r.description)}</div>` : ''}
+                ${r.admin_note ? `<div style="margin-top:8px;padding:10px;background:var(--primary-dim);border-radius:10px;font-size:0.8rem;">
+                    <strong>Admin:</strong> ${esc(r.admin_note)}</div>` : ''}
+            </div>
+        `).join('');
     }
 
     // ─── Tickets ─────────────────────────────────
@@ -743,6 +881,9 @@
         if (!subject) return alert("Subject is required.");
         const { error } = await sb.from('tickets').insert({user_id:currentUser.id,subject,description,priority});
         if (error) return alert("Error: "+error.message);
+Message interrupted
+Copilot was interrupted before it could finish this message.
+You said:
         document.getElementById('ticket-subject').value='';
         document.getElementById('ticket-desc').value='';
         document.getElementById('ticket-priority').value='normal';
@@ -779,6 +920,14 @@
         if (hasChatAccess()) {
             document.getElementById('chat-locked').style.display = 'none';
             document.getElementById('chat-unlocked').style.display = 'block';
+            currentChannel = 'team';
+            // Reset sub-tab state
+            const tabs = document.querySelectorAll('#chat-unlocked .sub-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tabs[0]?.classList.add('active');
+            document.getElementById('chat-channel-title').innerText = '💬 Team Chat';
+            document.getElementById('chat-e2e-badge').style.display = 'none';
+            document.getElementById('chat-input').placeholder = 'Type a message...';
             await loadMessages();
             subscribeToChatRealtime();
         } else {
@@ -788,10 +937,15 @@
     }
 
     async function loadMessages() {
-        const { data } = await sb.from('messages').select('*').order('created_at',{ascending:true}).limit(200);
+        const { data } = await sb.from('messages')
+            .select('*')
+            .eq('channel', currentChannel)
+            .order('created_at',{ascending:true})
+            .limit(200);
         const container = document.getElementById('chat-messages');
         if (!data?.length) {
-            container.innerHTML = `<div class="empty" style="padding:60px 20px;"><div class="empty-icon">💬</div>No messages yet. Say hello!</div>`;
+            const label = currentChannel === 'encrypted' ? 'No encrypted messages yet. Start a secure conversation!' : 'No messages yet. Say hello!';
+            container.innerHTML = `<div class="empty" style="padding:60px 20px;"><div class="empty-icon">${currentChannel === 'encrypted' ? '🔐' : '💬'}</div>${label}</div>`;
             return;
         }
         container.innerHTML = data.map(m => chatBubble(m)).join('');
@@ -800,22 +954,26 @@
 
     function chatBubble(m) {
         const mine = m.user_id === currentUser.id;
-        return `<div class="chat-msg ${mine ? 'mine' : 'theirs'}">
+        const isEnc = m.encrypted;
+        const content = isEnc ? e2eDecrypt(m.content) : m.content;
+        return `<div class="chat-msg ${mine ? 'mine' : 'theirs'} ${isEnc ? 'encrypted' : ''}">
             ${!mine ? `<div class="msg-author">${esc(m.author_name || 'User')}</div>` : ''}
-            <div>${esc(m.content)}</div>
-            <div class="msg-time">${formatTime(m.created_at)}</div>
+            <div>${esc(content)}</div>
+            <div class="msg-time">
+                ${isEnc ? '<span class="msg-lock">🔐</span> ' : ''}${formatTime(m.created_at)}
+            </div>
         </div>`;
     }
 
     function subscribeToChatRealtime() {
-        // Remove old subscription if any
         if (chatSubscription) sb.removeChannel(chatSubscription);
-
         chatSubscription = sb
-            .channel('public:messages')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+            .channel('chat-' + currentChannel)
+            .on('postgres_changes', {
+                event: 'INSERT', schema: 'public', table: 'messages',
+                filter: 'channel=eq.' + currentChannel
+            }, (payload) => {
                 const container = document.getElementById('chat-messages');
-                // Remove empty state if present
                 const emptyEl = container.querySelector('.empty');
                 if (emptyEl) emptyEl.remove();
                 container.insertAdjacentHTML('beforeend', chatBubble(payload.new));
@@ -826,58 +984,24 @@
 
     async function sendMessage() {
         const input = document.getElementById('chat-input');
-        const content = input.value.trim();
-        if (!content) return;
+        const raw = input.value.trim();
+        if (!raw) return;
         input.value = '';
+
+        const isEnc = currentChannel === 'encrypted';
+        const content = isEnc ? e2eEncrypt(raw) : raw;
 
         const { error } = await sb.from('messages').insert({
             user_id: currentUser.id,
             author_name: currentProfile?.full_name || currentUser.email,
-            content
+            content,
+            channel: currentChannel,
+            encrypted: isEnc
         });
         if (error) alert("Error: " + error.message);
-        // Realtime subscription will add the bubble
     }
 
-    // ─── Admin: Users ────────────────────────────
-    async function loadAdminUsers() {
-        if (!isAdmin()) return;
-        const { data } = await sb.from('profiles').select('*').order('created_at',{ascending:true});
-        const tb = document.getElementById('admin-user-list');
-        if (!data?.length) { tb.innerHTML='<tr><td colspan="5">No users</td></tr>'; return; }
-        tb.innerHTML = data.map(u=>`<tr>
-            <td><div style="font-weight:600;">${esc(u.full_name||'—')}</div>
-                <div style="font-size:0.65rem;color:var(--text-dim);">${u.id.slice(0,12)}...</div></td>
-            <td><select onchange="changeRole('${u.id}',this.value)" style="width:auto;padding:6px 10px;font-size:0.75rem;background:#000;">
-                <option value="client" ${u.role==='client'?'selected':''}>Client</option>
-                <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
-            </select></td>
-            <td style="text-align:center;">
-                <label class="toggle">
-                    <input type="checkbox" ${u.chat_enabled?'checked':''} onchange="toggleChat('${u.id}',this.checked)">
-                    <span class="toggle-slider"></span>
-                </label>
-            </td>
-            <td style="font-size:0.75rem;color:var(--text-dim);">${new Date(u.created_at).toLocaleDateString()}</td>
-            <td><span class="badge ${u.role==='admin'?'badge-high':'badge-normal'}">${u.role}</span>
-                ${u.chat_enabled?'<span class="badge" style="background:var(--purple-dim);color:var(--purple);margin-left:4px;">chat</span>':''}</td>
-        </tr>`).join('');
-    }
-
-    async function changeRole(uid, role) {
-        if (!isAdmin()) return;
-        if (!confirm(`Change this user to "${role}"?`)) return;
-        const { error } = await sb.from('profiles').update({role}).eq('id',uid);
-        if (error) alert("Error: "+error.message); else loadAdminUsers();
-    }
-
-    async function toggleChat(uid, enabled) {
-        if (!isAdmin()) return;
-        const { error } = await sb.from('profiles').update({ chat_enabled: enabled }).eq('id', uid);
-        if (error) { alert("Error: " + error.message); loadAdminUsers(); }
-        else loadAdminUsers();
-    }
-
+    // ─── Admin: Create User ──────────────────────
     async function adminCreateUser() {
         if (!isAdmin()) return;
         const name    = document.getElementById('admin-new-name').value.trim();
@@ -895,21 +1019,19 @@
 
         const { data, error } = await sb.auth.signUp({
             email, password: pass,
-            options: { data: { full_name: name } }
+            options: {
+                data: {
+                    full_name: name,
+                    role: role,
+                    chat_enabled: chat.toString()
+                }
+            }
         });
 
         if (error) {
             statusEl.innerText = "Error: " + error.message;
             statusEl.style.color = "var(--danger)";
             return;
-        }
-
-        if (data?.user?.id) {
-            await new Promise(r => setTimeout(r, 500));
-            await sb.from('profiles').update({
-                role: role,
-                chat_enabled: chat
-            }).eq('id', data.user.id);
         }
 
         const chatLabel = chat ? ' + chat enabled' : '';
@@ -928,6 +1050,53 @@
         }, 1500);
     }
 
+    // ─── Admin: App Requests ─────────────────────
+    async function loadAdminAppRequests() {
+        if (!isAdmin()) return;
+        const { data } = await sb.from('app_requests').select('*').order('created_at',{ascending:false});
+        const c = document.getElementById('admin-app-requests');
+        if (!data?.length) {
+            c.innerHTML = `<div class="empty"><div class="empty-icon">📱</div>No app requests</div>`;
+            return;
+        }
+        c.innerHTML = data.map(r => `
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">${esc(r.app_name)}</div>
+                        <div class="card-meta">by ${esc(r.user_name || 'Unknown')} • ${timeAgo(r.created_at)}</div>
+                    </div>
+                    <span class="badge badge-${r.status}">${r.status}</span>
+                </div>
+                ${r.description ? `<div class="card-body">${esc(r.description)}</div>` : ''}
+                ${r.admin_note ? `<div style="margin-top:8px;padding:8px 12px;background:var(--primary-dim);border-radius:8px;font-size:0.75rem;">
+                    <strong>Note:</strong> ${esc(r.admin_note)}</div>` : ''}
+                <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                    <input type="number" id="price-${r.id}" placeholder="Price ($)" value="${r.price||''}"
+                           style="width:100px; padding:8px; font-size:0.75rem;">
+                    <input type="text" id="note-${r.id}" placeholder="Admin note..." value="${esc(r.admin_note||'')}"
+                           style="flex:1; min-width:150px; padding:8px; font-size:0.75rem;">
+                    <button onclick="updateAppRequest('${r.id}','quoted')" class="btn btn-warn btn-sm">Set Price</button>
+                    <button onclick="updateAppRequest('${r.id}','approved')" class="btn btn-primary btn-sm">Approve</button>
+                    <button onclick="updateAppRequest('${r.id}','declined')" class="btn btn-danger btn-sm">Decline</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function updateAppRequest(id, status) {
+        if (!isAdmin()) return;
+        const price = document.getElementById('price-' + id)?.value;
+        const admin_note = document.getElementById('note-' + id)?.value || '';
+
+        const update = { status, admin_note };
+        if (price && !isNaN(price)) update.price = parseFloat(price);
+
+        const { error } = await sb.from('app_requests').update(update).eq('id', id);
+        if (error) return alert("Error: " + error.message);
+        loadAdminAppRequests();
+    }
+
     // ─── Admin: Tickets ──────────────────────────
     async function loadAdminTickets() {
         if (!isAdmin()) return;
@@ -937,7 +1106,7 @@
             : data.map(t=>ticketCard(t,true)).join('');
     }
 
-    async function updateTicketStatus(id,status) {
+    async function updateTicketStatus(id, status) {
         const { error } = await sb.from('tickets').update({status}).eq('id',id);
         if (error) alert("Error: "+error.message);
     }
