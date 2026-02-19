@@ -271,7 +271,7 @@ try{
 var r=await sb.from('websites').select('custom_domain,domain_verification_code').eq('id',id);
 if(!r.data||!r.data.length){st.innerHTML='<span style="color:var(--danger)">Not found</span>';return}
 var site=r.data[0];var domain=site.custom_domain;var expected=site.domain_verification_code;
-var dns=await(await fetch('https://dns.google/resolve?name=_velo-verify.'+encodeURIComponent(domain)+'&type=TXT')).json();
+var dns=await(await fetch('https://dns.google/resolve?name=velo-verify.'+encodeURIComponent(domain)+'&type=TXT')).json();
 var verified=false;
 if(dns.Answer){for(var i=0;i<dns.Answer.length;i++){if((dns.Answer[i].data||'').replace(/"/g,'').trim()===expected){verified=true;break}}}
 if(verified){
