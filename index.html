@@ -186,7 +186,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary)}textarea{res
 </div></div>
 
 <!-- DOMAIN MODAL -->
-<div id="domain-modal" class="modal-overlay"><div class="modal-box"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><h3 style="font-size:1rem;font-weight:800">🌍 Custom Domain</h3><button onclick="closeDomainModal()" class="btn btn-dark btn-sm" style="width:auto">✕</button></div><div id="domain-modal-content"></div></div></div>
+<div id="domain-modal" class="modal-overlay" style="display:none"><div class="modal-box"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><h3 style="font-size:1rem;font-weight:800">🌍 Custom Domain</h3><button onclick="closeDomainModal()" class="btn btn-dark btn-sm" style="width:auto">✕</button></div><div id="domain-modal-content"></div></div></div>
 
 <script>
 var SB_URL='https://lqkpxervwakucksrnoss.supabase.co',SB_KEY='sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8',PATREON_URL='https://www.patreon.com/c/VeloComputingTechnologies/membership',BASE_DOMAIN='velocomputing.tech';
@@ -232,8 +232,21 @@ async function deploySiteFromEditor(){if(!editingSiteId)return;await saveSite();
 async function undeploySite(id){if(!confirm('Undeploy?'))return;try{var s=(await sb.auth.getSession()).data.session;await fetch(SB_URL+'/functions/v1/deploy-site/undeploy',{method:'POST',headers:{Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({site_id:id})});loadMySites()}catch(e){alert(e.message)}}
 
 // ═══ CUSTOM DOMAIN ═══
-function openDomainModal(id){domainModalSiteId=id;document.getElementById('domain-modal').classList.add('active');loadDomainModal(id)}
-function closeDomainModal(){document.getElementById('domain-modal').classList.remove('active');domainModalSiteId=null}
+function openDomainModal(id){
+  event.stopPropagation();
+  domainModalSiteId=id;
+  var m=document.getElementById('domain-modal');
+  m.style.display='flex';
+  m.classList.add('active');
+  loadDomainModal(id);
+}
+
+function closeDomainModal(){
+  var m=document.getElementById('domain-modal');
+  m.style.display='none';
+  m.classList.remove('active');
+  domainModalSiteId=null;
+}
 async function loadDomainModal(id){var c=document.getElementById('domain-modal-content');c.innerHTML='Loading...';var r=await sb.from('websites').select('*').eq('id',id).single();if(!r.data){c.innerHTML='Not found';return}var s=r.data;
 if(s.custom_domain&&s.domain_verified){c.innerHTML='<div style="text-align:center;padding:20px 0"><div style="font-size:3rem">\u2705</div><h4 style="margin:12px 0 4px">Verified!</h4><p style="color:var(--text-dim);font-size:.85rem"><strong>'+esc(s.custom_domain)+'</strong> → '+esc(s.title)+'</p></div><div class="dns-record"><div class="dns-label">Live at</div><div class="dns-value">https://'+esc(s.custom_domain)+'</div></div><div class="dns-record"><div class="dns-label">CNAME (keep this)</div><div>Name: <span class="dns-value">@ or www</span></div><div>Target: <span class="dns-value">velo-computing-technologies.github.io</span> <span class="dns-copy" onclick="copyText(\'velo-computing-technologies.github.io\')">\uD83D\uDCCB</span></div></div><div style="color:var(--text-dim);font-size:.72rem;margin:12px 0">The Cloudflare Worker serves your site when visitors go to '+esc(s.custom_domain)+'</div><div style="display:flex;gap:8px;margin-top:16px"><button onclick="removeDomain(\''+s.id+'\')" class="btn btn-danger btn-sm">Disconnect</button><button onclick="closeDomainModal()" class="btn btn-dark btn-sm">Close</button></div>'}
 else if(s.custom_domain&&!s.domain_verified){c.innerHTML='<div style="text-align:center"><div style="font-size:2.5rem">\u23F3</div><h4 style="margin:12px 0 4px">Verify '+esc(s.custom_domain)+'</h4><p style="color:var(--text-dim);font-size:.8rem;margin-bottom:16px">Add these DNS records:</p></div><div class="dns-record"><div class="dns-label">1. TXT Record (verification)</div><div>Type: <strong>TXT</strong></div><div>Name: <span class="dns-value">_velo-verify</span> <span class="dns-copy" onclick="copyText(\'_velo-verify\')">\uD83D\uDCCB</span></div><div>Value: <span class="dns-value">'+esc(s.domain_verification_code)+'</span> <span class="dns-copy" onclick="copyText(\''+esc(s.domain_verification_code)+'\')">\uD83D\uDCCB</span></div></div><div class="dns-record"><div class="dns-label">2. CNAME Record (routing)</div><div>Type: <strong>CNAME</strong></div><div>Name: <span class="dns-value">@ or www</span></div><div>Target: <span class="dns-value">velo-computing-technologies.github.io</span> <span class="dns-copy" onclick="copyText(\'velo-computing-technologies.github.io\')">\uD83D\uDCCB</span></div></div><div style="color:var(--text-dim);font-size:.72rem;margin:12px 0">DNS can take 1-5 minutes. Click verify when ready.</div><div style="display:flex;gap:8px"><button onclick="verifyDomain(\''+s.id+'\')" class="btn btn-primary btn-sm" id="btn-verify">\u2705 Verify</button><button onclick="removeDomain(\''+s.id+'\')" class="btn btn-danger btn-sm">Remove</button><button onclick="closeDomainModal()" class="btn btn-dark btn-sm">Cancel</button></div><div id="verify-status" style="margin-top:12px;font-size:.8rem"></div>'}
@@ -296,7 +309,9 @@ async function updateTicketStatus(id,s){await sb.from('tickets').update({status:
 async function loadAdminReports(){if(!isAdmin())return;var r=await sb.from('reports').select('*').order('created_at',{ascending:false});var c=document.getElementById('admin-reports-list');if(!r.data||!r.data.length){c.innerHTML='<div class="empty">\u2705 None</div>';return}c.innerHTML=r.data.map(function(x){return'<div class="card"><div class="card-header"><div><div class="card-title">'+(x.type==='block'?'\uD83D\uDEAB':'\u26A0\uFE0F')+' '+esc(x.reported_name)+'</div><div class="card-meta">by '+esc(x.reporter_name)+' \u2022 '+timeAgo(x.created_at)+'</div></div><span class="badge badge-'+(x.type==='block'?'urgent':'high')+'">'+x.type+'</span></div>'+(x.reason?'<div class="card-body">'+esc(x.reason)+'</div>':'')+'</div>'}).join('')}
 
 // Click outside modal to close
-document.getElementById('domain-modal').addEventListener('click',function(e){if(e.target===this)closeDomainModal()});
+document.getElementById('domain-modal').addEventListener('click',function(e){
+  if(e.target===document.getElementById('domain-modal'))closeDomainModal();
+});
 
 bootstrap();
 </script>
