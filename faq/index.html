@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #030305;
+  color: #f0f0f5;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.faq-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* Hero */
+.faq-hero {
+  text-align: center;
+  padding: 80px 20px 40px;
+  position: relative;
+}
+
+.faq-hero .glow {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(61,220,132,0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.faq-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.faq-hero .gradient {
+  background: linear-gradient(135deg, #3ddc84, #22d3ee, #3ddc84);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.faq-hero p {
+  color: #6b7280;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Filter Buttons */
+.faq-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 32px;
+  padding: 0 10px;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: #6b7280;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+}
+
+.filter-btn:hover {
+  color: #f0f0f5;
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+}
+
+.filter-btn.active {
+  background: #3ddc84;
+  color: #000;
+  border-color: #3ddc84;
+}
+
+/* FAQ Items */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faq-item {
+  background: #0d0d12;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.3s, opacity 0.3s, transform 0.3s;
+}
+
+.faq-item:hover {
+  border-color: rgba(61,220,132,0.2);
+}
+
+.faq-item.hidden {
+  display: none;
+}
+
+.faq-q {
+  width: 100%;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  color: #f0f0f5;
+  font-size: .95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-family: inherit;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.faq-q:hover {
+  color: #3ddc84;
+}
+
+.faq-icon {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #3ddc84;
+  transition: transform 0.3s;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-item.open .faq-a {
+  max-height: 600px;
+  padding: 0 24px 20px;
+}
+
+.faq-a p {
+  color: #9ca3af;
+  font-size: .88rem;
+  line-height: 1.7;
+}
+
+.faq-a ul {
+  color: #9ca3af;
+  font-size: .85rem;
+  padding-left: 20px;
+  margin-top: 8px;
+  line-height: 1.8;
+}
+
+.faq-a li {
+  margin-bottom: 4px;
+}
+
+.faq-a a {
+  color: #3ddc84;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.faq-a a:hover {
+  text-decoration: underline;
+}
+
+.faq-a code {
+  background: rgba(61,220,132,0.1);
+  color: #3ddc84;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: .82rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.faq-a strong {
+  color: #e0e0e0;
+}
+
+/* Tables */
+.faq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+  margin-top: 8px;
+}
+
+.faq-table th {
+  text-align: left;
+  padding: 10px 12px;
+  color: #6b7280;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.faq-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: #9ca3af;
+}
+
+.faq-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Tier Mini Cards */
+.tier-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.tier-mini {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.tier-mini:hover {
+  border-color: rgba(255,66,77,0.3);
+}
+
+.tier-mini-price {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #f0f0f5;
+  margin-bottom: 2px;
+}
+
+.tier-mini-name {
+  font-size: .8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #e0e0e0;
+}
+
+.tier-mini ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  font-size: .72rem;
+  color: #6b7280;
+  line-height: 1.8;
+}
+
+.tier-mini ul li::before {
+  content: '✓ ';
+  color: #3ddc84;
+  font-weight: 700;
+}
+
+/* CTA */
+.faq-cta {
+  text-align: center;
+  margin-top: 60px;
+  padding: 48px 24px;
+  background: #0d0d12;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 24px;
+}
+
+.faq-cta h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.faq-cta p {
+  color: #6b7280;
+  margin-bottom: 24px;
+  font-size: .9rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: .9rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.cta-btn.primary {
+  background: #3ddc84;
+  color: #000;
+}
+
+.cta-btn.patreon {
+  background: #FF424D;
+  color: #fff;
+}
+
+/* Footer */
+.faq-footer {
+  text-align: center;
+  padding: 40px 20px 20px;
+  color: #4b5563;
+  font-size: .7rem;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .faq-hero { padding: 50px 10px 30px; }
+  .faq-q { padding: 16px 18px; font-size: .88rem; }
+  .faq-item.open .faq-a { padding: 0 18px 16px; }
+  .tier-row { grid-template-columns: 1fr 1fr; }
+  .cta-btn { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+<head>
+<div class="faq-container">
+  <div class="faq-hero">
+    <div class="glow"></div>
+    <h1>Frequently Asked<br><span class="gradient">Questions</span></h1>
+    <p>Everything you need to know about Velo Cloud</p>
+  </div>
+
+  <div class="faq-filters">
+    <button class="filter-btn active" onclick="filterFaq('all')">All</button>
+    <button class="filter-btn" onclick="filterFaq('general')">General</button>
+    <button class="filter-btn" onclick="filterFaq('accounts')">Accounts</button>
+    <button class="filter-btn" onclick="filterFaq('sites')">Websites</button>
+    <button class="filter-btn" onclick="filterFaq('apps')">Apps</button>
+    <button class="filter-btn" onclick="filterFaq('patreon')">Patreon</button>
+    <button class="filter-btn" onclick="filterFaq('billing')">Billing</button>
+  </div>
+
+  <div class="faq-list" id="faq-list">
+
+    <div class="faq-item" data-cat="general">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What is Velo Cloud?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Velo Cloud is a full-stack engineering platform built in Umeå, Sweden. We offer custom app development (Android, iOS, Web), a built-in website builder, encrypted team chat, a ticket system, and community features — all from one dashboard.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="general">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Is Velo Cloud free to use?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes! Creating an account is completely free. You can submit tickets, browse apps, and post in the community. Premium features like the website builder, chat access, and ad-free apps require a Patreon subscription starting at 25 SEK/month.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="general">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Who is behind Velo Cloud?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Velo Computing Technologies is a software engineering company based in Umeå, Sweden. We specialize in native mobile and web development, cloud infrastructure, and developer tools.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="accounts">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I create an account?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Click "Get Started" on the homepage, enter your name, email, and a password (min 6 characters). You'll receive a confirmation email — click the link to activate your account, then sign in.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="accounts">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>I forgot my password. How do I reset it?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Contact us via a support ticket or email at <strong>support@velocomputing.tech</strong>. We'll send you a password reset link. Self-service password reset is coming soon.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="accounts">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I change my name or avatar?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes! Go to Dashboard → Profile tab → Edit Profile. You can update your display name and set an avatar URL (any public image link works).</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="sites">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How does the website builder work?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Go to Dashboard → Sites tab. Create a new site with a title and slug. Open the editor to write HTML, CSS, and JavaScript with a live preview. When ready, make the site public and click Deploy — your site goes live on <strong>velocomputing.tech/sites/your-slug/</strong></p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="sites">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How many websites can I create?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <table class="faq-table">
+          <tr><th>Tier</th><th>Sites</th><th>Public</th><th>Root Path</th></tr>
+          <tr><td>Free</td><td>0</td><td>❌</td><td>❌</td></tr>
+          <tr><td>🌱 Starter (25 SEK)</td><td>1</td><td>❌</td><td>❌</td></tr>
+          <tr><td>⚡ Basic (50 SEK)</td><td>3</td><td>❌</td><td>❌</td></tr>
+          <tr><td>🚀 Advanced (100 SEK)</td><td>10</td><td>✅</td><td>❌</td></tr>
+          <tr><td>💎 Enterprise (200 SEK)</td><td>Unlimited</td><td>✅</td><td>✅</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="sites">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What's the difference between Public and Private sites?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p><strong>Private</strong> sites are saved in your dashboard but not deployed — only you can see and edit them. <strong>Public</strong> sites can be deployed to GitHub Pages and accessed by anyone via their URL. Public sites require Advanced tier or higher.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="sites">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What are root path sites vs regular sites?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p><strong>Regular sites</strong> deploy to <code>velocomputing.tech/sites/your-slug/</code>. <strong>Root path sites</strong> (Enterprise/Admin only) deploy to <code>velocomputing.tech/your-slug/</code> — directly on the main domain.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="apps">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I request a custom app?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Go to Dashboard → Apps → Request. Fill in your app name, description, platform (Web, Android, iOS, or all), and submit. Our team reviews requests and provides a quote. Patreon Starter+ members can submit requests for free.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="apps">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What platforms do you develop for?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>We build native apps for <strong>Android</strong> (Kotlin/Java), <strong>iOS</strong> (Swift), and <strong>Web</strong> (HTML/CSS/JS, React, Next.js). We also offer cross-platform solutions when appropriate.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="apps">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What are the platform fees?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <table class="faq-table">
+          <tr><th>Platform</th><th>Fee</th><th>Type</th></tr>
+          <tr><td>🌐 Web</td><td>Custom quote</td><td>Per project</td></tr>
+          <tr><td>🤖 Google Play</td><td>$25</td><td>One-time</td></tr>
+          <tr><td>🍎 App Store</td><td>$100/year</td><td>Annual</td></tr>
+        </table>
+        <p style="margin-top:12px;font-size:.8rem;color:#888">These are store registration fees charged by Google/Apple, not by Velo Cloud.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="patreon">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I connect my Patreon account?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Sign in to your dashboard, then click the "Connect Patreon" button on the banner or go to the Membership tab. You'll be redirected to Patreon to authorize — once confirmed, your tier and perks activate automatically.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="patreon">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What tiers are available?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <div class="tier-row">
+          <div class="tier-mini">
+            <div class="tier-mini-price">25 SEK</div>
+            <div class="tier-mini-name">🌱 Starter</div>
+            <ul><li>1 website</li><li>Free app requests</li><li>Chat access</li><li>Save progress</li></ul>
+          </div>
+          <div class="tier-mini">
+            <div class="tier-mini-price">50 SEK</div>
+            <div class="tier-mini-name">⚡ Basic</div>
+            <ul><li>3 websites</li><li>All apps ad-free</li><li>Premium on 1 app</li><li>Live editor</li></ul>
+          </div>
+          <div class="tier-mini">
+            <div class="tier-mini-price">100 SEK</div>
+            <div class="tier-mini-name">🚀 Advanced</div>
+            <ul><li>10 websites</li><li>Public sites</li><li>Premium all apps</li><li>OAuth 2.0</li></ul>
+          </div>
+          <div class="tier-mini">
+            <div class="tier-mini-price">200 SEK</div>
+            <div class="tier-mini-name">💎 Enterprise</div>
+            <ul><li>Unlimited sites</li><li>Root domain</li><li>Urgent tickets</li><li>Source code</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="patreon">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I change or cancel my tier?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes. Manage your subscription directly on <a href="https://www.patreon.com/settings/memberships" target="_blank">Patreon</a>. You can upgrade, downgrade, or cancel anytime. Changes reflect in your dashboard after reconnecting or on your next login.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="billing">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What payment methods are accepted?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>All payments go through Patreon, which accepts credit/debit cards and PayPal. Velo Cloud does not process payments directly.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="billing">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Are prices in SEK or USD?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Patreon tier prices are listed in <strong>SEK</strong> (Swedish Krona). Patreon may convert to your local currency at checkout. App store fees ($25 Play, $100/yr Apple) are in USD as set by Google and Apple.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="general">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I contact support?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Three ways:</p>
+        <ul>
+          <li><strong>Tickets</strong> — Dashboard → Tickets → submit a ticket</li>
+          <li><strong>Chat</strong> — Dashboard → Chat (requires Starter+ or admin access)</li>
+          <li><strong>Email</strong> — support@velocomputing.tech</li>
+        </ul>
+        <p style="margin-top:8px">Enterprise members get priority support with urgent ticket access.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" data-cat="general">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Is my data secure?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes. We use Supabase (built on PostgreSQL) with Row Level Security. All connections are HTTPS encrypted. Private DM messages use end-to-end encryption. We never sell or share your data.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="faq-cta">
+    <h2>Still have questions?</h2>
+    <p>We're here to help.</p>
+    <div class="cta-buttons">
+      <a href="https://velocomputing.tech" class="cta-btn primary">Go to Dashboard →</a>
+      <a href="https://www.patreon.com/c/VeloComputingTechnologies/membership" target="_blank" class="cta-btn patreon">Join Patreon</a>
+    </div>
+  </div>
+
+  <footer class="faq-footer">
+    <p>VELO.CLOUD — Umeå, Sweden • © 2026 Velo Computing Technologies</p>
+  </footer>
+</div>
+</body>
+</html>
+<script>
+function toggleFaq(btn) {
+  var item = btn.parentElement;
+  var wasOpen = item.classList.contains('open');
+  
+  // Close all others
+  document.querySelectorAll('.faq-item.open').forEach(function(el) {
+    el.classList.remove('open');
+  });
+  
+  // Toggle clicked
+  if (!wasOpen) {
+    item.classList.add('open');
+  }
+}
+
+function filterFaq(cat) {
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  // Filter items
+  document.querySelectorAll('.faq-item').forEach(function(item) {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+      item.classList.remove('open');
+    }
+  });
+}
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.faq-item.open').forEach(function(el) {
+      el.classList.remove('open');
+    });
+  }
+});
+
+console.log('Velo Cloud FAQ loaded');
+</script>
+</body>
+</html>
