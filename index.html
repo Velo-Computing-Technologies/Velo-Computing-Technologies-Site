@@ -1,341 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Velo Cloud | Umeå Engineering</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script type="module">
-let loaded=false;
-try{const mod=await import('https://esm.sh/@supabase/supabase-js@2');window.supabaseCreateClient=mod.createClient;loaded=true}catch(e){}
-if(!loaded)try{const mod=await import('https://unpkg.com/@supabase/supabase-js@2/dist/module/index.js');window.supabaseCreateClient=mod.createClient;loaded=true}catch(e){}
-if(!loaded)try{const mod=await import('https://cdn.skypack.dev/@supabase/supabase-js@2');window.supabaseCreateClient=mod.createClient;loaded=true}catch(e){}
-window.__supabaseReady=loaded;
-</script>
-<style>
-:root{--bg:#030305;--card:#0d0d12;--card-hover:#14141c;--primary:#3ddc84;--primary-glow:rgba(61,220,132,0.25);--primary-dim:rgba(61,220,132,0.12);--danger:#ff4b4b;--danger-dim:rgba(255,75,75,0.15);--warn:#f59e0b;--warn-dim:rgba(245,158,11,0.15);--blue:#3b82f6;--blue-dim:rgba(59,130,246,0.15);--purple:#a855f7;--purple-dim:rgba(168,85,247,0.15);--patreon:#FF424D;--patreon-dim:rgba(255,66,77,0.15);--text:#f0f0f5;--text-dim:#6b7280;--border:rgba(255,255,255,0.06);--glass:rgba(13,13,18,0.7)}
-*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden}
-#status{font-size:.6rem;padding:6px;color:var(--primary);text-align:center;letter-spacing:3px;text-transform:uppercase;background:rgba(61,220,132,0.03);border-bottom:1px solid var(--border)}
-.container{max-width:960px;margin:0 auto;padding:30px 20px}.view{display:none}.view.active{display:block}
-.landing-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(61,220,132,0.08) 0%,transparent 60%),radial-gradient(ellipse 40% 50% at 80% 50%,rgba(59,130,246,0.05) 0%,transparent 50%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
-.grid-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px}
-.landing-nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:24px 40px;max-width:1200px;margin:0 auto}
-.landing-nav .logo{font-size:1.3rem;font-weight:900;letter-spacing:-0.5px}.landing-nav .logo span{color:var(--primary)}.landing-nav .nav-links{display:flex;gap:8px}
-.landing-hero{position:relative;z-index:2;text-align:center;padding:120px 20px 60px;max-width:800px;margin:0 auto}
-.landing-hero .pill{display:inline-block;padding:6px 16px;border-radius:50px;background:var(--primary-dim);color:var(--primary);font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;border:1px solid rgba(61,220,132,0.2)}
-.landing-hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:20px}
-.landing-hero h1 .gradient-text{background:linear-gradient(135deg,var(--primary),#22d3ee,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.landing-hero p{color:var(--text-dim);font-size:1.1rem;line-height:1.7;max-width:550px;margin:0 auto 40px}
-.hero-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.landing-features{position:relative;z-index:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:900px;margin:60px auto 0;padding:0 20px}
-.feature-card{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:28px;backdrop-filter:blur(10px);transition:border-color 0.3s,transform 0.2s}
-.feature-card:hover{border-color:rgba(61,220,132,0.2);transform:translateY(-2px)}
-.feature-icon{font-size:1.8rem;margin-bottom:14px}.feature-card h3{font-size:.95rem;margin-bottom:8px;font-weight:700}.feature-card p{font-size:.8rem;color:var(--text-dim);line-height:1.6}
-.landing-footer{position:relative;z-index:2;text-align:center;padding:80px 20px 40px;color:var(--text-dim);font-size:.7rem}
-.auth-card{background:var(--card);padding:40px;border-radius:24px;border:1px solid var(--border);max-width:420px;margin:60px auto;position:relative;z-index:2}
-.auth-card h2{margin-bottom:4px;font-size:1.4rem}.auth-card .subtitle{color:var(--text-dim);font-size:.8rem;margin-bottom:24px}
-.auth-toggle{margin-top:20px;text-align:center;font-size:.8rem;color:var(--text-dim)}.auth-toggle a{color:var(--primary);cursor:pointer;font-weight:600}
-input,textarea,select{width:100%;padding:14px 16px;margin:6px 0;background:rgba(0,0,0,0.5);border:1px solid var(--border);color:#fff;border-radius:12px;font-size:.9rem;font-family:inherit;outline:none;transition:border 0.2s}
-input:focus,textarea:focus,select:focus{border-color:var(--primary)}textarea{resize:vertical;min-height:80px}select{cursor:pointer}select option{background:#111}
-.input-label{font-size:.7rem;color:var(--text-dim);margin:10px 0 2px;text-transform:uppercase;letter-spacing:1px;display:block}
-.btn{padding:14px 28px;border-radius:12px;border:none;font-weight:700;cursor:pointer;font-size:.9rem;width:100%;margin-top:8px;transition:all 0.2s;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
-.btn:hover{opacity:0.9;transform:translateY(-1px)}.btn:active{transform:scale(0.98)}
-.btn-primary{background:var(--primary);color:#000}.btn-primary-glow{background:var(--primary);color:#000;box-shadow:0 0 30px var(--primary-glow)}
-.btn-dark{background:rgba(255,255,255,0.06);color:#fff;border:1px solid var(--border)}.btn-danger{background:var(--danger);color:#fff}.btn-warn{background:var(--warn);color:#000}.btn-blue{background:var(--blue);color:#fff}
-.btn-patreon{background:var(--patreon);color:#fff}.btn-purple{background:var(--purple);color:#fff}
-.btn-sm{padding:8px 16px;font-size:.75rem;width:auto;margin:0;border-radius:8px}.btn-inline{width:auto}
-.btn:disabled{opacity:0.3;cursor:not-allowed;transform:none}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 0;margin-bottom:24px;border-bottom:1px solid var(--border)}
-.topbar-left h1{font-size:1.3rem;font-weight:900}.topbar-left h1 span{color:var(--primary)}.topbar-right{display:flex;align-items:center;gap:12px}
-.role-badge{font-size:.6rem;padding:4px 10px;border-radius:20px;font-weight:700;letter-spacing:1px;text-transform:uppercase}.role-admin{background:var(--warn-dim);color:var(--warn)}.role-client{background:var(--blue-dim);color:var(--blue)}.role-patron{background:var(--patreon-dim);color:var(--patreon)}
-.tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--card);padding:4px;border-radius:14px;border:1px solid var(--border);overflow-x:auto}
-.tab{flex:1;padding:12px;text-align:center;border-radius:10px;cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text-dim);transition:all 0.2s;white-space:nowrap}
-.tab:hover{color:var(--text)}.tab.active{background:var(--primary);color:#000}.tab-content{display:none}.tab-content.active{display:block}
-.sub-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.sub-tab{padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.75rem;font-weight:600;color:var(--text-dim);background:rgba(255,255,255,0.03);border:1px solid var(--border);transition:all 0.2s}
-.sub-tab:hover{color:var(--text)}.sub-tab.active{background:var(--primary-dim);color:var(--primary);border-color:rgba(61,220,132,0.3)}.sub-content{display:none}.sub-content.active{display:block}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;transition:all 0.2s}
-.card:hover{background:var(--card-hover);border-color:rgba(255,255,255,0.1)}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:12px}.card-title{font-weight:700;font-size:.95rem}.card-meta{font-size:.7rem;color:var(--text-dim)}.card-body{color:var(--text-dim);font-size:.85rem;line-height:1.6}
-.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-.app-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
-.app-card:hover{border-color:rgba(61,220,132,0.2);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
-.app-icon{font-size:2.5rem;margin-bottom:12px}.app-card h4{font-size:.9rem;margin-bottom:6px}.app-card p{font-size:.72rem;color:var(--text-dim);line-height:1.5;margin-bottom:12px}
-.app-status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.6rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
-.app-status-in_progress{background:var(--warn-dim);color:var(--warn)}.app-status-released{background:var(--primary-dim);color:var(--primary)}.app-status-beta{background:var(--purple-dim);color:var(--purple)}
-.badge{font-size:.6rem;padding:3px 8px;border-radius:8px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;display:inline-block}
-.badge-open,.badge-pending{background:var(--primary-dim);color:var(--primary)}.badge-in_progress,.badge-quoted{background:var(--warn-dim);color:var(--warn)}
-.badge-closed,.badge-declined{background:rgba(255,255,255,0.06);color:var(--text-dim)}.badge-approved{background:var(--primary-dim);color:var(--primary)}
-.badge-low{background:rgba(255,255,255,0.04);color:var(--text-dim)}.badge-normal{background:var(--blue-dim);color:var(--blue)}.badge-high{background:var(--warn-dim);color:var(--warn)}.badge-urgent{background:var(--danger-dim);color:var(--danger)}
-.badge-live{background:var(--purple-dim);color:var(--purple)}
-.domain-badge{font-size:.55rem;padding:2px 8px;border-radius:6px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;display:inline-block}
-.domain-badge-verified{background:var(--primary-dim);color:var(--primary)}.domain-badge-pending{background:var(--warn-dim);color:var(--warn)}
-.dns-record{background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;padding:14px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.75rem;line-height:1.8;color:#e0e0e0}
-.dns-record .dns-label{color:var(--text-dim);font-size:.65rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-family:'Inter',sans-serif}
-.dns-record .dns-value{color:var(--primary);font-weight:700;word-break:break-all}
-.dns-copy{cursor:pointer;color:var(--blue);font-size:.7rem;font-weight:600;margin-left:8px}.dns-copy:hover{text-decoration:underline}
-.profile-header{display:flex;align-items:center;gap:20px;margin-bottom:30px}
-.profile-avatar{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--primary),#22d3ee);color:#000;flex-shrink:0;background-size:cover;background-position:center}
-.profile-info h2{font-size:1.2rem}.profile-info p{color:var(--text-dim);font-size:.8rem}.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.chat-container{display:flex;flex-direction:column;height:55vh;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
-.chat-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.chat-header h3{font-size:.9rem}
-.chat-online{font-size:.65rem;color:var(--primary);display:flex;align-items:center;gap:6px}
-.chat-online::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block}
-.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:8px}
-.chat-messages::-webkit-scrollbar{width:4px}.chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.chat-msg{max-width:75%;padding:12px 16px;border-radius:16px;font-size:.85rem;line-height:1.5;position:relative;word-wrap:break-word}
-.chat-msg.mine{align-self:flex-end;background:var(--primary);color:#000;border-bottom-right-radius:4px}
-.chat-msg.theirs{align-self:flex-start;background:rgba(255,255,255,0.06);border-bottom-left-radius:4px}
-.chat-msg.encrypted{border:1px solid rgba(168,85,247,0.3)}.chat-msg.mine.encrypted{background:linear-gradient(135deg,var(--primary),#22d3ee)}
-.chat-msg .msg-author{font-size:.65rem;font-weight:700;margin-bottom:4px;opacity:0.7}.chat-msg.mine .msg-author{color:#000}
-.chat-msg .msg-time{font-size:.55rem;opacity:0.5;margin-top:4px;text-align:right}.chat-msg.mine .msg-time{color:#000}
-.chat-input-bar{padding:14px;border-top:1px solid var(--border);display:flex;gap:10px}
-.chat-input-bar input{flex:1;margin:0;background:rgba(0,0,0,0.4);border-radius:14px}.chat-input-bar button{width:auto;margin:0;padding:12px 24px;border-radius:14px}
-.chat-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;height:50vh;color:var(--text-dim);text-align:center;gap:12px}.chat-locked-icon{font-size:3rem}
-.e2e-badge{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;color:var(--purple);background:var(--purple-dim);padding:3px 8px;border-radius:6px;font-weight:600}
-.user-list{display:flex;flex-direction:column;gap:8px;max-height:240px;overflow-y:auto;margin-bottom:16px}
-.user-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s}
-.user-item:hover{background:rgba(255,255,255,0.06);border-color:rgba(61,220,132,0.2)}.user-item.active{background:var(--primary-dim);border-color:var(--primary)}
-.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#22d3ee);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;color:#000;flex-shrink:0}
-.user-name{flex:1;font-size:.85rem;font-weight:600}
-.chat-actions{display:flex;gap:6px;margin-top:10px}
-.toggle{position:relative;display:inline-block;width:38px;height:22px}.toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#333;transition:0.3s;border-radius:22px}
-.toggle-slider:before{content:"";position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;transition:0.3s;border-radius:50%}
-.toggle input:checked+.toggle-slider{background:var(--primary)}.toggle input:checked+.toggle-slider:before{transform:translateX(16px)}
-.empty{text-align:center;padding:40px;color:var(--text-dim)}.empty-icon{font-size:2rem;margin-bottom:10px}
-.form-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px}.form-section h3{margin-bottom:16px;font-size:.95rem}
-.form-row{display:flex;gap:10px}.form-row>*{flex:1}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center}
-.stat-value{font-size:2rem;font-weight:800}.stat-label{color:var(--text-dim);font-size:.65rem;margin-top:4px;letter-spacing:1px;text-transform:uppercase}
-.section-title{margin-bottom:12px;font-size:.75rem;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase}
-.pricing-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:12px}
-.pricing-table th{text-align:left;padding:12px;color:var(--text-dim);border-bottom:1px solid var(--border);font-size:.65rem;letter-spacing:1px;text-transform:uppercase}
-.pricing-table td{padding:12px;border-bottom:1px solid var(--border)}.pricing-table tr:hover td{background:var(--card-hover)}
-.pricing-highlight{color:var(--primary);font-weight:700}
-.home-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--card);border-top:1px solid var(--border);padding:10px 20px;display:flex;justify-content:center;gap:10px;backdrop-filter:blur(20px)}
-.tier-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:16px}
-.tier-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;transition:all 0.3s;position:relative}
-.tier-card:hover{border-color:rgba(255,66,77,0.3);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
-.tier-card.featured{border-color:rgba(255,66,77,0.3);box-shadow:0 0 40px rgba(255,66,77,0.08)}
-.tier-card .tier-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--patreon);color:#fff;padding:3px 12px;border-radius:20px;font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.tier-price{font-size:1.8rem;font-weight:900;margin:12px 0 4px}.tier-price span{font-size:.75rem;font-weight:400;color:var(--text-dim)}
-.tier-name{font-size:.95rem;font-weight:700;margin-bottom:12px}
-.tier-features{list-style:none;text-align:left;font-size:.75rem;color:var(--text-dim);line-height:2;padding:0}
-.tier-features li::before{content:'\2713  ';color:var(--primary);font-weight:700}
-.patreon-banner{background:linear-gradient(135deg,rgba(255,66,77,0.1),rgba(255,66,77,0.03));border:1px solid rgba(255,66,77,0.2);border-radius:16px;padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.patreon-banner-icon{font-size:2rem}.patreon-banner-text{flex:1;min-width:200px}.patreon-banner-text h4{font-size:.9rem;margin-bottom:4px}.patreon-banner-text p{font-size:.75rem;color:var(--text-dim)}
-.editor-container{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:16px;overflow:hidden;height:60vh}
-.editor-panes{display:flex;flex-direction:column;overflow:hidden}
-.editor-tabs{display:flex;background:rgba(0,0,0,0.4);border-bottom:1px solid var(--border)}
-.editor-tab{padding:10px 16px;font-size:.75rem;font-weight:600;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
-.editor-tab:hover{color:var(--text)}.editor-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
-.editor-area{flex:1;overflow:hidden;position:relative}.editor-area textarea{width:100%;height:100%;background:#0a0a0e;color:#e0e0e0;border:none;border-radius:0;padding:16px;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.6;resize:none;margin:0;outline:none;tab-size:2;position:absolute;top:0;left:0}
-.preview-frame{background:#fff;border:none;width:100%;height:100%}
-.site-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;transition:all 0.2s}.site-card:hover{border-color:rgba(61,220,132,0.2)}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:200;align-items:center;justify-content:center;padding:20px;display:none}
-.modal-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto}
-@media(max-width:768px){.editor-container{grid-template-columns:1fr;height:auto}.editor-panes{height:40vh}.preview-frame{height:40vh}.tabs{flex-wrap:wrap}}
-@media(max-width:600px){.form-row{flex-direction:column}.topbar{flex-direction:column;gap:10px;text-align:center}.topbar-right{justify-content:center;flex-wrap:wrap}.landing-hero h1{letter-spacing:-1px}.landing-nav{padding:16px 20px}.profile-header{flex-direction:column;text-align:center}.profile-grid{grid-template-columns:1fr}.chat-msg{max-width:88%}.app-grid{grid-template-columns:1fr 1fr}.tier-grid{grid-template-columns:1fr 1fr}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krytonum | Velo Computing Technologies</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #05070a;
+            --card-bg: #0d1117;
+            --accent-color: #00d2ff;
+            --text-color: #e6edf3;
+            --text-dim: #8b949e;
+            --border: #30363d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo-container img {
+            max-width: 320px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(0, 210, 255, 0.3));
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -3px;
+            margin: 0;
+            background: linear-gradient(180deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slogan {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin-top: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .content {
+            max-width: 700px;
+            margin: 40px auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .main-project {
+            border-top: 1px solid var(--border);
+            padding-top: 40px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        .status-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 8px 20px;
+            display: inline-block;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
 </head>
 <body>
-<div id="status">INITIALIZING SYSTEM...</div>
-<div id="home-bar" class="home-bar" style="display:none"><button onclick="router('landing')" class="btn btn-dark btn-sm btn-inline">🏠</button><button onclick="router('dashboard')" class="btn btn-primary btn-sm btn-inline">📊 Dashboard</button><button onclick="handleLogout()" class="btn btn-danger btn-sm btn-inline">Sign Out</button></div>
 
-<div id="view-landing" class="view active"><div class="landing-bg"></div><div class="grid-overlay"></div>
-<nav class="landing-nav"><div class="logo">VELO<span>.CLOUD</span></div><div class="nav-links" id="landing-nav-links"><button onclick="router('login')" class="btn btn-dark btn-sm btn-inline">Sign In</button><button onclick="router('signup')" class="btn btn-primary btn-sm btn-inline">Get Started</button></div></nav>
-<div class="landing-hero"><div class="pill">⚡ Umeå Engineering Node</div><h1>Build faster.<br><span class="gradient-text">Ship smarter.</span></h1><p>Native Android, iOS & Web engineering platform with website builder, encrypted chat, custom domains & more.</p><div class="hero-buttons"><button onclick="router('signup')" class="btn btn-primary-glow btn-inline" style="width:auto;padding:16px 40px" id="hero-cta">Start Free →</button><button onclick="router('login')" class="btn btn-dark btn-inline" style="width:auto;padding:16px 40px" id="hero-login">Client Login</button></div></div>
-<div class="landing-features"><div class="feature-card"><div class="feature-icon">🎫</div><h3>Ticket System</h3><p>Submit and track support tickets with priority levels.</p></div><div class="feature-card"><div class="feature-icon">📱</div><h3>App Development</h3><p>Web, Android & iOS. Request custom apps instantly.</p></div><div class="feature-card"><div class="feature-icon">🌐</div><h3>Website Builder</h3><p>Create, deploy & connect custom domains. Live preview.</p></div><div class="feature-card"><div class="feature-icon">🔐</div><h3>Encrypted Chat</h3><p>Private E2E encrypted messaging with controls.</p></div></div>
-<div class="landing-footer" style="padding-bottom:80px"><p>VELO.CLOUD — Umeå, Sweden</p></div></div>
+<header>
+    <div class="logo-container">
+        <!-- Se till att filnamnet matchar din logotyp -->
+        <img src="20260418_1701_Image Generation_simple_compose_01kpghr8rtfj6vcr1b3h88tn3k.png" alt="Krytonum Logo">
+    </div>
+    <h1>Krytonum</h1>
+    <div class="slogan">The Core Standard</div>
+</header>
 
-<div id="view-login" class="view"><div class="landing-bg"></div><div class="auth-card"><h2>Welcome back</h2><p class="subtitle">Sign in to your Velo Cloud portal</p><input type="email" id="login-email" placeholder="Email address"><input type="password" id="login-pass" placeholder="Password"><button onclick="handleLogin()" class="btn btn-primary" style="margin-top:16px">Sign In</button><div class="auth-toggle">No account? <a onclick="router('signup')">Create one</a></div><p onclick="router('landing')" style="margin-top:12px;cursor:pointer;font-size:.75rem;color:var(--text-dim);text-align:center">← Back</p></div></div>
+<div class="content">
+    <div class="main-project">
+        <p>
+            High-performance operating system architecture engineered for stability, 
+            technical integrity, and bare-metal efficiency.
+        </p>
+        <div class="status-box">System Status: Active Development</div>
+    </div>
+</div>
 
-<div id="view-signup" class="view"><div class="landing-bg"></div><div class="auth-card"><h2>Create account</h2><p class="subtitle">Join Velo Cloud — it's free</p><input type="text" id="signup-name" placeholder="Full name"><input type="email" id="signup-email" placeholder="Email address"><input type="password" id="signup-pass" placeholder="Password (min 6)"><button onclick="handleSignup()" class="btn btn-primary" style="margin-top:16px">Create Account</button><div class="auth-toggle">Have an account? <a onclick="router('login')">Sign in</a></div><p onclick="router('landing')" style="margin-top:12px;cursor:pointer;font-size:.75rem;color:var(--text-dim);text-align:center">← Back</p></div></div>
+<footer>
+  © 2026 Velo Computing Technologies. All rights reserved.
+</footer>
 
-<div id="view-dashboard" class="view"><div class="container" style="padding-bottom:80px">
-<div class="topbar"><div class="topbar-left"><h1>VELO<span>.CLOUD</span></h1></div><div class="topbar-right"><span id="dash-email" style="font-size:.8rem;color:var(--text-dim)"></span><span id="dash-role-badge" class="role-badge"></span><span id="dash-patron-badge" class="role-badge role-patron" style="display:none"></span><button onclick="router('landing')" class="btn btn-dark btn-sm">🏠</button><button onclick="handleLogout()" class="btn btn-danger btn-sm">Sign Out</button></div></div>
-<div id="patreon-banner" class="patreon-banner"><div class="patreon-banner-icon">🎁</div><div class="patreon-banner-text"><h4>Unlock Premium with Patreon</h4><p>Website builder, chat, ad-free apps & more.</p></div><button onclick="connectPatreon()" class="btn btn-patreon btn-sm btn-inline">🔗 Connect Patreon</button></div>
-<div class="tabs"><div class="tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div><div class="tab" data-tab="apps" onclick="switchTab('apps')">Apps</div><div class="tab" data-tab="websites" onclick="switchTab('websites')">🌐 Sites</div><div class="tab" data-tab="tickets" onclick="switchTab('tickets')">Tickets</div><div class="tab" data-tab="community" onclick="switchTab('community')">Community</div><div class="tab" data-tab="chat" id="tab-chat" onclick="switchTab('chat')" style="display:none">Chat</div><div class="tab" data-tab="membership" onclick="switchTab('membership')">Membership</div><div class="tab" data-tab="profile" onclick="switchTab('profile')">Profile</div><div class="tab" data-tab="admin" id="tab-admin" onclick="switchTab('admin')" style="display:none">Admin</div></div>
-
-<div id="panel-overview" class="tab-content active"><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="stat-tickets">0</div><div class="stat-label">Tickets</div></div><div class="stat-card"><div class="stat-value" id="stat-open">0</div><div class="stat-label">Open</div></div><div class="stat-card"><div class="stat-value" id="stat-apps">0</div><div class="stat-label">Apps</div></div><div class="stat-card"><div class="stat-value" id="stat-sites">0</div><div class="stat-label">Sites</div></div></div><div class="section-title">Recent Tickets</div><div id="overview-tickets"></div></div>
-
-<div id="panel-apps" class="tab-content"><div class="sub-tabs"><div class="sub-tab active" onclick="switchAppPanel('catalog')">📱 Catalog</div><div class="sub-tab" onclick="switchAppPanel('request')">🛒 Request</div><div class="sub-tab" onclick="switchAppPanel('pricing')">💰 Pricing</div></div><div id="app-panel-catalog" class="sub-content active"><div class="app-grid" id="app-catalog"></div></div><div id="app-panel-request" class="sub-content"><div class="form-section"><h3>🛒 Request App</h3><input type="text" id="req-app-name" placeholder="App name"><textarea id="req-app-desc" placeholder="Describe..."></textarea><select id="req-app-platform"><option value="web">🌐 Web</option><option value="android">🤖 Android</option><option value="ios">🍎 iOS</option><option value="all">All</option></select><button onclick="submitAppRequest()" class="btn btn-primary">Submit</button></div><div id="my-app-requests"></div></div><div id="app-panel-pricing" class="sub-content"><div class="form-section"><h3>💰 Fees</h3><table class="pricing-table"><thead><tr><th>Platform</th><th>Fee</th></tr></thead><tbody><tr><td>🌐 Web</td><td class="pricing-highlight">Custom</td></tr><tr><td>🤖 Play</td><td class="pricing-highlight">$25</td></tr><tr><td>🍎 App Store</td><td class="pricing-highlight">$100/yr</td></tr></tbody></table></div></div></div>
-
-<div id="panel-websites" class="tab-content"><div class="sub-tabs"><div class="sub-tab active" onclick="switchSitePanel('my-sites')">🌐 My Sites</div><div class="sub-tab" onclick="switchSitePanel('editor')">✏️ Editor</div></div>
-<div id="site-panel-my-sites" class="sub-content active"><div class="form-section"><h3>➕ Create Website</h3><div id="site-limit-info" style="font-size:.75rem;color:var(--text-dim);margin-bottom:12px"></div><div class="form-row"><div><label class="input-label">Title</label><input type="text" id="new-site-title" placeholder="My Site"></div><div><label class="input-label">Slug</label><input type="text" id="new-site-slug" placeholder="my-site" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,'');updateSlugPreview()"><div style="font-size:.65rem;color:var(--text-dim);margin-top:2px" id="slug-preview">velocomputing.tech/sites/slug/</div></div></div><div id="domain-type-section" style="display:none;margin-top:8px"><label class="input-label">Type</label><select id="new-site-domain-type" onchange="updateSlugPreview()"><option value="subdomain">Path: /sites/slug/</option><option value="main" id="opt-main-domain">Root: /slug/</option></select></div><div style="margin-top:12px;display:flex;align-items:center;gap:10px"><label class="toggle"><input type="checkbox" id="new-site-public"><span class="toggle-slider"></span></label><span style="font-size:.8rem;color:var(--text-dim)">Public</span><span id="public-gate-label" style="font-size:.65rem;color:var(--patreon);display:none">(Advanced+)</span></div><button onclick="createWebsite()" class="btn btn-primary" id="btn-create-site" style="margin-top:12px">Create</button></div><div class="section-title">Your Websites</div><div id="my-sites-list"></div></div>
-<div id="site-panel-editor" class="sub-content"><div id="editor-no-site" class="empty"><div class="empty-icon">✏️</div>Select a site from "My Sites"</div><div id="editor-wrapper" style="display:none"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><div><h3 id="editor-site-title" style="font-size:1rem;font-weight:700"></h3><div id="editor-site-url" style="font-size:.7rem;color:var(--text-dim)"></div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button onclick="saveSite()" class="btn btn-primary btn-sm">💾 Save</button><button onclick="previewSite()" class="btn btn-blue btn-sm">👁 Preview</button><button onclick="deploySiteFromEditor()" class="btn btn-purple btn-sm" id="btn-editor-deploy">🚀 Deploy</button><button onclick="deleteSite()" class="btn btn-danger btn-sm">🗑</button></div></div><div class="editor-container"><div class="editor-panes"><div class="editor-tabs"><div class="editor-tab active" onclick="switchEditorTab('html')">HTML</div><div class="editor-tab" onclick="switchEditorTab('css')">CSS</div><div class="editor-tab" onclick="switchEditorTab('js')">JS</div></div><div class="editor-area"><textarea id="editor-html" spellcheck="false"></textarea><textarea id="editor-css" style="display:none" spellcheck="false"></textarea><textarea id="editor-js" style="display:none" spellcheck="false"></textarea></div></div><iframe id="preview-frame" class="preview-frame" sandbox="allow-scripts"></iframe></div></div></div></div>
-
-<div id="panel-tickets" class="tab-content"><div class="form-section"><h3>📝 New Ticket</h3><input type="text" id="ticket-subject" placeholder="Subject"><textarea id="ticket-desc" placeholder="Describe..."></textarea><div class="form-row"><select id="ticket-priority"><option value="low">Low</option><option value="normal" selected>Normal</option><option value="high">High</option><option value="urgent" id="opt-urgent" disabled>Urgent (Enterprise)</option></select><button onclick="createTicket()" class="btn btn-primary">Submit</button></div></div><div id="ticket-list"></div></div>
-
-<div id="panel-community" class="tab-content"><div class="form-section"><h3>💬 Post</h3><textarea id="post-content" placeholder="Share..."></textarea><button onclick="createPost()" class="btn btn-primary">Post</button></div><div id="post-list"></div></div>
-
-<div id="panel-chat" class="tab-content"><div id="chat-locked" class="chat-locked"><div class="chat-locked-icon">🔒</div><h3>Chat Locked</h3><p style="color:var(--text-dim);font-size:.85rem">Starter+ or admin access required.</p></div><div id="chat-unlocked" style="display:none"><div class="sub-tabs"><div class="sub-tab active" onclick="switchChatChannel('team')">💬 Team</div><div class="sub-tab" onclick="switchChatChannel('dm')">🔐 DM</div></div><div id="chat-dm-selector" style="display:none;margin-bottom:16px"><div class="user-list" id="dm-user-list"></div></div><div class="chat-container"><div class="chat-header"><h3 id="chat-channel-title">💬 Team Chat</h3><div style="display:flex;align-items:center;gap:10px"><span id="chat-e2e-badge" class="e2e-badge" style="display:none">🔐 E2E</span><div class="chat-online">Live</div></div></div><div class="chat-messages" id="chat-messages"></div><div class="chat-input-bar"><input type="text" id="chat-input" placeholder="Message..." onkeydown="if(event.key==='Enter')sendMessage()"><button onclick="sendMessage()" class="btn btn-primary">Send</button></div></div><div id="dm-actions" style="display:none;margin-top:12px"><div class="chat-actions"><button onclick="blockUser()" class="btn btn-danger btn-sm">🚫 Block</button><button onclick="reportUser()" class="btn btn-warn btn-sm">⚠️ Report</button><button onclick="endConversation()" class="btn btn-dark btn-sm">✕ End</button></div></div></div></div>
-
-<div id="panel-membership" class="tab-content"><div class="form-section"><h3>🎁 Membership</h3><div id="membership-status"></div></div><div class="form-section"><h3>🔓 Features</h3><div id="feature-access-table"></div></div></div>
-
-<div id="panel-profile" class="tab-content"><div class="profile-header"><div class="profile-avatar" id="profile-avatar">?</div><div class="profile-info"><h2 id="profile-display-name">—</h2><p id="profile-display-email">—</p><span id="profile-display-role" class="role-badge" style="margin-top:6px"></span><span id="profile-patron-badge" style="display:none;margin-left:6px;margin-top:6px" class="role-badge role-patron"></span></div></div><div class="form-section"><h3>✏️ Edit</h3><label class="input-label">Name</label><input type="text" id="profile-name"><label class="input-label">Avatar URL</label><input type="text" id="profile-avatar-url"><button onclick="saveProfile()" class="btn btn-primary" style="margin-top:12px">Save</button></div><div class="form-section"><h3>📊 Stats</h3><div class="profile-grid"><div class="card" style="text-align:center"><div style="font-size:1.5rem;font-weight:800" id="profile-ticket-count">0</div><div style="color:var(--text-dim);font-size:.65rem">TICKETS</div></div><div class="card" style="text-align:center"><div style="font-size:1.5rem;font-weight:800" id="profile-post-count">0</div><div style="color:var(--text-dim);font-size:.65rem">POSTS</div></div></div></div></div>
-
-<div id="panel-admin" class="tab-content"><div class="sub-tabs"><div class="sub-tab active" onclick="switchAdminPanel('users')">👤 Users</div><div class="sub-tab" onclick="switchAdminPanel('requests')">📱 Requests</div><div class="sub-tab" onclick="switchAdminPanel('tickets')">🎫 Tickets</div><div class="sub-tab" onclick="switchAdminPanel('reports')">⚠️ Reports</div><div class="sub-tab" onclick="switchAdminPanel('sites')">🌐 Sites</div></div><div id="admin-panel-users" class="sub-content active"><div class="form-section"><h3>➕ Add User</h3><div class="form-row"><div><input type="text" id="admin-new-name" placeholder="Name"></div><div><input type="email" id="admin-new-email" placeholder="Email"></div></div><div class="form-row"><div><input type="password" id="admin-new-pass" placeholder="Password"></div><div><select id="admin-new-role"><option value="client">Client</option><option value="admin">Admin</option></select></div></div><div style="margin-top:12px;display:flex;align-items:center;gap:10px"><label class="toggle"><input type="checkbox" id="admin-new-chat"><span class="toggle-slider"></span></label><span style="font-size:.8rem;color:var(--text-dim)">Chat</span></div><button onclick="adminCreateUser()" class="btn btn-primary" style="margin-top:12px">Create</button><div id="admin-create-status" style="font-size:.75rem;margin-top:8px"></div></div></div><div id="admin-panel-requests" class="sub-content"><div id="admin-app-requests"></div></div><div id="admin-panel-tickets" class="sub-content"><div id="admin-ticket-list"></div></div><div id="admin-panel-reports" class="sub-content"><div id="admin-reports-list"></div></div><div id="admin-panel-sites" class="sub-content"><div id="admin-sites-list"></div></div></div>
-</div></div>
-
-<div id="domain-modal" class="modal-overlay" style="display:none"><div class="modal-box"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><h3 style="font-size:1rem;font-weight:800">🌍 Custom Domain</h3><button onclick="closeDomainModal()" class="btn btn-dark btn-sm" style="width:auto">✕</button></div><div id="domain-modal-content"></div></div></div>
-
-<script>
-var SB_URL='https://lqkpxervwakucksrnoss.supabase.co',SB_KEY='sb_publishable_Sdi0YJz0IPwK9yV-0tLvCw_9IDZQhD8',PATREON_URL='https://www.patreon.com/c/VeloComputingTechnologies/membership',BASE_DOMAIN='velocomputing.tech';
-var sb=null,currentUser=null,currentProfile=null,chatSubscription=null,currentChannel='team',selectedDmUser=null,selectedDmName='',editingSiteId=null,domainModalSiteId=null;
-var E2E_KEY='velo-e2e-2026';
-var TIERS={none:{level:0,sites:0,publicSites:false,mainDomain:false,urgentTickets:false,freeRequests:false,chat:false},starter:{level:1,sites:1,publicSites:false,mainDomain:false,urgentTickets:false,freeRequests:true,chat:true},basic:{level:2,sites:3,publicSites:false,mainDomain:false,urgentTickets:false,freeRequests:true,chat:true},advanced:{level:3,sites:10,publicSites:true,mainDomain:false,urgentTickets:false,freeRequests:true,chat:true},enterprise:{level:4,sites:999,publicSites:true,mainDomain:true,urgentTickets:true,freeRequests:true,chat:true}};
-function getTier(){if(isAdmin())return TIERS.enterprise;var t=currentProfile&&currentProfile.patreon_tier?currentProfile.patreon_tier:'none';return TIERS[t]||TIERS.none}
-function getTierName(){if(isAdmin())return'admin';return currentProfile&&currentProfile.patreon_tier?currentProfile.patreon_tier:'none'}
-function e2eEncrypt(t){var r='';for(var i=0;i<t.length;i++)r+=String.fromCharCode(t.charCodeAt(i)^E2E_KEY.charCodeAt(i%E2E_KEY.length));return btoa(r)}
-function e2eDecrypt(e){try{var d=atob(e);var r='';for(var i=0;i<d.length;i++)r+=String.fromCharCode(d.charCodeAt(i)^E2E_KEY.charCodeAt(i%E2E_KEY.length));return r}catch(x){return'[error]'}}
-function getDmChannel(a,b){return'dm_'+[a,b].sort().join('_')}
-function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
-function timeAgo(d){var diff=Date.now()-new Date(d).getTime(),m=Math.floor(diff/60000);if(m<1)return'now';if(m<60)return m+'m';var h=Math.floor(m/60);if(h<24)return h+'h';return Math.floor(h/24)+'d'}
-function formatTime(d){return new Date(d).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
-function capitalize(s){return s?s.charAt(0).toUpperCase()+s.slice(1):''}
-function getSiteUrl(s){return s.domain_type==='main'?BASE_DOMAIN+'/'+s.slug+'/':BASE_DOMAIN+'/sites/'+s.slug+'/'}
-function copyText(t){navigator.clipboard.writeText(t).then(function(){alert('Copied!')}).catch(function(){prompt('Copy:',t)})}
-function router(id){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});var el=document.getElementById('view-'+id);if(el)el.classList.add('active');if(id==='dashboard')window.scrollTo(0,0);updateHomeBar()}
-function updateHomeBar(){var bar=document.getElementById('home-bar');if(!bar)return;if(currentUser){bar.style.display='flex';var nav=document.getElementById('landing-nav-links');if(nav)nav.innerHTML='<button onclick="router(\'dashboard\')" class="btn btn-primary btn-sm btn-inline">Dashboard</button>';var cta=document.getElementById('hero-cta');if(cta){cta.textContent='Dashboard \u2192';cta.onclick=function(){router('dashboard')}}var l=document.getElementById('hero-login');if(l)l.style.display='none'}else{bar.style.display='none'}}
-function switchTab(n){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});document.querySelectorAll('.tab-content').forEach(function(p){p.classList.remove('active')});var p=document.getElementById('panel-'+n);if(p)p.classList.add('active');var t=document.querySelector('.tab[data-tab="'+n+'"]');if(t)t.classList.add('active');if(n==='overview')loadOverview();if(n==='apps')loadAppCatalog();if(n==='websites')loadMySites();if(n==='tickets'){loadTickets();applyTicketGates()}if(n==='community')loadPosts();if(n==='chat')initChat();if(n==='membership')loadMembership();if(n==='profile')loadProfileTab();if(n==='admin'){loadAdminAppRequests();loadAdminTickets();loadAdminReports();loadAdminSites()}}
-function switchAdminPanel(n){document.querySelectorAll('#panel-admin .sub-tab').forEach(function(t){t.classList.remove('active')});document.querySelectorAll('#panel-admin .sub-content').forEach(function(p){p.classList.remove('active')});var el=document.getElementById('admin-panel-'+n);if(el)el.classList.add('active');var tabs=document.querySelectorAll('#panel-admin .sub-tab');var m={users:0,requests:1,tickets:2,reports:3,sites:4};if(tabs[m[n]])tabs[m[n]].classList.add('active')}
-function switchAppPanel(n){document.querySelectorAll('#panel-apps .sub-tab').forEach(function(t){t.classList.remove('active')});document.querySelectorAll('#panel-apps .sub-content').forEach(function(p){p.classList.remove('active')});var el=document.getElementById('app-panel-'+n);if(el)el.classList.add('active');var tabs=document.querySelectorAll('#panel-apps .sub-tab');var m={catalog:0,request:1,pricing:2};if(tabs[m[n]])tabs[m[n]].classList.add('active');if(n==='request')loadMyAppRequests()}
-function switchSitePanel(n){document.querySelectorAll('#panel-websites .sub-tab').forEach(function(t){t.classList.remove('active')});document.querySelectorAll('#panel-websites .sub-content').forEach(function(p){p.classList.remove('active')});var el=document.getElementById('site-panel-'+n);if(el)el.classList.add('active');var tabs=document.querySelectorAll('#panel-websites .sub-tab');var m={'my-sites':0,'editor':1};if(tabs[m[n]])tabs[m[n]].classList.add('active');if(n==='my-sites')loadMySites()}
-function updateSlugPreview(){var s=document.getElementById('new-site-slug').value||'slug';var d=(document.getElementById('new-site-domain-type')||{}).value||'subdomain';document.getElementById('slug-preview').innerText=d==='main'?BASE_DOMAIN+'/'+s+'/':BASE_DOMAIN+'/sites/'+s+'/'}
-function applyTicketGates(){var t=getTier();var u=document.getElementById('opt-urgent');if(u){u.disabled=!t.urgentTickets;u.textContent=t.urgentTickets?'Urgent':'Urgent (Enterprise)'}}
-function applySiteGates(){var t=getTier();var n=getTierName();document.getElementById('site-limit-info').innerText=isAdmin()?'Admin: Unlimited':'Plan: '+capitalize(n)+' \u2014 '+t.sites+' site(s)';var d=document.getElementById('domain-type-section');if(d)d.style.display=(t.mainDomain||isAdmin())?'block':'none';var m=document.getElementById('opt-main-domain');if(m)m.disabled=!t.mainDomain&&!isAdmin();var p=document.getElementById('new-site-public');if(p)p.disabled=!t.publicSites&&!isAdmin();var l=document.getElementById('public-gate-label');if(l)l.style.display=t.publicSites||isAdmin()?'none':'inline';var b=document.getElementById('btn-create-site');if(b)b.disabled=t.sites<1&&!isAdmin()}
-function renderFeatureTable(){var t=getTier();var n=getTierName();var el=document.getElementById('feature-access-table');if(!el)return;var f=[{n:'Websites',h:t.sites>0},{n:'Max Sites',h:true,v:t.sites>=999?'\u221E':t.sites},{n:'Public Sites',h:t.publicSites},{n:'Custom Domains',h:t.publicSites},{n:'Root Paths',h:t.mainDomain},{n:'App Requests',h:t.freeRequests},{n:'Urgent Tickets',h:t.urgentTickets},{n:'Chat',h:t.chat}];el.innerHTML='<table class="pricing-table"><thead><tr><th>Feature</th><th>'+capitalize(n)+'</th></tr></thead><tbody>'+f.map(function(x){return'<tr><td>'+x.n+'</td><td>'+(x.v?'<span class="pricing-highlight">'+x.v+'</span>':x.h?'<span style="color:var(--primary)">\u2713</span>':'<span style="color:var(--danger)">\u2717</span>')+'</td></tr>'}).join('')+'</tbody></table>'}
-
-// ═══ WEBSITES ═══
-async function loadMySites(){applySiteGates();var r=await sb.from('websites').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});var d=r.data;var c=document.getElementById('my-sites-list');if(!d||!d.length){c.innerHTML='<div class="empty"><div class="empty-icon">\uD83C\uDF10</div>No sites yet</div>';return}var tier=getTier();c.innerHTML=d.map(function(s){var u=getSiteUrl(s);var dep=!!s.deployed_at;var hd=!!s.custom_domain;var dv=!!s.domain_verified;var cd=tier.publicSites||isAdmin();return'<div class="site-card"><div class="card-header"><div><div class="card-title">\uD83C\uDF10 '+esc(s.title)+'</div><div class="card-meta">'+u+(hd?' \u2022 '+esc(s.custom_domain):'')+' \u2022 '+timeAgo(s.created_at)+(dep?' \u2022 Live '+timeAgo(s.deployed_at):'')+'</div></div><div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">'+(s.is_public?'<span class="badge badge-approved">Public</span>':'<span class="badge badge-closed">Private</span>')+(dep?'<span class="badge badge-live">\uD83D\uDE80</span>':'')+(hd?(dv?'<span class="domain-badge domain-badge-verified">\u2713 '+esc(s.custom_domain)+'</span>':'<span class="domain-badge domain-badge-pending">\u23F3 Pending</span>'):'')+'</div></div><div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button onclick="editSite(\''+s.id+'\')" class="btn btn-primary btn-sm">\u270F\uFE0F Edit</button>'+(s.is_public&&!dep?'<button onclick="deploySite(\''+s.id+'\')" class="btn btn-purple btn-sm">\uD83D\uDE80 Deploy</button>':'')+(dep?'<a href="https://'+u+'" target="_blank" class="btn btn-blue btn-sm">\uD83D\uDD17 Visit</a>'+(hd&&dv?'<a href="https://'+esc(s.custom_domain)+'" target="_blank" class="btn btn-blue btn-sm">\uD83C\uDF0D '+esc(s.custom_domain)+'</a>':'')+'<button onclick="deploySite(\''+s.id+'\')" class="btn btn-purple btn-sm">\uD83D\uDD04</button><button onclick="undeploySite(\''+s.id+'\')" class="btn btn-warn btn-sm">\u23F9</button>':'')+(s.is_public&&cd?'<button onclick="openDomainModal(\''+s.id+'\')" class="btn btn-dark btn-sm">\uD83C\uDF0D Domain</button>':'')+'<button onclick="toggleSitePublic(\''+s.id+'\','+!s.is_public+')" class="btn btn-dark btn-sm">'+(s.is_public?'\uD83D\uDD12':'\uD83C\uDF10')+'</button><button onclick="deleteSiteById(\''+s.id+'\')" class="btn btn-danger btn-sm">\uD83D\uDDD1</button></div></div>'}).join('')}
-async function createWebsite(){var t=getTier();var ti=document.getElementById('new-site-title').value.trim();var sl=document.getElementById('new-site-slug').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'');var dt=(document.getElementById('new-site-domain-type')||{}).value||'subdomain';var pub=document.getElementById('new-site-public').checked;if(!ti||!sl)return alert('Title & slug required');if(sl.length<2)return alert('Min 2 chars');if(['www','api','admin','sites','assets','css','js'].includes(sl))return alert('Reserved');if(!isAdmin()){var cnt=(await sb.from('websites').select('id',{count:'exact',head:true}).eq('user_id',currentUser.id)).count||0;if(cnt>=t.sites)return alert('Limit ('+t.sites+')');if(dt==='main')return alert('Root requires Enterprise');if(pub&&!t.publicSites)pub=false}var r=await sb.from('websites').insert({user_id:currentUser.id,user_name:currentProfile?currentProfile.full_name:'',title:ti,slug:sl,domain_type:dt,is_public:pub,html:'<h1>'+esc(ti)+'</h1>\n<p>Edit in Velo Cloud.</p>',css:'body{font-family:Inter,sans-serif;margin:0;padding:40px;background:#0a0a0e;color:#f0f0f5}\nh1{font-size:2rem;margin-bottom:12px}\np{color:#888}',js:'console.log("loaded");'});if(r.error)return alert(r.error.message.includes('unique')?'Slug taken':r.error.message);document.getElementById('new-site-title').value='';document.getElementById('new-site-slug').value='';document.getElementById('new-site-public').checked=false;updateSlugPreview();loadMySites()}
-async function editSite(id){var r=await sb.from('websites').select('*').eq('id',id).single();if(!r.data)return alert('Not found');var s=r.data;editingSiteId=id;document.getElementById('editor-site-title').innerText=s.title;document.getElementById('editor-site-url').innerText='https://'+getSiteUrl(s)+(s.custom_domain&&s.domain_verified?' \u2022 https://'+s.custom_domain:'');document.getElementById('editor-html').value=s.html||'';document.getElementById('editor-css').value=s.css||'';document.getElementById('editor-js').value=s.js||'';document.getElementById('editor-no-site').style.display='none';document.getElementById('editor-wrapper').style.display='block';switchSitePanel('editor');previewSite()}
-function switchEditorTab(t){document.querySelectorAll('.editor-tab').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.editor-area textarea').forEach(function(e){e.style.display='none'});document.getElementById('editor-'+t).style.display='block';event.target.classList.add('active')}
-function previewSite(){var h=document.getElementById('editor-html').value,c=document.getElementById('editor-css').value,j=document.getElementById('editor-js').value;document.getElementById('preview-frame').srcdoc='<!DOCTYPE html><html><head><style>'+c+'</style></head><body>'+h+'<script>'+j+'<\/script></body></html>'}
-async function saveSite(){if(!editingSiteId)return;var r=await sb.from('websites').update({html:document.getElementById('editor-html').value,css:document.getElementById('editor-css').value,js:document.getElementById('editor-js').value,updated_at:new Date().toISOString()}).eq('id',editingSiteId);if(r.error)return alert(r.error.message);previewSite();alert('Saved!')}
-async function deleteSite(){if(!editingSiteId||!confirm('Delete?'))return;await sb.from('websites').delete().eq('id',editingSiteId);editingSiteId=null;document.getElementById('editor-wrapper').style.display='none';document.getElementById('editor-no-site').style.display='block';switchSitePanel('my-sites')}
-async function deleteSiteById(id){if(!confirm('Delete?'))return;await sb.from('websites').delete().eq('id',id);if(editingSiteId===id){editingSiteId=null;document.getElementById('editor-wrapper').style.display='none';document.getElementById('editor-no-site').style.display='block'}loadMySites()}
-async function toggleSitePublic(id,v){if(v&&!getTier().publicSites&&!isAdmin())return alert('Advanced+ required');await sb.from('websites').update({is_public:v}).eq('id',id);loadMySites()}
-
-// ═══ DEPLOY ═══
-async function deploySite(id){var b=event.target;var o=b.innerText;b.disabled=true;b.innerText='...';try{var s=(await sb.auth.getSession()).data.session;var r=await fetch(SB_URL+'/functions/v1/deploy-site/deploy',{method:'POST',headers:{Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({site_id:id})});var d=await r.json();if(d.success){alert('\u2705 Deployed!\n'+d.url);loadMySites()}else alert('\u274C '+(d.error||'Failed'))}catch(e){alert(e.message)}finally{b.disabled=false;b.innerText=o}}
-async function deploySiteFromEditor(){if(!editingSiteId)return;await saveSite();var b=document.getElementById('btn-editor-deploy');var o=b.innerText;b.disabled=true;b.innerText='...';try{var s=(await sb.auth.getSession()).data.session;var r=await fetch(SB_URL+'/functions/v1/deploy-site/deploy',{method:'POST',headers:{Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({site_id:editingSiteId})});var d=await r.json();if(d.success){alert('\u2705 Deployed!\n'+d.url);loadMySites()}else alert('\u274C '+(d.error||'Failed'))}catch(e){alert(e.message)}finally{b.disabled=false;b.innerText=o}}
-async function undeploySite(id){if(!confirm('Undeploy?'))return;try{var s=(await sb.auth.getSession()).data.session;await fetch(SB_URL+'/functions/v1/deploy-site/undeploy',{method:'POST',headers:{Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({site_id:id})});loadMySites()}catch(e){alert(e.message)}}
-
-// ═══ CUSTOM DOMAIN (client-side, no edge function) ═══
-function openDomainModal(id){event.stopPropagation();domainModalSiteId=id;document.getElementById('domain-modal').style.display='flex';loadDomainModal(id)}
-function closeDomainModal(){document.getElementById('domain-modal').style.display='none';domainModalSiteId=null}
-
-async function loadDomainModal(id){
-var c=document.getElementById('domain-modal-content');
-c.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-dim)">Loading...</div>';
-try{
-var r=await sb.from('websites').select('*').eq('id',id).eq('user_id',currentUser.id);
-if((!r.data||!r.data.length)&&isAdmin())r=await sb.from('websites').select('*').eq('id',id);
-if(r.error){c.innerHTML='<span style="color:var(--danger)">'+esc(r.error.message)+'</span>';return}
-if(!r.data||!r.data.length){c.innerHTML='<span style="color:var(--danger)">Site not found</span>';return}
-var s=r.data[0];
-if(s.custom_domain&&s.domain_verified){
-c.innerHTML='<div style="text-align:center;padding:20px 0"><div style="font-size:3rem">\u2705</div><h4 style="margin:12px 0 4px">Verified!</h4><p style="color:var(--text-dim);font-size:.85rem"><strong>'+esc(s.custom_domain)+'</strong> → '+esc(s.title)+'</p></div><div class="dns-record"><div class="dns-label">Live at</div><div class="dns-value">https://'+esc(s.custom_domain)+'</div></div><div class="dns-record"><div class="dns-label">CNAME (keep this)</div><div>Name: <span class="dns-value">@ or www</span></div><div>Target: <span class="dns-value">velocomputing.tech</span> <span class="dns-copy" onclick="copyText(\'velocomputing.tech\')">\uD83D\uDCCB</span></div></div><div style="color:var(--text-dim);font-size:.72rem;margin:12px 0">The Cloudflare Worker serves your site when visitors go to this domain.</div><div style="display:flex;gap:8px;margin-top:16px"><button onclick="removeDomain(\''+s.id+'\')" class="btn btn-danger btn-sm">Disconnect</button><button onclick="closeDomainModal()" class="btn btn-dark btn-sm">Close</button></div>'
-}else if(s.custom_domain&&!s.domain_verified){
-c.innerHTML='<div style="text-align:center"><div style="font-size:2.5rem">\u23F3</div><h4 style="margin:12px 0 4px">Verify '+esc(s.custom_domain)+'</h4><p style="color:var(--text-dim);font-size:.8rem;margin-bottom:16px">Add these DNS records at your domain provider:</p></div><div class="dns-record"><div class="dns-label">1. TXT Record (verification)</div><div>Type: <strong>TXT</strong></div><div>Name: <span class="dns-value">velo-verify</span> <span class="dns-copy" onclick="copyText(\'velo-verify\')">\uD83D\uDCCB</span></div><div>Value: <span class="dns-value">'+esc(s.domain_verification_code)+'</span> <span class="dns-copy" onclick="copyText(\''+esc(s.domain_verification_code)+'\')">\uD83D\uDCCB</span></div></div><div class="dns-record"><div class="dns-label">2. CNAME Record (routing)</div><div>Type: <strong>CNAME</strong></div><div>Name: <span class="dns-value">@ or www</span></div><div>Target: <span class="dns-value">velocomputing.tech</span> <span class="dns-copy" onclick="copyText(\'velocomputing.tech\')">\uD83D\uDCCB</span></div></div><div style="color:var(--text-dim);font-size:.72rem;margin:12px 0">DNS can take 1-5 minutes to propagate.</div><div style="display:flex;gap:8px"><button onclick="verifyDomain(\''+s.id+'\')" class="btn btn-primary btn-sm" id="btn-verify">\u2705 Verify Now</button><button onclick="removeDomain(\''+s.id+'\')" class="btn btn-danger btn-sm">Remove</button><button onclick="closeDomainModal()" class="btn btn-dark btn-sm">Cancel</button></div><div id="verify-status" style="margin-top:12px;font-size:.8rem"></div>'
-}else{
-c.innerHTML='<p style="color:var(--text-dim);font-size:.85rem;margin-bottom:16px">Connect a custom domain to <strong>'+esc(s.title)+'</strong></p><input type="text" id="domain-input" placeholder="example.com or blog.example.com"><div style="font-size:.65rem;color:var(--text-dim);margin:4px 0 16px">Enter without http:// or www</div><div style="display:flex;gap:8px"><button onclick="setDomain(\''+s.id+'\')" class="btn btn-primary btn-sm" id="btn-set-domain">\uD83C\uDF0D Connect</button><button onclick="closeDomainModal()" class="btn btn-dark btn-sm">Cancel</button></div><div id="set-domain-status" style="margin-top:12px;font-size:.8rem"></div>'
-}
-}catch(e){c.innerHTML='<span style="color:var(--danger)">'+esc(e.message)+'</span>'}}
-
-async function setDomain(id){
-var d=document.getElementById('domain-input').value.trim().toLowerCase().replace(/^https?:\/\//,'').replace(/\/+$/,'').replace(/^www\./,'');
-if(!d)return alert('Enter a domain');
-if(!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(d))return alert('Invalid domain');
-if(d.endsWith('velocomputing.tech'))return alert('Cannot use velocomputing.tech');
-var btn=document.getElementById('btn-set-domain');var st=document.getElementById('set-domain-status');
-btn.disabled=true;btn.innerText='Setting up...';st.innerHTML='';
-try{
-var ex=await sb.from('websites').select('id').eq('custom_domain',d).neq('id',id);
-if(ex.data&&ex.data.length>0){st.innerHTML='<span style="color:var(--danger)">\u274C Domain already used</span>';return}
-var code='velo-verify-'+Math.random().toString(36).substring(2,10);
-var r=await sb.from('websites').update({custom_domain:d,domain_verified:false,domain_verification_code:code}).eq('id',id);
-if(r.error){st.innerHTML='<span style="color:var(--danger)">\u274C '+esc(r.error.message)+'</span>';return}
-loadDomainModal(id);
-}catch(e){st.innerHTML='<span style="color:var(--danger)">'+esc(e.message)+'</span>'}
-finally{btn.disabled=false;btn.innerText='\uD83C\uDF0D Connect'}}
-
-async function verifyDomain(id){
-var btn=document.getElementById('btn-verify');var st=document.getElementById('verify-status');
-btn.disabled=true;btn.innerText='Checking DNS...';st.innerHTML='';
-try{
-var r=await sb.from('websites').select('custom_domain,domain_verification_code').eq('id',id);
-if(!r.data||!r.data.length){st.innerHTML='<span style="color:var(--danger)">Not found</span>';return}
-var site=r.data[0];var domain=site.custom_domain;var expected=site.domain_verification_code;
-var dns=await(await fetch('https://dns.google/resolve?name=velo-verify.'+encodeURIComponent(domain)+'&type=TXT')).json();
-var verified=false;
-if(dns.Answer){for(var i=0;i<dns.Answer.length;i++){if((dns.Answer[i].data||'').replace(/"/g,'').trim()===expected){verified=true;break}}}
-if(verified){
-await sb.from('websites').update({domain_verified:true}).eq('id',id);
-st.innerHTML='<span style="color:var(--primary)">\u2705 Domain verified!</span>';
-setTimeout(function(){loadDomainModal(id);loadMySites()},1500);
-}else{
-st.innerHTML='<span style="color:var(--warn)">\u23F3 TXT record not found yet.<br>Expected: <strong>velo-verify.'+esc(domain)+'</strong> → <strong>'+esc(expected)+'</strong><br>DNS can take a few minutes. Try again.</span>';
-}
-}catch(e){st.innerHTML='<span style="color:var(--danger)">'+esc(e.message)+'</span>'}
-finally{btn.disabled=false;btn.innerText='\u2705 Verify Now'}}
-
-async function removeDomain(id){
-if(!confirm('Remove custom domain?'))return;
-await sb.from('websites').update({custom_domain:null,domain_verified:false,domain_verification_code:null}).eq('id',id);
-closeDomainModal();loadMySites()}
-
-// ═══ ADMIN SITES ═══
-async function loadAdminSites(){if(!isAdmin())return;var r=await sb.from('websites').select('*').order('created_at',{ascending:false});var d=r.data;var c=document.getElementById('admin-sites-list');if(!d||!d.length){c.innerHTML='<div class="empty">No sites</div>';return}c.innerHTML=d.map(function(s){var u=getSiteUrl(s);var dep=!!s.deployed_at;return'<div class="card"><div class="card-header"><div><div class="card-title">'+esc(s.title)+'</div><div class="card-meta">'+u+' \u2022 '+esc(s.user_name||'?')+' \u2022 '+timeAgo(s.created_at)+(s.custom_domain?' \u2022 \uD83C\uDF0D '+esc(s.custom_domain)+(s.domain_verified?' \u2713':''):'')+'</div></div><div style="display:flex;gap:4px">'+(s.is_public?'<span class="badge badge-approved">Public</span>':'<span class="badge badge-closed">Private</span>')+(dep?'<span class="badge badge-live">Live</span>':'')+'</div></div><div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button onclick="editSite(\''+s.id+'\');switchTab(\'websites\')" class="btn btn-primary btn-sm">Edit</button>'+(s.is_public?'<button onclick="deploySite(\''+s.id+'\')" class="btn btn-purple btn-sm">'+(dep?'Redeploy':'Deploy')+'</button>':'')+(dep?'<a href="https://'+u+'" target="_blank" class="btn btn-blue btn-sm">Visit</a><button onclick="undeploySite(\''+s.id+'\')" class="btn btn-warn btn-sm">Undeploy</button>':'')+'<button onclick="openDomainModal(\''+s.id+'\')" class="btn btn-dark btn-sm">\uD83C\uDF0D</button><button onclick="deleteSiteById(\''+s.id+'\')" class="btn btn-danger btn-sm">Del</button></div></div>'}).join('')}
-
-// ═══ CHAT ═══
-async function switchChatChannel(ch){if(ch==='team'){currentChannel='team';selectedDmUser=null;selectedDmName='';document.getElementById('chat-dm-selector').style.display='none';document.getElementById('dm-actions').style.display='none';document.getElementById('chat-channel-title').innerText='\uD83D\uDCAC Team';document.getElementById('chat-e2e-badge').style.display='none';document.getElementById('chat-input').placeholder='Message...';await loadMessages();subscribeToChatRealtime()}else{document.getElementById('chat-dm-selector').style.display='block';document.getElementById('dm-actions').style.display='none';await loadDmUserList();document.getElementById('chat-channel-title').innerText='\uD83D\uDD10 DM';document.getElementById('chat-e2e-badge').style.display='';document.getElementById('chat-input').placeholder='Select user...';document.getElementById('chat-messages').innerHTML='<div class="empty" style="padding:60px">\uD83D\uDC65 Select user</div>'}document.querySelectorAll('#chat-unlocked>.sub-tabs .sub-tab').forEach(function(t){t.classList.remove('active')});var tabs=document.querySelectorAll('#chat-unlocked>.sub-tabs .sub-tab');if(ch==='team'&&tabs[0])tabs[0].classList.add('active');else if(tabs[1])tabs[1].classList.add('active')}
-async function loadDmUserList(){var r=await sb.from('profiles').select('id,full_name,avatar_url').or('chat_enabled.eq.true,role.eq.admin').neq('id',currentUser.id);var d=r.data;var l=document.getElementById('dm-user-list');if(!d||!d.length){l.innerHTML='<div class="empty" style="padding:20px;font-size:.8rem">No users</div>';return}l.innerHTML=d.map(function(u){return'<div class="user-item" onclick="selectDmUser(\''+u.id+'\',\''+esc(u.full_name||'User')+'\')"><div class="user-avatar">'+(u.full_name||'?')[0].toUpperCase()+'</div><div class="user-name">'+esc(u.full_name||'?')+'</div></div>'}).join('')}
-async function selectDmUser(uid,name){selectedDmUser=uid;selectedDmName=name;currentChannel=getDmChannel(currentUser.id,uid);document.querySelectorAll('.user-item').forEach(function(i){i.classList.remove('active')});if(event&&event.target)event.target.closest('.user-item')?.classList.add('active');document.getElementById('chat-channel-title').innerText='\uD83D\uDD10 '+name;document.getElementById('chat-input').placeholder='Encrypted...';document.getElementById('dm-actions').style.display='block';await loadMessages();subscribeToChatRealtime()}
-async function blockUser(){if(!selectedDmUser||!confirm('Block?'))return;await sb.from('reports').insert({reporter_id:currentUser.id,reported_id:selectedDmUser,reporter_name:currentProfile?.full_name||'',reported_name:selectedDmName,type:'block',channel:currentChannel});alert('Blocked.');switchChatChannel('dm')}
-async function reportUser(){if(!selectedDmUser)return;var r=prompt('Reason?');if(!r)return;await sb.from('reports').insert({reporter_id:currentUser.id,reported_id:selectedDmUser,reporter_name:currentProfile?.full_name||'',reported_name:selectedDmName,type:'report',reason:r,channel:currentChannel});alert('Reported.')}
-async function endConversation(){if(!selectedDmUser)return;selectedDmUser=null;selectedDmName='';switchChatChannel('dm')}
-async function connectPatreon(){try{var s=(await sb.auth.getSession()).data.session;try{var r=await fetch(SB_URL+'/functions/v1/patreon-auth/login',{headers:s?{Authorization:'Bearer '+s.access_token}:{}});if(r.ok){var j=await r.json();if(j.url){window.location.href=j.url;return}}}catch(f){}window.open(PATREON_URL,'_blank')}catch(e){window.open(PATREON_URL,'_blank')}}
-function checkPatreonCallback(){var h=window.location.hash;if(h.includes('patreon_success')){alert('Patreon connected!');window.location.hash='';loadProfile().then(function(){setupDashboard();loadMembership()})}}
-async function loadMembership(){var el=document.getElementById('membership-status');if(!currentProfile){el.innerHTML='Not logged in';return}if(currentProfile.patreon_connected&&currentProfile.patreon_active&&currentProfile.patreon_tier){el.innerHTML='<div style="display:flex;align-items:center;gap:16px"><div style="font-size:2.5rem">\uD83C\uDF89</div><div><div style="font-weight:800">Patron \u2014 '+capitalize(currentProfile.patreon_tier)+'</div><div style="color:var(--text-dim);font-size:.8rem">Active</div></div></div>'}else{el.innerHTML='<p style="color:var(--text-dim)">No membership</p><div style="margin-top:12px;display:flex;gap:8px"><a href="'+PATREON_URL+'" target="_blank" class="btn btn-patreon btn-sm btn-inline">Subscribe</a><button onclick="connectPatreon()" class="btn btn-dark btn-sm btn-inline">\uD83D\uDD17 Connect</button></div>'}renderFeatureTable()}
-async function bootstrap(){var st=document.getElementById('status');var a=0;while(!window.__supabaseReady&&a<40){await new Promise(function(r){setTimeout(r,100)});a++}if(!window.supabaseCreateClient){st.innerText="CDN BLOCKED";st.style.color="#ff4b4b";return}try{sb=window.supabaseCreateClient(SB_URL,SB_KEY);st.innerText="ONLINE";var s=(await sb.auth.getSession()).data.session;if(s){currentUser=s.user;await loadProfile();setupDashboard();router('dashboard');loadOverview()}}catch(e){st.innerText=e.message;st.style.color="#ff4b4b"}}
-async function handleLogin(){var e=document.getElementById('login-email').value.trim(),p=document.getElementById('login-pass').value;if(!e||!p)return alert('Fill all fields');var r=await sb.auth.signInWithPassword({email:e,password:p});if(r.error)alert(r.error.message);else window.location.reload()}
-async function handleSignup(){var n=document.getElementById('signup-name').value.trim(),e=document.getElementById('signup-email').value.trim(),p=document.getElementById('signup-pass').value;if(!n||!e||!p)return alert('All required');if(p.length<6)return alert('Min 6 chars');var r=await sb.auth.signUp({email:e,password:p,options:{data:{full_name:n}}});if(r.error)return alert(r.error.message);alert('Check email!');router('login')}
-async function handleLogout(){if(chatSubscription)sb.removeChannel(chatSubscription);await sb.auth.signOut();window.location.reload()}
-async function loadProfile(){var r=await sb.from('profiles').select('*').eq('id',currentUser.id).single();if(r.data)currentProfile=r.data}
-function isAdmin(){return currentProfile&&currentProfile.role==='admin'}
-function hasChatAccess(){return isAdmin()||(currentProfile&&currentProfile.chat_enabled)||getTier().chat}
-function setupDashboard(){document.getElementById('dash-email').innerText=currentUser.email;var b=document.getElementById('dash-role-badge');b.innerText=currentProfile?currentProfile.role||'client':'client';b.className='role-badge '+(isAdmin()?'role-admin':'role-client');if(isAdmin())document.getElementById('tab-admin').style.display='';if(hasChatAccess())document.getElementById('tab-chat').style.display='';var pb=document.getElementById('dash-patron-badge');if(currentProfile&&currentProfile.patreon_tier){pb.style.display='inline-block';pb.innerText=currentProfile.patreon_tier;document.getElementById('patreon-banner').style.display='none'}else{pb.style.display='none';document.getElementById('patreon-banner').style.display='flex'}updateHomeBar();checkPatreonCallback()}
-async function loadProfileTab(){var av=document.getElementById('profile-avatar');var i=(currentProfile&&currentProfile.full_name?currentProfile.full_name:currentUser.email||'?')[0].toUpperCase();if(currentProfile&&currentProfile.avatar_url){av.style.backgroundImage='url('+currentProfile.avatar_url+')';av.innerText=''}else{av.style.backgroundImage='';av.innerText=i}document.getElementById('profile-display-name').innerText=currentProfile?currentProfile.full_name||'\u2014':'\u2014';document.getElementById('profile-display-email').innerText=currentUser.email;var rb=document.getElementById('profile-display-role');rb.innerText=currentProfile?currentProfile.role||'client':'client';rb.className='role-badge '+(isAdmin()?'role-admin':'role-client');var pp=document.getElementById('profile-patron-badge');if(currentProfile&&currentProfile.patreon_tier){pp.style.display='inline-block';pp.innerText=currentProfile.patreon_tier}else pp.style.display='none';document.getElementById('profile-name').value=currentProfile?currentProfile.full_name||'':'';document.getElementById('profile-avatar-url').value=currentProfile?currentProfile.avatar_url||'':'';document.getElementById('profile-ticket-count').innerText=(await sb.from('tickets').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id)).count||0;document.getElementById('profile-post-count').innerText=(await sb.from('posts').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id)).count||0}
-async function saveProfile(){var f=document.getElementById('profile-name').value.trim();if(!f)return alert('Name required');await sb.from('profiles').update({full_name:f,avatar_url:document.getElementById('profile-avatar-url').value.trim()}).eq('id',currentUser.id);await loadProfile();setupDashboard();loadProfileTab();alert('Saved!')}
-async function loadOverview(){var r=await sb.from('tickets').select('*').order('created_at',{ascending:false}).limit(5);var t=r.data||[];document.getElementById('stat-tickets').innerText=t.length;document.getElementById('stat-open').innerText=t.filter(function(x){return x.status==='open'}).length;document.getElementById('stat-apps').innerText=(await sb.from('apps').select('*',{count:'exact',head:true})).count||0;document.getElementById('stat-sites').innerText=(await sb.from('websites').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id)).count||0;document.getElementById('overview-tickets').innerHTML=!t.length?'<div class="empty"><div class="empty-icon">\uD83D\uDCED</div>No tickets</div>':t.slice(0,3).map(function(x){return ticketCard(x)}).join('')}
-async function loadAppCatalog(){var r=await sb.from('apps').select('*').eq('is_public',true);var c=document.getElementById('app-catalog');if(!r.data||!r.data.length){c.innerHTML='<div class="empty">\uD83D\uDCF1 No apps</div>';return}c.innerHTML=r.data.map(function(a){return'<div class="app-card"><div class="app-icon">'+a.icon+'</div><h4>'+esc(a.name)+'</h4><p>'+esc(a.description||'')+'</p><span class="app-status-pill app-status-'+a.status+'">'+a.status.replace('_',' ')+'</span></div>'}).join('')}
-async function submitAppRequest(){if(!getTier().freeRequests&&!isAdmin())return alert('Starter+ required');var n=document.getElementById('req-app-name').value.trim(),d=document.getElementById('req-app-desc').value.trim(),p=document.getElementById('req-app-platform').value;if(!n)return alert('Name required');await sb.from('app_requests').insert({user_id:currentUser.id,user_name:currentProfile?currentProfile.full_name||currentUser.email:currentUser.email,app_name:n,description:d+'\n[Platform: '+p+']'});document.getElementById('req-app-name').value='';document.getElementById('req-app-desc').value='';alert('Submitted!')}
-async function loadMyAppRequests(){var r=await sb.from('app_requests').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});var c=document.getElementById('my-app-requests');if(!r.data||!r.data.length){c.innerHTML='<div class="empty">No requests</div>';return}c.innerHTML=r.data.map(function(x){return'<div class="card"><div class="card-header"><div><div class="card-title">'+esc(x.app_name)+'</div><div class="card-meta">'+timeAgo(x.created_at)+'</div></div><span class="badge badge-'+x.status+'">'+x.status+'</span></div></div>'}).join('')}
-function ticketCard(t,a){a=a||false;return'<div class="card"><div class="card-header"><div><div class="card-title">'+esc(t.subject)+'</div><div class="card-meta">'+timeAgo(t.created_at)+'</div></div><div style="display:flex;gap:6px"><span class="badge badge-'+t.priority+'">'+t.priority+'</span><span class="badge badge-'+t.status+'">'+t.status.replace('_',' ')+'</span></div></div>'+(t.description?'<div class="card-body">'+esc(t.description)+'</div>':'')+(a?'<div style="margin-top:12px"><select onchange="updateTicketStatus(\''+t.id+'\',this.value)" style="width:auto;padding:6px 10px;font-size:.75rem"><option value="open" '+(t.status==='open'?'selected':'')+'>Open</option><option value="in_progress" '+(t.status==='in_progress'?'selected':'')+'>In Progress</option><option value="closed" '+(t.status==='closed'?'selected':'')+'>Closed</option></select></div>':'')+'</div>'}
-async function loadTickets(){var r=await sb.from('tickets').select('*').order('created_at',{ascending:false});document.getElementById('ticket-list').innerHTML=!r.data||!r.data.length?'<div class="empty">No tickets</div>':r.data.map(function(t){return ticketCard(t)}).join('')}
-async function createTicket(){var s=document.getElementById('ticket-subject').value.trim(),d=document.getElementById('ticket-desc').value.trim(),p=document.getElementById('ticket-priority').value;if(!s)return alert('Subject required');if(p==='urgent'&&!getTier().urgentTickets&&!isAdmin())return alert('Enterprise required');await sb.from('tickets').insert({user_id:currentUser.id,subject:s,description:d,priority:p});document.getElementById('ticket-subject').value='';document.getElementById('ticket-desc').value='';document.getElementById('ticket-priority').value='normal';loadTickets()}
-async function loadPosts(){var r=await sb.from('posts').select('*').order('created_at',{ascending:false});document.getElementById('post-list').innerHTML=!r.data||!r.data.length?'<div class="empty">No posts</div>':r.data.map(function(p){return'<div class="card"><div class="card-header"><div><div class="card-title">'+esc(p.author_name||'Anon')+'</div><div class="card-meta">'+timeAgo(p.created_at)+'</div></div>'+(p.user_id===currentUser.id||isAdmin()?'<button onclick="deletePost(\''+p.id+'\')" class="btn btn-danger btn-sm">\u2715</button>':'')+'</div><div class="card-body">'+esc(p.content)+'</div></div>'}).join('')}
-async function createPost(){var c=document.getElementById('post-content').value.trim();if(!c)return alert('Write something');await sb.from('posts').insert({user_id:currentUser.id,author_name:currentProfile?currentProfile.full_name||currentUser.email:currentUser.email,content:c});document.getElementById('post-content').value='';loadPosts()}
-async function deletePost(id){if(!confirm('Delete?'))return;await sb.from('posts').delete().eq('id',id);loadPosts()}
-async function initChat(){if(hasChatAccess()){document.getElementById('chat-locked').style.display='none';document.getElementById('chat-unlocked').style.display='block';currentChannel='team';await loadMessages();subscribeToChatRealtime()}else{document.getElementById('chat-locked').style.display='flex';document.getElementById('chat-unlocked').style.display='none'}}
-async function loadMessages(){var r=await sb.from('messages').select('*').eq('channel',currentChannel).order('created_at',{ascending:true}).limit(200);var d=r.data;var c=document.getElementById('chat-messages');if(!d||!d.length){c.innerHTML='<div class="empty" style="padding:60px">'+(currentChannel.startsWith('dm_')?'Start chatting!':'Say hello!')+'</div>';return}c.innerHTML=d.map(function(m){return chatBubble(m)}).join('');c.scrollTop=c.scrollHeight}
-function chatBubble(m){var mine=m.user_id===currentUser.id;var enc=m.encrypted||currentChannel.startsWith('dm_');var content=enc?e2eDecrypt(m.content):m.content;return'<div class="chat-msg '+(mine?'mine':'theirs')+' '+(enc?'encrypted':'')+'">'+(mine?'':'<div class="msg-author">'+esc(m.author_name||'?')+'</div>')+'<div>'+esc(content)+'</div><div class="msg-time">'+(enc?'\uD83D\uDD10 ':'')+formatTime(m.created_at)+'</div></div>'}
-function subscribeToChatRealtime(){if(chatSubscription)sb.removeChannel(chatSubscription);chatSubscription=sb.channel('c-'+currentChannel).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'channel=eq.'+currentChannel},function(p){var c=document.getElementById('chat-messages');var e=c.querySelector('.empty');if(e)e.remove();c.insertAdjacentHTML('beforeend',chatBubble(p.new));c.scrollTop=c.scrollHeight}).subscribe()}
-async function sendMessage(){var i=document.getElementById('chat-input');var r=i.value.trim();if(!r)return;if(currentChannel.startsWith('dm_')&&!selectedDmUser)return alert('Select user');i.value='';var enc=currentChannel.startsWith('dm_');await sb.from('messages').insert({user_id:currentUser.id,author_name:currentProfile?currentProfile.full_name||currentUser.email:currentUser.email,content:enc?e2eEncrypt(r):r,channel:currentChannel,encrypted:enc})}
-async function adminCreateUser(){if(!isAdmin())return;var n=document.getElementById('admin-new-name').value.trim(),e=document.getElementById('admin-new-email').value.trim(),p=document.getElementById('admin-new-pass').value,ro=document.getElementById('admin-new-role').value,ch=document.getElementById('admin-new-chat').checked;var st=document.getElementById('admin-create-status');if(!n||!e||!p)return alert('All required');if(p.length<6)return alert('Min 6');st.innerText='Creating...';var r=await sb.auth.signUp({email:e,password:p,options:{data:{full_name:n,role:ro,chat_enabled:ch.toString()}}});if(r.error){st.innerText=r.error.message;st.style.color='var(--danger)';return}st.innerText='\u2713 Created';st.style.color='var(--primary)';document.getElementById('admin-new-name').value='';document.getElementById('admin-new-email').value='';document.getElementById('admin-new-pass').value=''}
-async function loadAdminAppRequests(){if(!isAdmin())return;var r=await sb.from('app_requests').select('*').order('created_at',{ascending:false});var c=document.getElementById('admin-app-requests');if(!r.data||!r.data.length){c.innerHTML='<div class="empty">No requests</div>';return}c.innerHTML=r.data.map(function(x){return'<div class="card"><div class="card-header"><div><div class="card-title">'+esc(x.app_name)+'</div><div class="card-meta">'+esc(x.user_name||'?')+' \u2022 '+timeAgo(x.created_at)+'</div></div><span class="badge badge-'+x.status+'">'+x.status+'</span></div><div style="margin-top:12px;display:flex;gap:6px"><button onclick="updateAppRequest(\''+x.id+'\',\'approved\')" class="btn btn-primary btn-sm">OK</button><button onclick="updateAppRequest(\''+x.id+'\',\'declined\')" class="btn btn-danger btn-sm">No</button></div></div>'}).join('')}
-async function updateAppRequest(id,s){await sb.from('app_requests').update({status:s}).eq('id',id);loadAdminAppRequests()}
-async function loadAdminTickets(){if(!isAdmin())return;var r=await sb.from('tickets').select('*').order('created_at',{ascending:false});document.getElementById('admin-ticket-list').innerHTML=!r.data||!r.data.length?'<div class="empty">No tickets</div>':r.data.map(function(t){return ticketCard(t,true)}).join('')}
-async function updateTicketStatus(id,s){await sb.from('tickets').update({status:s}).eq('id',id)}
-async function loadAdminReports(){if(!isAdmin())return;var r=await sb.from('reports').select('*').order('created_at',{ascending:false});var c=document.getElementById('admin-reports-list');if(!r.data||!r.data.length){c.innerHTML='<div class="empty">\u2705 None</div>';return}c.innerHTML=r.data.map(function(x){return'<div class="card"><div class="card-header"><div><div class="card-title">'+(x.type==='block'?'\uD83D\uDEAB':'\u26A0\uFE0F')+' '+esc(x.reported_name)+'</div><div class="card-meta">by '+esc(x.reporter_name)+' \u2022 '+timeAgo(x.created_at)+'</div></div><span class="badge badge-'+(x.type==='block'?'urgent':'high')+'">'+x.type+'</span></div>'+(x.reason?'<div class="card-body">'+esc(x.reason)+'</div>':'')+'</div>'}).join('')}
-
-document.getElementById('domain-modal').addEventListener('click',function(e){if(e.target===document.getElementById('domain-modal'))closeDomainModal()});
-bootstrap();
-</script>
 </body>
 </html>
