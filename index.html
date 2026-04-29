@@ -1,128 +1,869 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krytonum | Velo Computing Technologies</title>
-    <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #05070a;
-            --card-bg: #0d1117;
-            --accent-color: #00d2ff;
-            --text-color: #e6edf3;
-            --text-dim: #8b949e;
-            --border: #30363d;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Krytonum — Velo Computing Technologies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #020408;
+      --surface: #080e14;
+      --border: #0d1f2d;
+      --accent: #00ffe0;
+      --accent2: #0066ff;
+      --accent3: #ff003c;
+      --text: #c8dce8;
+      --muted: #3a5566;
+      --heading: #eaf6ff;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            line-height: 1.6;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        header {
-            width: 100%;
-            text-align: center;
-            padding: 20px;
-        }
+    html { scroll-behavior: smooth; }
 
-        .logo-container img {
-            max-width: 320px;
-            height: auto;
-            filter: drop-shadow(0 0 30px rgba(0, 210, 255, 0.3));
-            margin-bottom: 20px;
-        }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
 
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: -3px;
-            margin: 0;
-            background: linear-gradient(180deg, #fff 0%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    /* GRID OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,224,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,224,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        .slogan {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-color);
-            font-size: 1.1rem;
-            margin-top: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
+    /* SCANLINE */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
 
-        .content {
-            max-width: 700px;
-            margin: 40px auto;
-            text-align: center;
-            padding: 0 20px;
-        }
+    /* NOISE TEXTURE */
+    .noise {
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 2;
+    }
 
-        .main-project {
-            border-top: 1px solid var(--border);
-            padding-top: 40px;
-        }
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(2,4,8,0.85);
+      backdrop-filter: blur(12px);
+    }
 
-        p {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            max-width: 600px;
-            margin: 0 auto 30px auto;
-        }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--heading);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
 
-        .status-box {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--accent-color);
-            border: 1px solid var(--accent-color);
-            padding: 8px 20px;
-            display: inline-block;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
+    .nav-logo span { color: var(--accent); }
 
-        footer {
-            position: absolute;
-            bottom: 40px;
-            width: 100%;
-            text-align: center;
-            color: #333;
-            font-size: 0.75rem;
-            font-family: 'JetBrains Mono', monospace;
-        }
-    </style>
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-badge {
+      font-size: 11px;
+      padding: 4px 12px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: pulse-border 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { border-color: var(--accent); box-shadow: 0 0 8px rgba(0,255,224,0.2); }
+      50% { border-color: rgba(0,255,224,0.4); box-shadow: 0 0 20px rgba(0,255,224,0.05); }
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,102,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      bottom: 10%;
+      right: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0,255,224,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      animation: drift 10s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0); }
+      to { transform: translate(30px, -30px); }
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.2s;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(56px, 9vw, 120px);
+      line-height: 0.92;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.4s;
+    }
+
+    .hero-title .accent { color: var(--accent); }
+    .hero-title .dim { color: var(--muted); }
+
+    .hero-subtitle {
+      font-family: 'Syne', sans-serif;
+      font-weight: 400;
+      font-size: clamp(14px, 2vw, 20px);
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 48px;
+      max-width: 560px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.6s;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 700;
+      transition: all 0.2s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      box-shadow: 0 0 30px rgba(0,255,224,0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 20px rgba(0,255,224,0.1);
+    }
+
+    /* TERMINAL BLOCK */
+    .terminal {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      opacity: 0;
+      animation: fade-up 0.6s ease forwards 1s;
+      display: none;
+    }
+
+    @media (min-width: 1100px) { .terminal { display: block; } }
+
+    .terminal-bar {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    .terminal-body {
+      padding: 20px;
+      line-height: 1.8;
+    }
+
+    .t-muted { color: var(--muted); }
+    .t-accent { color: var(--accent); }
+    .t-accent2 { color: var(--accent2); }
+    .t-accent3 { color: var(--accent3); }
+    .t-head { color: var(--heading); }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--accent);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* STATS ROW */
+    .stats {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      padding: 40px 48px;
+      border-right: 1px solid var(--border);
+      opacity: 0;
+      animation: fade-up 0.5s ease forwards;
+    }
+
+    .stat:last-child { border-right: none; }
+    .stat:nth-child(1) { animation-delay: 0.1s; }
+    .stat:nth-child(2) { animation-delay: 0.2s; }
+    .stat:nth-child(3) { animation-delay: 0.3s; }
+    .stat:nth-child(4) { animation-delay: 0.4s; }
+
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 36px;
+      color: var(--heading);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-value span { color: var(--accent); }
+    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; }
+
+    /* SECTION */
+    section {
+      position: relative;
+      z-index: 10;
+      padding: 100px 48px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(32px, 4vw, 52px);
+      color: var(--heading);
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 60px;
+      font-size: 14px;
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .feature {
+      background: var(--bg);
+      padding: 40px;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.3s ease;
+    }
+
+    .feature:hover { background: var(--surface); }
+    .feature:hover::before { height: 100%; }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--heading);
+      margin-bottom: 12px;
+    }
+
+    .feature-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .feature-tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0,255,224,0.2);
+      padding: 3px 10px;
+    }
+
+    /* ROADMAP */
+    .roadmap {
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    }
+
+    .roadmap-item {
+      position: relative;
+      padding: 0 0 48px 32px;
+      opacity: 0;
+      animation: fade-up 0.5s ease forwards;
+    }
+
+    .roadmap-item:nth-child(1) { animation-delay: 0.1s; }
+    .roadmap-item:nth-child(2) { animation-delay: 0.2s; }
+    .roadmap-item:nth-child(3) { animation-delay: 0.3s; }
+    .roadmap-item:nth-child(4) { animation-delay: 0.4s; }
+
+    .roadmap-item::before {
+      content: '';
+      position: absolute;
+      left: -5px; top: 6px;
+      width: 10px; height: 10px;
+      border: 1px solid var(--accent);
+      background: var(--bg);
+      transform: rotate(45deg);
+    }
+
+    .roadmap-item.done::before { background: var(--accent); }
+
+    .roadmap-phase {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .roadmap-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--heading);
+      margin-bottom: 8px;
+    }
+
+    .roadmap-desc {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .roadmap-status {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+    }
+
+    .status-active {
+      color: var(--accent);
+      border: 1px solid rgba(0,255,224,0.3);
+      background: rgba(0,255,224,0.05);
+    }
+
+    .status-done {
+      color: #888;
+      border: 1px solid #333;
+    }
+
+    .status-planned {
+      color: var(--accent2);
+      border: 1px solid rgba(0,102,255,0.3);
+      background: rgba(0,102,255,0.05);
+    }
+
+    /* GITHUB CTA */
+    .cta {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 80px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(0,255,224,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 48px);
+      color: var(--heading);
+      margin-bottom: 16px;
+    }
+
+    .cta-desc {
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-size: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 32px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    /* OPEN SOURCE BADGE */
+    .oss-banner {
+      position: relative;
+      z-index: 10;
+      background: rgba(0,255,224,0.04);
+      border-top: 1px solid rgba(0,255,224,0.1);
+      border-bottom: 1px solid rgba(0,255,224,0.1);
+      padding: 16px 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .oss-banner strong { color: var(--heading); }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      section { padding: 60px 24px; }
+      .stat { padding: 32px 24px; }
+      footer { padding: 24px; flex-direction: column; text-align: center; }
+      .oss-banner { padding: 16px 24px; }
+      .cta { padding: 60px 24px; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <div class="logo-container">
-        <!-- Se till att filnamnet matchar din logotyp -->
-        <img src="20260418_1701_Image Generation_simple_compose_01kpghr8rtfj6vcr1b3h88tn3k.png" alt="Krytonum Logo">
-    </div>
-    <h1>Krytonum</h1>
-    <div class="slogan">The Core Standard</div>
-</header>
+<div class="noise"></div>
 
-<div class="content">
-    <div class="main-project">
-        <p>
-            High-performance operating system architecture engineered for stability, 
-            technical integrity, and bare-metal efficiency.
-        </p>
-        <div class="status-box">System Status: Active Development</div>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">VELO<span>.</span>COMPUTING</a>
+  <ul class="nav-links">
+    <li><a href="#features">Architecture</a></li>
+    <li><a href="https://github.com/velo-computing-technologies/Krytonum" target="_blank">GitHub</a></li>
+  </ul>
+  <div class="nav-badge">Active Dev</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-eyebrow">Velo Computing Technologies</div>
+
+  <h1 class="hero-title">
+    KRYTO<span class="accent">NUM</span><br>
+    <span class="dim">OS</span>
+  </h1>
+
+  <p class="hero-subtitle">
+    The Core Standard. A high-performance operating system engineered for developers — built bare-metal in C++, with security-first architecture from the ground up.
+  </p>
+
+  <div class="hero-actions">
+    <a href="https://github.com" target="_blank" class="btn-primary">
+      ★ Star on GitHub
+    </a>
+    <a href="#roadmap" class="btn-secondary">
+      → View Roadmap
+    </a>
+  </div>
+
+  <!-- TERMINAL -->
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-dot" style="background:#ff5f57"></div>
+      <div class="terminal-dot" style="background:#febc2e"></div>
+      <div class="terminal-dot" style="background:#28c840"></div>
+      <span style="color:var(--muted);font-size:11px;margin-left:8px;">krytonum ~ boot</span>
     </div>
+    <div class="terminal-body">
+      <div><span class="t-muted">[ 0.000000 ]</span> <span class="t-head">Krytonum kernel</span> <span class="t-accent">v0.1.0-alpha</span></div>
+      <div><span class="t-muted">[ 0.000012 ]</span> Initializing bare-metal C++ runtime...</div>
+      <div><span class="t-muted">[ 0.000048 ]</span> <span class="t-accent2">Memory manager</span> — online</div>
+      <div><span class="t-muted">[ 0.000091 ]</span> <span class="t-accent2">Process scheduler</span> — online</div>
+      <div><span class="t-muted">[ 0.000134 ]</span> <span class="t-accent2">Security layer</span> — online</div>
+      <div><span class="t-muted">[ 0.000178 ]</span> <span class="t-accent">TLS stack</span> — initializing</div>
+      <div><span class="t-muted">[ 0.000203 ]</span> <span class="t-accent3">mbedTLS</span> — signed ✓</div>
+      <div><span class="t-muted">[ 0.000241 ]</span> Developer shell — ready</div>
+      <div style="margin-top:12px;"><span class="t-accent">root@krytonum</span><span class="t-muted">:~$</span> <span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-value">C<span>++</span></div>
+    <div class="stat-label">Core Language</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value"><span>100</span>%</div>
+    <div class="stat-label">Open Source & Free</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value"><span>0</span></div>
+    <div class="stat-label">Vendor Lock-in</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">Dev<span>.</span></div>
+    <div class="stat-label">First Philosophy</div>
+  </div>
 </div>
 
+<!-- OPEN SOURCE BANNER -->
+<div class="oss-banner">
+  <span>⬡</span>
+  <span><strong>Krytonum is free and open source.</strong> No subscriptions. No telemetry. No compromise. Fork it, build it, ship it.</span>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">Architecture</div>
+  <h2 class="section-title">Built Different.<br>By Design.</h2>
+  <p class="section-desc">Every layer engineered with intention — from the bootloader to the developer shell. No legacy baggage. No compromises.</p>
+
+  <div class="features-grid">
+    <div class="feature">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-title">Bare-Metal C++ Kernel</div>
+      <p class="feature-desc">Custom kernel written from scratch in modern C++. No Linux compatibility layer, no abstractions you didn't ask for. Direct hardware access, maximum performance.</p>
+      <span class="feature-tag">Kernel</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-title">Security-First Architecture</div>
+      <p class="feature-desc">Security isn't a layer bolted on top — it's baked into the foundation. Memory isolation, signed TLS, and hardened system calls from day one.</p>
+      <span class="feature-tag">Security</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🧠</span>
+      <div class="feature-title">AI Cyber Defense Layer</div>
+      <p class="feature-desc">Integrating a fine-tuned cybersecurity AI model directly into the OS stack. Autonomous threat detection and vulnerability analysis at the system level.</p>
+      <span class="feature-tag">AI — Planned</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🛠</span>
+      <div class="feature-title">Developer-First UX</div>
+      <p class="feature-desc">Built for people who live in terminals. A clean, fast shell experience with first-class toolchain support. Think Linux, reimagined without the cruft.</p>
+      <span class="feature-tag">DX</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">📦</span>
+      <div class="feature-title">Custom Package System</div>
+      <p class="feature-desc">A purpose-built package manager designed for the Krytonum ecosystem. Fast, deterministic, and reproducible builds across every environment.</p>
+      <span class="feature-tag">Tooling — Planned</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🌐</span>
+      <div class="feature-title">Hardened Network Stack</div>
+      <p class="feature-desc">Custom TLS implementation with verified fingerprints, strict cipher suites, and deep inspection capabilities. Built to survive hostile networks.</p>
+      <span class="feature-tag">Networking</span>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-label">Roadmap</div>
+  <h2 class="section-title">Where We're Going.</h2>
+  <p class="section-desc">Months to years — but every great OS started with a single commit.</p>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 80px;">
+    <div class="roadmap">
+      <div class="roadmap-item done">
+        <div class="roadmap-phase">Phase 0</div>
+        <div class="roadmap-title">Foundation</div>
+        <p class="roadmap-desc">Project structure, toolchain setup, bootloader research, team assembly, domain and brand established.</p>
+        <span class="roadmap-status status-done">Complete</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 1</div>
+        <div class="roadmap-title">Kernel Core</div>
+        <p class="roadmap-desc">Custom C++ kernel, memory management, process scheduling, interrupt handling, and basic hardware abstraction layer.</p>
+        <span class="roadmap-status status-active">In Progress</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 2</div>
+        <div class="roadmap-title">System Services</div>
+        <p class="roadmap-desc">File system, driver framework, network stack with hardened TLS, and developer shell environment.</p>
+        <span class="roadmap-status status-planned">Planned</span>
+      </div>
+    </div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 3</div>
+        <div class="roadmap-title">Developer Experience</div>
+        <p class="roadmap-desc">Package manager, toolchain integration, documentation, and first public alpha release to early contributors.</p>
+        <span class="roadmap-status status-planned">Planned</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 4</div>
+        <div class="roadmap-title">AI Cyber Defense</div>
+        <p class="roadmap-desc">Integration of fine-tuned cybersecurity AI model — autonomous vulnerability detection, threat analysis, and system hardening at the OS level.</p>
+        <span class="roadmap-status status-planned">Planned</span>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 5</div>
+        <div class="roadmap-title">Public Launch</div>
+        <p class="roadmap-desc">Stable release, community building, and open contributions. The beginning, not the end.</p>
+        <span class="roadmap-status status-planned">Planned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2 class="cta-title">Open Source.<br>No Strings Attached.</h2>
+  <p class="cta-desc">Krytonum is free — forever. Watch it being built, contribute, or just follow along.</p>
+  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+    <a href="https://github.com" target="_blank" class="btn-primary">★ Follow on GitHub</a>
+    <a href="https://velocomputing.tech" target="_blank" class="btn-secondary">🌐 velocomputing.tech</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  © 2026 Velo Computing Technologies. All rights reserved.
+  <div class="footer-logo">VELO<span>.</span>COMPUTING</div>
+  <div class="footer-copy">© 2026 Velo Computing Technologies. Open Source. Free Forever.</div>
+  <ul class="footer-links">
+    <li><a href="https://github.com" target="_blank">GitHub</a></li>
+    <li><a href="#features">Docs</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
 </footer>
 
 </body>
