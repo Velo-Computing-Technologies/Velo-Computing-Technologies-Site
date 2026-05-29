@@ -26,32 +26,8 @@
             <p>Krytonum is an upcoming independent Linux distribution where the entire user space, window manager, and system configurations are executed natively through a hardened, low-overhead JavaScript runtime. No heavy desktop environments. No bloated rendering pipelines.</p>
         </section>
 
-        <section class="code-preview">
-            <h3>System Configuration Preview</h3>
-            <p class="section-desc">How system nodes and environments are defined in Krytonum via raw JSON.</p>
-            <div class="code-window">
-                <div class="code-header">
-                    <span class="file-name">/etc/krytonum/init.json</span>
-                </div>
-                <pre><code>{
-    "system": {
-        "hostname": "krytonum-dev-node",
-        "runtime": "Velo-WebShell-Core",
-        "allow_jit": true
-    },
-    "display": {
-        "engine": "Wayland-Chromium-Minimal",
-        "default_compositor": "css-grid-wm",
-        "hardware_acceleration": "vulkan"
-    },
-    "modules": [
-        "./ui/statusbar.js",
-        "./ui/terminal-emulator.js",
-        "./services/network-manager.json"
-    ]
-}</code></pre>
-            </div>
-        </section>
+       
+
 
         <section class="roadmap">
             <h3>Production Roadmap (2026)</h3>
@@ -71,17 +47,6 @@
             </div>
         </section>
 
-        <section class="interactive-status">
-            <h3>Query Build Server</h3>
-            <p class="section-desc">Check the real-time build logs directly from the Velo Computing environment pipelines.</p>
-            <button id="inspect-btn" class="cmd-btn"># krytonum-ctl --verify-pipeline</button>
-            <div id="console-log" class="console-box hidden">
-                <div class="console-line text-muted">[INFO] Connecting to velo-build-cluster-04...</div>
-                <div class="console-line text-muted">[INFO] Fetching HEAD commit from main trunk...</div>
-                <div class="console-line text-green">[OK] Pipeline Secure. Build #0892 compiled successfully.</div>
-                <div class="console-line">Current Target: x86_64-unknown-linux-gnu</div>
-            </div>
-        </section>
 
     </main>
 
