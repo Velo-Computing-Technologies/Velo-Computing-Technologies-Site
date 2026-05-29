@@ -3,59 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krytonum</title>
-    <style>
-        body {
-            background: #0a0a0a;
-            color: #cccccc;
-            font-family: monospace;
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 0 20px;
-            line-height: 1.5;
-        }
-        h1, h2 {
-            color: #ffffff;
-            font-weight: normal;
-        }
-        h1 { font-size: 1.2rem; margin-bottom: 4px; }
-        h2 { font-size: 1rem; margin-top: 30px; border-bottom: 1px dashed #333333; padding-bottom: 4px; }
-        .meta { color: #666666; font-size: 0.9rem; margin-bottom: 24px; }
-        .warning { color: #aa7744; border: 1px solid #332211; padding: 12px; margin: 20px 0; }
-        ul { padding-left: 20px; list-style-type: square; }
-        li { margin-bottom: 6px; }
-        a { color: #4488cc; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-    </style>
+    <title>Krytonum OS | Internal Architecture & Dev Status</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Krytonum OS</h1>
-    <div class="meta">Velo Computing Technologies | <a href="https://github.com/Velo-Computing-Technologies/Krytonum">Github</a></div>
+    <header class="sys-header">
+        <div class="sys-title">
+            <h1>KRYTONUM OS</h1>
+            <span class="status-indicator tag-orange">BUILD PHASE: IN PRODUCTION</span>
+        </div>
+        <div class="sys-meta">
+            <span>Kernel: Linux 6.12-rc</span>
+            <span>UI: WebShell (HTML5/CSS3/ES14)</span>
+        </div>
+    </header>
 
-    <p>Krytonum is a long-term research project focused on bare-metal x86_64 system architecture and low-overhead kernel primitives.</p>
+    <main class="main-content">
+        
+        <section class="manifesto">
+            <h2>Core Concept</h2>
+            <p>Krytonum is an upcoming independent Linux distribution where the entire user space, window manager, and system configurations are executed natively through a hardened, low-overhead JavaScript runtime. No heavy desktop environments. No bloated rendering pipelines.</p>
+        </section>
 
-    <div class="warning">
-        <strong>Status:</strong> Pre-alpha / Non-functional. The codebase currently consists of layout skeletons, build system configurations, and driver stubs. This is a multi-year initiative (est. 5-10 years) and is not yet bootable.
-    </div>
+        <section class="code-preview">
+            <h3>System Configuration Preview</h3>
+            <p class="section-desc">How system nodes and environments are defined in Krytonum via raw JSON.</p>
+            <div class="code-window">
+                <div class="code-header">
+                    <span class="file-name">/etc/krytonum/init.json</span>
+                </div>
+                <pre><code>{
+    "system": {
+        "hostname": "krytonum-dev-node",
+        "runtime": "Velo-WebShell-Core",
+        "allow_jit": true
+    },
+    "display": {
+        "engine": "Wayland-Chromium-Minimal",
+        "default_compositor": "css-grid-wm",
+        "hardware_acceleration": "vulkan"
+    },
+    "modules": [
+        "./ui/statusbar.js",
+        "./ui/terminal-emulator.js",
+        "./services/network-manager.json"
+    ]
+}</code></pre>
+            </div>
+        </section>
 
-    <h2>Development Roadmap</h2>
-    <ul>
-        <li><strong>Phase 1:</strong> Toolchain stability, Limine bootloader integration, and physical namespace migration (from OrionOS).</li>
-        <li><strong>Phase 2:</strong> Virtual memory structures, physical page allocators, and interrupt dispatch handling.</li>
-        <li><strong>Phase 3:</strong> Native PCI bus enumeration and low-level hardware IO ring drivers (Intel e1000).</li>
-    </ul>
+        <section class="roadmap">
+            <h3>Production Roadmap (2026)</h3>
+            <div class="roadmap-timeline">
+                <div class="timeline-item done">
+                    <span class="phase">Phase 1: Kernel & Wayland Binding</span>
+                    <p>Stripping the Linux kernel and establishing the direct bridge between Wayland compositor events and JavaScript bindings. (Completed Q1 2026)</p>
+                </div>
+                <div class="timeline-item active">
+                    <span class="phase">Phase 2: HTML/CSS Window Manager</span>
+                    <p>Current focus. Compiling the core CSS Grid-based window management system and hardware-accelerated DOM rendering. (In Progress)</p>
+                </div>
+                <div class="timeline-item pending">
+                    <span class="phase">Phase 3: Public Alpha Source Release</span>
+                    <p>Source code release for independent building. No pre-compiled ISO binaries will be provided at this stage.</p>
+                </div>
+            </div>
+        </section>
 
-    <h2>Build Environment</h2>
-    <p>Freestanding cross-compilation requires <code>nasm</code>, a target <code>x86_64-elf-gcc</code> environment, and GNU <code>make</code>.</p>
+        <section class="interactive-status">
+            <h3>Query Build Server</h3>
+            <p class="section-desc">Check the real-time build logs directly from the Velo Computing environment pipelines.</p>
+            <button id="inspect-btn" class="cmd-btn"># krytonum-ctl --verify-pipeline</button>
+            <div id="console-log" class="console-box hidden">
+                <div class="console-line text-muted">[INFO] Connecting to velo-build-cluster-04...</div>
+                <div class="console-line text-muted">[INFO] Fetching HEAD commit from main trunk...</div>
+                <div class="console-line text-green">[OK] Pipeline Secure. Build #0892 compiled successfully.</div>
+                <div class="console-line">Current Target: x86_64-unknown-linux-gnu</div>
+            </div>
+        </section>
 
-    <pre>
-$ git clone --recursive https://github.com
-$ cd Krytonum
-$ make</pre>
+    </main>
 
-    <h2>License</h2>
-    <p>MIT License.</p>
+    <footer>
+        <div class="footer-container">
+            <div>&copy; 2026 Velo Computing Technologies</div>
+            <div class="text-muted">Strictly confidential developer resource. Not for redistribution.</div>
+        </div>
+    </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
