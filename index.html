@@ -3,60 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krytonum OS | Internal Architecture & Dev Status</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Velo Computing Technologies</title>
+    <style>
+        /* Minimalist Color Palette & Reset */
+        :root {
+            --bg-color: #0f1115;
+            --card-bg: #161920;
+            --border-color: #242936;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #3b82f6; /* Restrained slate blue */
+            --accent-hover: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            letter-spacing: -0.01em;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 6%;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(15, 17, 21, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        nav ul li a {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 6% 80px 6%;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 600px;
+        }
+
+        /* Global Button */
+        .btn {
+            display: inline-block;
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--text-muted);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            margin-left: 12px;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--card-bg);
+            border-color: var(--text-muted);
+        }
+
+        /* Content Sections Base */
+        section {
+            padding: 80px 6%;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        /* About Section (Grounded & Realistic) */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .about-content h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        .about-content p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+        }
+
+        /* Shop / Wishlist Section */
+        .shop-intro {
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .shop-intro p {
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            border-radius: 6px;
+        }
+
+        .product-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .product-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .status-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 8px;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .form-cta-box {
+            background-color: var(--card-bg);
+            border: 1px dashed var(--border-color);
+            padding: 40px;
+            text-align: center;
+            border-radius: 6px;
+        }
+
+        .form-cta-box h3 {
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .form-cta-box p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            max-width: 500px;
+        }
+
+        .contact-container p {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 4px;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 6%;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 16px;
+                padding: 16px;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            footer {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <header class="sys-header">
-        <div class="sys-title">
-            <h1>KRYTONUM OS</h1>
-            <span class="status-indicator tag-orange">BUILD PHASE: IN PRODUCTION</span>
-        </div>
-        <div class="sys-meta">
-            <span>Kernel: Linux 6.12-rc</span>
-            <span>UI: WebShell (HTML5/CSS3/ES14)</span>
-        </div>
+    <header>
+        
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#shop">Shop Wishlist</a></li>
+                
+            </ul>
+        </nav>
     </header>
 
-    <main class="main-content">
-        
-        <section class="manifesto">
-            <h2>Core Concept</h2>
-            <p>Krytonum is an upcoming OS built on the Linux kernel where the entire user space, window manager, and system configurations are executed natively through a hardened, low-overhead JavaScript runtime. No heavy desktop environments. No bloated rendering pipelines.</p>
-        </section>
+    <section style="border-top: none;">
+        <div class="hero">
+            <h1>Specialized hardware & practical machine learning deployment.</h1>
+            <p>We design computing systems and software architectures tailored for concrete operational tasks. No artificial hype. Just engineered performance.</p>
+            <a href="#shop" class="btn">View Wishlist Shop</a>
+            <a href="#about" class="btn btn-secondary">Read Our Focus</a>
+        </div>
+    </section>
 
-       
-
-
-        <section class="roadmap">
-            <h3>Production Roadmap (2026)</h3>
-            <div class="roadmap-timeline">
-                <div class="timeline-item done">
-                    <span class="phase">Phase 1: Kernel & Wayland Binding</span>
-                    <p>Stripping the Linux kernel and establishing the direct bridge between Wayland compositor events and JavaScript bindings. (Completed Q1 2026)</p>
-                </div>
-                <div class="timeline-item active">
-                    <span class="phase">Phase 2: HTML/CSS Window Manager</span>
-                    <p>Current focus. Compiling the core CSS Grid-based window management system and hardware-accelerated DOM rendering. (In Progress)</p>
-                </div>
-                <div class="timeline-item pending">
-                    <span class="phase">Phase 3: Public Alpha Source Release</span>
-                    <p>Source code release for independent building. No pre-compiled ISO binaries will be provided at this stage.</p>
-                </div>
+    <section id="about">
+        <div class="section-title">About Our Technology</div>
+        <div class="about-content">
+            <div>
+                <h2>We focus squarely on applied AI and Machine Learning systems.</h2>
             </div>
-        </section>
+            <div>
+                <p>At Velo Computing Technologies, we don't treat artificial intelligence as a marketing buzzword. Our work centers on creating predictable, efficient machine learning pipelines and the physical hardware architectures required to run them optimally.</p>
+                <p>Whether it is building custom low-latency edge computing devices or structuring model training pipelines, our goal is utility, resource efficiency, and long-term hardware reliability.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="shop">
+        <div class="section-title">Production Shop</div>
+        <div class="shop-intro">
+            <h2>The Wishlist Framework</h2>
+            <p>We build our computing hardware in adaptive, demand-driven batches. Look over our current deployment concepts below. If you want us to manufacture a specific item, modify a design, or introduce a new product to our queue, let us know via our hardware wishlist form.</p>
+        </div>
+
+        <div class="shop-grid">
+            <div class="product-card">
+                <span class="status-tag">In Concepts</span>
+                <h3 style="margin-top: 12px;">Velo Edge-Node v1</h3>
+                <p>Compact, fanless hardware chassis optimized for local machine learning inference and real-time computer vision preprocessing.</p>
+            </div>
+            <div class="product-card">
+                <span class="status-tag">Under Review</span>
+                <h3 style="margin-top: 12px;">Dedicated ML Workstation</h3>
+                <p>Quiet, liquid-cooled desk builds constructed specifically for local model training, featuring optimized telemetry sensors.</p>
+            </div>
+            <div class="product-card">
+                <span class="status-tag">In Concepts</span>
+                <h3 style="margin-top: 12px;">Custom Accelerator Arrays</h3>
+                <p>Rack-mountable compute arrays tailored for specialized tensor computation and parallel processing workloads.</p>
+            </div>
+        </div>
+
+        <div class="form-cta-box">
+            <h3>Have an item or variation you want us to build?</h3>
+            <p>Submit your production requests, preferred specifications, and feature ideas directly through our wishlist pipeline.</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfFh8Hkx9hQLd3pub4VIDpUl5PQOx4ah7RJuF8h585v6Wpu5w/viewform?usp=sharing&ouid=117284519180935903830" target="_blank" class="btn">Open Wishlist Form</a>
+        </div>
+    </section>
 
 
-    </main>
 
     <footer>
-        <div class="footer-container">
-            <div>&copy; 2026 Velo Computing Technologies</div>
-            <div class="text-muted">Strictly confidential developer resource. Not for redistribution.</div>
-        </div>
+        <p>&copy; 2026 Velo Computing Technologies. Functional engineering over trends.</p>
+        <p>Built for clarity.</p>
     </footer>
 
-    <script src="script.js"></script>
 </body>
 </html>
