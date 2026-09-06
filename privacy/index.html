@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Velo One Docs</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --muted-color: #666666;
+            --border-color: #e5e7eb;
+            --card-bg: #f9fafb;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --text-color: #f8fafc;
+                --muted-color: #94a3b8;
+                --border-color: #334155;
+                --card-bg: #1e293b;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--muted-color);
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-size: 1.15rem;
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p, li {
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .highlight-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--muted-color);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Privacy Policy</h1>
+    <div class="subtitle">Applies to Velo One Docs Web App & Desktop Client | Effective Date: September 6, 2026</div>
+
+    <p>This Privacy Policy outlines how network communications, continuous database synchronization, and local data are handled across both the <strong>Velo One Docs Web Application</strong> and the <strong>Velo One Docs Native Desktop Application</strong>.</p>
+
+    <div class="highlight-box">
+        <strong>Summary Statement:</strong> Velo One Docs continuously transmits user-generated document content, state changes, and session metadata over encrypted network protocols to a remote cloud database to facilitate real-time synchronization across clients.
+    </div>
+
+    <h2>1. Scope of Data Transmission</h2>
+    <p>When operating Velo One Docs (either in a browser or as a desktop executable), the application establishes active, ongoing connections to remote database endpoints. Data transmitted includes:</p>
+    <ul>
+        <li><strong>Document Content & Editor State:</strong> Text, title changes, document metadata, and formatting data are streamed in real-time or near-real-time to maintain cloud persistence.</li>
+        <li><strong>Authentication Tokens & Session Keys:</strong> Security tokens required to authorize database read/write requests.</li>
+        <li><strong>Network Identifiers:</strong> Standard transport-layer data (such as IP address and user-agent string) transmitted automatically during HTTPS REST calls and WebSocket connections.</li>
+    </ul>
+
+    <h2>2. Web Version vs. Desktop App Behavior</h2>
+    <ul>
+        <li><strong>Web Version (GitHub Pages):</strong> Runs entirely inside the browser DOM. Network traffic occurs between the client browser and the designated remote database API endpoint. No tracking cookies or advertising telemetry scripts are injected.</li>
+        <li><strong>Desktop App (.EXE):</strong> Executes locally on Windows. It maintains direct, background HTTP/WebSocket traffic to the cloud database endpoint exclusively to execute document sync and state recovery.</li>
+    </ul>
+
+    <h2>3. Telemetry and Third-Party Analytics</h2>
+    <p>Velo One Docs does not sell user data, route document contents to ad-targeting networks, or embed third-party marketing trackers. Network communication is strictly confined to the backend server infrastructure required to operate the document storage service.</p>
+
+    <h2>4. Executable Integrity & Code Signing</h2>
+    <p>Official Windows builds of Velo One Docs are compiled directly from source code via GitHub Actions and digitally signed to verify binary authenticity and source code provenance.</p>
+
+    <h2>5. Inquiries & Source Code Transparency</h2>
+    <p>Velo One Docs is open source. For questions regarding code behavior or privacy compliance, please review the public source code repository or open an issue on GitHub.</p>
+
+    <div class="footer">
+        Code Signing & Privacy Notice: This program will not transfer any information to other networked systems unless specifically requested by the user or required to operate the user-initiated continuous document synchronization service.
+    </div>
+
+</body>
+</html>
