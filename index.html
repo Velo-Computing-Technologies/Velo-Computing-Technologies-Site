@@ -3,360 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velo Computing Technologies</title>
+    <title>Velo One Workspace | Docs, Sheets & Slides</title>
     <style>
-        /* Minimalist Color Palette & Reset */
         :root {
-            --bg-color: #0f1115;
-            --card-bg: #161920;
-            --border-color: #242936;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent: #3b82f6; /* Restrained slate blue */
-            --accent-hover: #2563eb;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --accent-docs: #2563eb;
+            --accent-sheets: #16a34a;
+            --accent-slides: #ea580c;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-main: #0f172a;
+                --card-bg: #1e293b;
+                --text-primary: #f8fafc;
+                --text-secondary: #94a3b8;
+                --border-color: #334155;
+                --accent-docs: #60a5fa;
+                --accent-sheets: #4ade80;
+                --accent-slides: #fb923c;
+            }
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            letter-spacing: -0.01em;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 0;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* Header Navigation */
         header {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 24px 6%;
             border-bottom: 1px solid var(--border-color);
-            background-color: rgba(15, 17, 21, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(8px);
         }
 
         .logo {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            text-decoration: none;
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-        }
-
-        nav ul li a {
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
             font-size: 0.9rem;
-            color: var(--text-muted);
-            transition: color 0.2s ease;
+            margin-left: 20px;
+            font-weight: 500;
         }
 
-        nav ul li a:hover {
-            color: var(--text-main);
+        nav a:hover {
+            color: var(--text-primary);
         }
 
-        /* Hero Section */
         .hero {
-            padding: 120px 6% 80px 6%;
             max-width: 800px;
+            margin: 60px auto 40px auto;
+            text-align: center;
+            padding: 0 20px;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            font-weight: 600;
-            line-height: 1.15;
-            margin-bottom: 24px;
+            font-size: 2.75rem;
+            font-weight: 800;
             letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            line-height: 1.15;
         }
 
         .hero p {
             font-size: 1.15rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             margin-bottom: 32px;
-            max-width: 600px;
         }
 
-        /* Global Button */
+        .apps-grid {
+            max-width: 1100px;
+            margin: 0 auto 80px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 0 20px;
+        }
+
+        .app-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge {
+            display: inline-block;
+            align-self: flex-start;
+            padding: 4px 10px;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .badge-live {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--accent-docs);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .badge-dev {
+            background-color: rgba(100, 116, 139, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .app-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .app-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
         .btn {
             display: inline-block;
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            padding: 12px 24px;
-            border-radius: 4px;
+            text-align: center;
+            padding: 10px 16px;
+            border-radius: 6px;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: background-color 0.2s ease;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
         }
 
         .btn:hover {
-            background-color: var(--text-muted);
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-docs);
+            color: #ffffff;
         }
 
         .btn-secondary {
             background-color: transparent;
-            color: var(--text-main);
+            color: var(--text-primary);
             border: 1px solid var(--border-color);
-            margin-left: 12px;
         }
 
-        .btn-secondary:hover {
-            background-color: var(--card-bg);
-            border-color: var(--text-muted);
-        }
-
-        /* Content Sections Base */
-        section {
-            padding: 80px 6%;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .section-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent);
-            margin-bottom: 24px;
-            font-weight: 700;
-        }
-
-        /* About Section (Grounded & Realistic) */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-        }
-
-        .about-content h2 {
-            font-size: 2rem;
-            font-weight: 500;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
-        }
-
-        .about-content p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 16px;
-        }
-
-        /* Shop / Wishlist Section */
-        .shop-intro {
-            max-width: 600px;
-            margin-bottom: 40px;
-        }
-
-        .shop-intro p {
-            color: var(--text-muted);
-            margin-top: 8px;
-        }
-
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .product-card {
-            background-color: var(--card-bg);
+        .btn-disabled {
+            background-color: var(--bg-main);
+            color: var(--text-secondary);
             border: 1px solid var(--border-color);
-            padding: 32px;
-            border-radius: 6px;
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
-        .product-card h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .product-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 16px;
-        }
-
-        .status-tag {
-            display: inline-block;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 4px 8px;
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--accent);
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .form-cta-box {
-            background-color: var(--card-bg);
-            border: 1px dashed var(--border-color);
-            padding: 40px;
-            text-align: center;
-            border-radius: 6px;
-        }
-
-        .form-cta-box h3 {
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .form-cta-box p {
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            font-size: 0.95rem;
-        }
-
-        /* Contact Section */
-        .contact-container {
-            max-width: 500px;
-        }
-
-        .contact-container p {
-            color: var(--text-muted);
-            margin-bottom: 32px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 4px;
-            outline: none;
-            font-size: 0.95rem;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--text-muted);
-        }
-
-        /* Footer */
         footer {
-            padding: 40px 6%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 20px;
             border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 0.85rem;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
         }
 
-        /* Responsive Layouts */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 16px;
-                padding: 16px;
-            }
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-            footer {
-                flex-direction: column;
-                gap: 12px;
-                text-align: center;
-            }
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
     <header>
-        
+        <a href="#" class="logo">Velo One Suite</a>
         <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#shop">Shop Wishlist</a></li>
-                
-            </ul>
+            <a href="#apps">Apps</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME" target="_blank" rel="noopener">GitHub</a>
         </nav>
     </header>
 
-    <section style="border-top: none;">
-        <div class="hero">
-            <h1>Specialized hardware & practical machine learning deployment.</h1>
-            <p>We design computing systems and software architectures tailored for concrete operational tasks. No artificial hype. Just engineered performance.</p>
-            <a href="#shop" class="btn">View Wishlist Shop</a>
-            <a href="#about" class="btn btn-secondary">Read Our Focus</a>
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <h1>Enterprise Document & Real-Time Productivity Tools</h1>
+            <p>Velo One provides local-first desktop apps and continuous cloud sync for documents, spreadsheets, and presentation decks.</p>
+        </section>
 
-    <section id="about">
-        <div class="section-title">About Our Technology</div>
-        <div class="about-content">
-            <div>
-                <h2>We focus squarely on applied AI and Machine Learning systems.</h2>
+        <section class="apps-grid" id="apps">
+            <!-- VELO ONE DOCS (AVAILABLE NOW) -->
+            <div class="app-card">
+                <div>
+                    <span class="badge badge-live">Live & Ready</span>
+                    <h2>Velo One Docs</h2>
+                    <p>Production-ready document editor with exact whitespace preservation, real-time database sync, template support, and desktop executables.</p>
+                </div>
+                <div class="actions">
+                    <a href="docs.velocomputing.tech" class="btn btn-primary">Launch Web App</a>
+                    <a href="https://github.com/Velo-Computing-Technologies/Velo-One-Docs/releases/latest" class="btn btn-secondary">Download Windows (.exe)</a>
+                </div>
             </div>
-            <div>
-                <p>At Velo Computing Technologies, we don't treat artificial intelligence as a marketing buzzword. Our work centers on creating predictable, efficient machine learning pipelines and the physical hardware architectures required to run them optimally.</p>
-                <p>Whether it is building custom low-latency edge computing devices or structuring model training pipelines, our goal is utility, resource efficiency, and long-term hardware reliability.</p>
+
+            <!-- VELO ONE SHEETS (IN DEVELOPMENT) -->
+            <div class="app-card">
+                <div>
+                    <span class="badge badge-dev">In Development</span>
+                    <h2>Velo One Sheets</h2>
+                    <p>High-performance spreadsheet editor designed for rapid data entry, real-time database grid storage, and offline tabular computations.</p>
+                </div>
+                <div class="actions">
+                    <span class="btn btn-disabled">Coming Soon</span>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <section id="shop">
-        <div class="section-title">Production Shop</div>
-        <div class="shop-intro">
-            <h2>The Wishlist Framework</h2>
-            <p>We build our computing hardware in adaptive, demand-driven batches. Look over our current deployment concepts below. If you want us to manufacture a specific item, modify a design, or introduce a new product to our queue, let us know via our hardware wishlist form.</p>
-        </div>
-
-        <div class="shop-grid">
-            <div class="product-card">
-                <span class="status-tag">In Concepts</span>
-                <h3 style="margin-top: 12px;">Velo Edge-Node v1</h3>
-                <p>Compact, fanless hardware chassis optimized for local machine learning inference and real-time computer vision preprocessing.</p>
+            <!-- VELO ONE SLIDES (IN DEVELOPMENT) -->
+            <div class="app-card">
+                <div>
+                    <span class="badge badge-dev">In Development</span>
+                    <h2>Velo One Slides</h2>
+                    <p>Presentation software engineered for structured technical decks, slide state synchronization, and clean offline desktop display.</p>
+                </div>
+                <div class="actions">
+                    <span class="btn btn-disabled">Coming Soon</span>
+                </div>
             </div>
-            <div class="product-card">
-                <span class="status-tag">Under Review</span>
-                <h3 style="margin-top: 12px;">Dedicated ML Workstation</h3>
-                <p>Quiet, liquid-cooled desk builds constructed specifically for local model training, featuring optimized telemetry sensors.</p>
-            </div>
-            <div class="product-card">
-                <span class="status-tag">In Concepts</span>
-                <h3 style="margin-top: 12px;">Custom Accelerator Arrays</h3>
-                <p>Rack-mountable compute arrays tailored for specialized tensor computation and parallel processing workloads.</p>
-            </div>
-        </div>
-
-        <div class="form-cta-box">
-            <h3>Have an item or variation you want us to build?</h3>
-            <p>Submit your production requests, preferred specifications, and feature ideas directly through our wishlist pipeline.</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfFh8Hkx9hQLd3pub4VIDpUl5PQOx4ah7RJuF8h585v6Wpu5w/viewform?usp=sharing&ouid=117284519180935903830" target="_blank" class="btn">Open Wishlist Form</a>
-        </div>
-    </section>
-
-
+        </section>
+    </main>
 
     <footer>
-        <p>&copy; 2026 Velo Computing Technologies. Functional engineering over trends.</p>
-        <p>Built for clarity.</p>
+        <div>&copy; 2026 Velo One Suite. Open source software.</div>
+        <div>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
     </footer>
 
 </body>
